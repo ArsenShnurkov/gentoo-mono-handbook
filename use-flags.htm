@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>Which USE flags are recommended for what purpose?</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td valign="top">
+<h1>Which USE flags are recommended for what purpose?</h1>
+</td><td valign="top">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<h2>Configuration</h2>
+<dl>
+<dt>debug</dt>
+<dd>Switch target to Debug instead of Release</dd>
+
+<dt>developer</dt>
+<dd>create .mdb files (that can be done for any of Debug or Releasy targets</dd>
+</dl>
+
+<h2>Compilation</h2>
+<dl>
+<dt>aot</dt>
+<dd>to create aoted native code (see example in <a href="https://github.com/gentoo/gentoo-portage-rsync-mirror/tree/master/app-admin/keepass">keepass ebuild</a>)</dd>
+
+<dt>jit</dt>
+<dd>to create bundled executable with <strong>mkbundle</strong> (<a href="http://linux.die.net/man/1/mkbundle">man</a>, <a href="www.mono-project.com/archived/guiderunning_mono_applications/#bundles">guide</a>, <a href="http://stackoverflow.com/questions/20485834/does-mono-mkbundle-produce-native-code">q</a>, <a href="https://github.com/mono/mono/blob/master/mcs/tools/mkbundle/mkbundle.cs">sources</a>)</dd>
+
+<dt>native</dt>
+<dd>to create compiled native code (see <a href="https://github.com/xen2/SharpLang">SharpLang</a> project)
+<br />
+ecj-gcj ebuild have such description for this use-flag: 
+<br />
+"native = Build a native binary along with the jar. Provides faster execution time, but needs about 1G memory and some patience to compile."
+</dd>
+</dl>
+
+<h2>Testing</h2>
+<dl>
+<dt>test</dt>
+<dd>this flag is automatically enabled if <code>FEATURES="test"</code> is in the <em>make.conf</em> (<a href="https://forums.gentoo.org/viewtopic-t-841708.html">is it really used?</a>)
+<br />
+ebuild should use NUnit or xUnit to test packaged code
+</dd>
+</dl>
+
+<h2>Installation</h2>
+<dl>
+<dt>gac</dt>
+<dd>add a strongnaming into compile options and register assembly with <strong>gacutil -i</strong></dd>
+
+<dt>nupkg</dt>
+<dd>use .nuspec file to create .nupkg and install that package into local nuget repository</dd>
+</dl>
+
+<h2>Integration</h2>
+<dl>
+<dt>mate</dt>
+<dd>Create menu shortcut for launching application in mate DE</dd>
+</dl>
+
+
+Some other USE-flags for inspiration:
+<br />
+<a href="https://www.gentoo.org/support/use-flags/">https://www.gentoo.org/support/use-flags/</a>
+
+</body>
+</html>

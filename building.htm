@@ -10,11 +10,22 @@
 <h1>How to compile solutions and projects with assemblies (executables and dynamic libraries) ?</h1>
 </td><td valign="top">
 <a href="index.htm">Gentoo Mono Handbook</a>
-<br />
-&nbsp;
 </td></tr></table>
 
-<font style="color:red">we don't know</font>
+
+<br />
+<a href="https://devmanual.gentoo.org/eclass-reference/dotnet.eclass/index.html">dotnet.eclass reference</a> ? <font style="color:red">there is no such thing!</font>
+<br />
+<br />
+<a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass#L81-L85">https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass#L81-L85</a>
+
+<pre><xmp>
+# @FUNCTION: exbuild
+# @DESCRIPTION: run xbuild with Release configuration and configurated FRAMEWORK
+exbuild() {
+	xbuild "${1}" /p:Configuration=Release /tv:4.0 /p:TargetFrameworkVersion=v"${FRAMEWORK}" || die
+}
+</xmp></pre>
 
 </body>
 </html>

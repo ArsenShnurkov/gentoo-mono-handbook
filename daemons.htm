@@ -13,9 +13,56 @@
 <br />
 &nbsp;
 </td></tr></table>
-
-
 <font style="color:red">we don't know</font>
+<br />
+<br />
+<a href="http://stackoverflow.com/questions/186493/how-do-i-code-a-mono-daemon">http://stackoverflow.com/questions/186493/how-do-i-code-a-mono-daemon</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;You should implement a service and use mono-service. 
+<br />
+<br />
 
+<br />
+<a href="http://stackoverflow.com/questions/3660039/success-with-start-stop-daemon-and-mono-service2">http://stackoverflow.com/questions/3660039/success-with-start-stop-daemon-and-mono-service2</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;We had a lot of issues with mono-service and ended up implementing our own "service" code in our app. Nothing hard, just grabbing some <a href="signals.htm">signals</a>:</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="typ">UnixSignal</span><span class="pln"> intr </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">UnixSignal</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Signum</span><span class="pun">.</span><span class="pln">SIGINT</span><span class="pun">);</span><span class="pln">
+</span><span class="typ">UnixSignal</span><span class="pln"> term </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">UnixSignal</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Signum</span><span class="pun">.</span><span class="pln">SIGTERM</span><span class="pun">);</span><span class="pln">
+</span><span class="typ">UnixSignal</span><span class="pln"> hup </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">UnixSignal</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Signum</span><span class="pun">.</span><span class="pln">SIGHUP</span><span class="pun">);</span><span class="pln">
+</span><span class="typ">UnixSignal</span><span class="pln"> usr2 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">UnixSignal</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Signum</span><span class="pun">.</span><span class="pln">SIGUSR2</span><span class="pun">);</span><span class="pln">
+
+</span><span class="typ">UnixSignal</span><span class="pun">[]</span><span class="pln"> signals </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">UnixSignal</span><span class="pun">[]</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> intr</span><span class="pun">,</span><span class="pln"> term</span><span class="pun">,</span><span class="pln"> hup</span><span class="pun">,</span><span class="pln"> usr2 </span><span class="pun">};</span><span class="pln">
+
+</span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">bool</span><span class="pln"> running </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">;</span><span class="pln"> running</span><span class="pun">;</span><span class="pln"> </span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">int</span><span class="pln"> idx </span><span class="pun">=</span><span class="pln"> </span><span class="typ">UnixSignal</span><span class="pun">.</span><span class="typ">WaitAny</span><span class="pun">(</span><span class="pln">signals</span><span class="pun">);</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">idx </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">0</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> idx </span><span class="pun">&gt;=</span><span class="pln"> signals</span><span class="pun">.</span><span class="typ">Length</span><span class="pun">)</span><span class="pln"> </span><span class="kwd">continue</span><span class="pun">;</span><span class="pln">
+
+    log</span><span class="pun">.</span><span class="typ">Debug</span><span class="pun">(</span><span class="str">"daemon: received signal "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> signals</span><span class="pun">[</span><span class="pln">idx</span><span class="pun">].</span><span class="typ">Signum</span><span class="pun">.</span><span class="typ">ToString</span><span class="pun">());</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">((</span><span class="pln">intr</span><span class="pun">.</span><span class="typ">IsSet</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> term</span><span class="pun">.</span><span class="typ">IsSet</span><span class="pun">))</span><span class="pln"> 
+    </span><span class="pun">{</span><span class="pln">
+        intr</span><span class="pun">.</span><span class="typ">Reset</span><span class="pln"> </span><span class="pun">();</span><span class="pln">
+        term</span><span class="pun">.</span><span class="typ">Reset</span><span class="pln"> </span><span class="pun">();</span><span class="pln">
+
+        log</span><span class="pun">.</span><span class="typ">Debug</span><span class="pun">(</span><span class="str">"daemon: stopping..."</span><span class="pun">);</span><span class="pln">
+
+        running </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">false</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln"> </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">hup</span><span class="pun">.</span><span class="typ">IsSet</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="com">// Ignore. Could be used to reload configuration.</span><span class="pln">
+        hup</span><span class="pun">.</span><span class="typ">Reset</span><span class="pun">();</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln"> </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">usr2</span><span class="pun">.</span><span class="typ">IsSet</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        usr2</span><span class="pun">.</span><span class="typ">Reset</span><span class="pun">();</span><span class="pln">
+        </span><span class="com">// do something</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+    
 </body>
 </html>

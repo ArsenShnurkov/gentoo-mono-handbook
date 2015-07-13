@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>How to work with signals?</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td valign="top">
+<h1>How to work with signals?</h1>
+</td><td valign="top">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<a href="http://stackoverflow.com/a/216617/1709408">http://stackoverflow.com/a/216617/1709408</a>
+<br />
+To receive notifications in the Unix way, that is using signals, you want to use the <strong>Mono.Unix.UnixSignal</strong>
+for each signal that you plan on receiving and then call UnixSignal.WaitAny () on an array of signals.
+<br />
+You would typically do this on a separate thread.
+<br />
+<br />
+<a href="http://www.mono-project.com/docs/faq/technical/#can-i-use-signal-handlers-with-mono">www.mono-project.com/docs/faq/technical/#can-i-use-signal-handlers-with-mono</a>
+<br />
+UnixSignal is the supported mechanism in Mono for receiving signals as it will not interfere with the runtime and isolates the developer from the finer complexity of signal handling in Unix.
+<br />
+<br />
+<a href="http://stackoverflow.com/a/11134892/1709408">http://stackoverflow.com/a/11134892/1709408</a>
+<br />
+<a href="http://www.kernel.org/doc/man-pages/online/pages/man7/signal.7.html">Signals</a> are intended to provide a rudimentary form of control over a process, not as an IPC mechanism. Signals have several issues when used as anything else:</p>
+
+<ul>
+<li><p>A lot of system calls will be interrupted by a signal and need special handling.</p></li>
+<li><p>Accordingly, a lot of code in the wild is not signal-safe.</p></li>
+<li><p>Signals do not have any kind of data content, except for themselves. This makes them mostly useless as a message passing method.</p></li>
+<li><p>There is only so much you can do in a signal handler.</p></li>
+<li><p>Most importantly, subsequent signals of the same type are not queued - they are <em>merged</em> into one instance.</p></li>
+<li><p>Even more important, <em>there is no guarantee that signals are delivered in the same order as they were generated</em>. From the manual page:</p>
+
+<blockquote>
+  <p>By contrast, if multiple standard signals are pending for a process, <strong>the order in which
+  they are delivered is unspecified</strong>.</p>
+</blockquote></li>
+</ul>
+
+<p>You might <em>theoretically</em> be able set up some kind of channel using several signals going back and forth, with some acting like some sort of acknowledgement, but no sane person would want to attempt something like that. You might as well use smoke signals instead...</p>
+
+
+</body>
+</html>

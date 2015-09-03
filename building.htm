@@ -27,5 +27,107 @@ exbuild() {
 }
 </xmp></pre>
 
+<h2>Typical error messages</h2>
+could not import "$(MSBuildBinPath)\Microsoft.CSharp.Targets"
+<br />
+<br />
+# find /usr/lib/mono -name "Microsoft.CSharp.targets"
+<br />
+/usr/lib/mono/xbuild/12.0/bin/Microsoft.CSharp.targets
+<br />
+/usr/lib/mono/xbuild/14.0/bin/Microsoft.CSharp.targets
+<br />
+/usr/lib/mono/4.5/Microsoft.CSharp.targets
+<br />
+<br />
+if 4.5 is set the error is 
+<br />
+MSBUILD: error MSBUILD0000: Unknown tools version: '4.5' . Known versions: '2.0' '3.0' '3.5' '4.0' '12.0'
+<br />
+if 12.0 is set, then
+<br />
+could not import "$(MSBuildBinPath)\Microsoft.CSharp.Targets"
+<br />
+<br />
+<a href="https://msdn.microsoft.com/en-us/library/bb383796.aspx">https://msdn.microsoft.com/en-us/library/bb383796.aspx</a>
+<br />
+Toolset properties specify the paths of the tools.
+MSBuild uses the value of the ToolsVersion attribute in the project file to locate the corresponding registry key,
+and then uses the information in the registry key to set the Toolset properties.
+
+<h2>Framework profiles</h2>
+
+<a href="http://manpages.ubuntu.com/manpages/utopic/man1/xbuild.1.html">http://manpages.ubuntu.com/manpages/utopic/man1/xbuild.1.html</a>
+<pre>
+<u>XBUILD_FRAMEWORK_FOLDERS_PATH</u>
+              With  ToolsVersion 4.0, projects can target arbitrary frameworks
+              referenced by TargetFrameworkMoniker, which is of the format:
+
+                Identifier,Version=&lt;version&gt;[,Profile=&lt;profile&gt;]
+
+              Eg. ".NETFramework,Version=v4.0"
+
+              The 3 parts of the moniker are given by the msbuild properties:
+
+                $(TargetFrameworkIdentifier),  $(TargetFrameworkVersion)   and
+              $(TargetFrameworkProfile)
+
+              This moniker maps to a framework description file on disk:
+
+                &lt;framework_root&gt;/Identifier/Version/[Profile]/RedistList/FrameworkList.xml
+
+              This file is used to  determine  the  path  where  to  find  the
+              framework assemblies for this particular framework.
+
+              Framework  root  here  is  configurable  and  is resolved in the
+              following order:
+
+                1. Paths specified in the environment variable $XBUILD_FRAMEWORK_FOLDERS_PATH
+                2. /Library/Frameworks/Mono.framework/External/xbuild-frameworks on Mac OSX.
+                3. MSBuild property $(TargetFrameworkRoot)
+                4. $prefix/lib/mono/xbuild-frameworks (default location)
+
+              XBuild tries the paths given above, in order, till  it  finds  a
+              FrameworkList.xml  for the moniker.  Running with /v:detailed or
+              higher verbosity will show the various paths that it tries.
+
+              The FrameworkList.xml itself just has a root element like:
+
+                &lt;FileList          Name=".NET          Framework          3.5"
+              TargetFrameworkDirectory="..\..\..\..\3.5"
+              IncludeFramework="v3.0"&gt;
+                &lt;/FileList&gt;
+
+              Here  the  TargetFrameworkDirectory  attribute   specifies   the
+              directory where the assemblies for this particular framework can
+              be found. If this is not set, then  the  parent  of  the  folder
+              containing the xml file is taken as the framework directory.
+
+              IncludeFramework  attribute specifies the version of a framework
+              (under the *same* $(TargetFrameworkIdentifier)) which should  be
+              included in the final list of Target framework directories.
+</pre>
+
+<h2>Variables of .csproj files</h2>
+<a href="https://msdn.microsoft.com/en-us/library/ms164309.aspx">https://msdn.microsoft.com/en-us/library/ms164309.aspx</a>
+<br />
+MSBuildBinPath
+<br />
+<br />
+The absolute path of the folder where the MSBuild binaries that are currently being used are located (for example, C:\Windows\Microsoft.Net\Framework\versionNumber). This property is useful if you have to refer to files in the MSBuild directory.
+<br />
+Do not include the final backslash on this property.
+<br />
+<br />
+MSBuildProjectDirectory
+<br />
+MSBuildProjectFile
+<br />
+MSBuildProjectFullPath
+<br />
+MSBuildProjectName
+<br />
+MSBuildToolsVersion
+
 </body>
 </html>

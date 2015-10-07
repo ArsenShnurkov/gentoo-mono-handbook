@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>How to modify the code of mono</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td valign="top">
+<h1>How to modify the code of mono</h1>
+</td><td valign="top">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<a href="http://www.mono-project.com/community/contributing/contribution-howto/">http://www.mono-project.com/community/contributing/contribution-howto/</a>
+<br />
+<br />
+1. determine the owner of code with Blame feature of <a href="http://github.com/mono/mono">http://github.com/mono/mono</a>
+<br />
+2. create bug in <a href="bugtracker.htm">bugtracker</a>, add the owner to CC (after pressing "show additional fields" button)
+<br />
+3. implement the patch
+<br />
+4. validate the code according Code Style Guidelines
+<br />
+5. write some unit tests
+<br />
+6. do the actual testing
+<br />
+7. create a Pull Request for change on github
+<br />
+8. Attach patch with "patch" checkbox (and link to PR, and give them MIT license to changes, and say that patch and PR is the same, but PR may contain more fresh version)
+<br />
+9. Hope they will accept the changes
+<br />
+10. fix according to their words, untill the accept the patch (create a fork of mono, if they stop)
+<br />
+<br />
+NUnit Tests Guidelines. 
+<br />
+In the mono source tree they are located at: mcs/class/doc/NUnitGuideli…
+
+</body>
+</html>

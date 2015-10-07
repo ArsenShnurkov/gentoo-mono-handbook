@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>GTK+  packaging</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="../images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td valign="top">
+<h1>GTK+  packaging</h1>
+</td><td valign="top">
+<a href="../index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+Which documentation do we have?
+<br />
+<a href="http://www.mono-project.com/docs/gui/gtksharp/">http://www.mono-project.com/docs/gui/gtksharp/</a>
+<br />
+<a href="http://www.mono-project.com/docs/gui/gtksharp/tutorials/">http://www.mono-project.com/docs/gui/gtksharp/tutorials/</a>
+<br />
+<br />
+Gtk# is a Graphical User Interface Toolkit for mono and .Net. 
+<br />
+<br />
+<font style="color:red">What is "Toolkit" and how it relates to other parts of graphical stacks ?</font>
+<br />
+<font style="color:red">How many stacks do we have? X, Wayland, Mir ?</font>
+<br />
+<br />
+binds gtk+ toolkit and assorted GNOME libraries.
+<br />
+<font style="color:red">which libraries does toolkit include?</font>
+<br />
+<font style="color:red">which other libraries are wrapped?</font>
+<br />
+<br />
+<font style="color:red">Does it allow work with OpenGL?</font>
+<br />
+<br />
+<font style="color:red">What is Stetic and how to install it in gentoo?</font>
+
+<br />
+<br />
+Gtk# 3.0 will be built against the .net 2.0 profile, but it will be possible to install 2.12 and 3.0 in parallel for compatibility.
+(q) <a href="http://www.mono-project.com/docs/gui/gtksharp/plan/">http://www.mono-project.com/docs/gui/gtksharp/plan/</a>
+<br />
+there is no more 2.0 profile (because MS opensourced 4.0, 4.5, 4.6), so we need a more modern plan
+<br />
+<br />
+<a href="https://github.com/gentoo/dotnet/issues/131">https://github.com/gentoo/dotnet/issues/131</a> - no docs about how Gtk+ and Gtk# are packaged for portage
+<br />
+<br />
+The current state of affairs is, that the stable branch and the testing branch of gx86 take different approaches:</p>
+
+<ul>
+<li>stable: eclass-based modular sub projects (kinda like gstreamer) </li>
+<li>testing: monolithic gtk-sharp</li>
+</ul>
+
+<p>As currently implemented, these approaches are not only incompatible, but difficult to support simultaneously in ebuilds that DEPEND on them.  To preserve the two-prong status quo sustainably, the dotnet team would probably need to create virtuals to prevent a profusion of DEPENDenceies like:</p>
+
+<div class="highlight highlight-source-shell"><pre>( <span class="pl-k">||</span> ( <span class="pl-k">&lt;</span>=dev-dotnet/gtk-sharp-2.12.13[foolib] dev-dotnet/foo-sharp))</pre></div>
+
+<p>from appearing all over the place which, although probably legal in EAPI5+, will anyhow bring portage's dep-solver to it's knees, in practice, causing all kinds of spooky disasters whenever any structural change occurs and general slowness any time --complete-graph evaluation occurs.</p>
+
+<p>I think the questions that need answering are:</p>
+
+<ul>
+<li>How much benefit is derived from the modular ebuilds as compared to the monolithic approach?</li>
+<li>Is there a good reason to maintain both or can we pick one or the other approach and treeclean the other out of existence?</li>
+</ul>
+<br />
+<font style="color:red">Why do developers think that approaches are incompatible?</font>
+<br />
+<br />
+<font style="color:red">How exactly "modular design" is implemented?</font>
+<br />
+<font style="color:red">How exactly "monolitic design" is implemented?</font>
+<br />
+<br />
+<font style="color:red">How the Gtk+ project is structured in it's source repository?</font>
+<br />
+<br />
+<font style="color:red">Which pieces of C# code the Gtk# project includes and why?</font>
+
+
+
+
+<h2>How Gtk+ is packaged in stable and testing branches?</h2>
+
+The text of "modular" ebuild:
+<br />
+<a href="https://github.com/gentoo/gentoo/blob/3734280aee79307945994b3396c1b7f073ae1a85/dev-dotnet/gtk-sharp/gtk-sharp-2.12.10.ebuild">https://github.com/gentoo/gentoo/blob/3734280aee79307945994b3396c1b7f073ae1a85/dev-dotnet/gtk-sharp/gtk-sharp-2.12.10.ebuild</a> (main tree)
+<br />
+KEYWORDS="<strong><font style="color:magenta">amd64 ppc x86</font></strong> ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~x86-solaris"
+<br />
+The text of eclass for supporting "modules":
+<br />
+<a href="https://github.com/gentoo/gentoo/blob/86cec2922af8e267dbcccde278327e6ad40b6c3e/eclass/gtk-sharp-module.eclass">https://github.com/gentoo/gentoo/blob/86cec2922af8e267dbcccde278327e6ad40b6c3e/eclass/gtk-sharp-module.eclass</a> (main tree)
+<br />
+<a href="https://github.com/gentoo/dotnet/blob/4f761293e163822fc10d0fe1aa6555cafd4ceec3/eclass/gtk-sharp-module.eclass">https://github.com/gentoo/dotnet/blob/4f761293e163822fc10d0fe1aa6555cafd4ceec3/eclass/gtk-sharp-module.eclass</a> (dotnet overlay)
+
+<br />
+<br />
+The texts of "monolitic" ebuilds:
+<br />
+<a href="https://github.com/gentoo/gentoo/blob/3734280aee79307945994b3396c1b7f073ae1a85/dev-dotnet/gtk-sharp/gtk-sharp-2.12.21.ebuild">https://github.com/gentoo/gentoo/blob/3734280aee79307945994b3396c1b7f073ae1a85/dev-dotnet/gtk-sharp/gtk-sharp-2.12.21.ebuild</a> (main tree)
+<br />
+<a href="https://github.com/gentoo/dotnet/blob/4f761293e163822fc10d0fe1aa6555cafd4ceec3/dev-dotnet/gtk-sharp/gtk-sharp-2.99.3.ebuild">https://github.com/gentoo/dotnet/blob/4f761293e163822fc10d0fe1aa6555cafd4ceec3/dev-dotnet/gtk-sharp/gtk-sharp-2.99.3.ebuild</a> (dotnet overlay)
+<br />
+KEYWORDS="<strong><font style="color:magenta">~</font></strong>amd64 <strong><font style="color:magenta">~</font></strong>x86 <strong><font style="color:magenta">~</font></strong>ppc"
+<br />
+this is testing branch, because it is marked as testing with tilda sign for all architectures:
+<br />
+<br />
+<a href="https://dev.gentoo.org/~zmedico/portage/doc/man/emerge.1.html">https://dev.gentoo.org/~zmedico/portage/doc/man/emerge.1.html</a>
+
+<dl>
+<dt><b>KEYWORDS</b></dt>
+<dd>
+The <b>KEYWORDS</b> variable in an <b>ebuild</b> file is also used for masking
+a package still in testing.  There are architecture-specific keywords for
+each package that let <b>portage</b> know which systems are compatible with
+the package.  Packages which compile on an architecture, but have not been
+proven to be "stable", are masked with a tilde (<b>~</b>) in front of the
+architecture name.  <b>emerge</b> examines the <b>ACCEPT_KEYWORDS</b> environment
+variable to allow or disallow the emerging of a package masked by
+<b>KEYWORDS</b>.  To inform <b>emerge</b> that it should build these 'testing'
+versions of packages, you should update your
+<i>/etc/portage/package.accept_keywords</i>
+file to list the packages you want the
+'testing' version.  See <b><a href="https://dev.gentoo.org/~zmedico/portage/doc/man/portage.5.html">portage</a></b>(5) for more information.
+</dd><dt>
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>--complete-graph evaluation</h2>
+<a href="https://dev.gentoo.org/~zmedico/portage/doc/man/emerge.1.html">https://dev.gentoo.org/~zmedico/portage/doc/man/emerge.1.html</a>
+<br />
+
+<dl>
+<dt><b>--complete-graph [ y | n ]</b></dt>
+<dd>
+This causes <b>emerge</b> to consider the deep dependencies of all
+packages from the world set. With this option enabled,
+<b>emerge</b> will bail out if it determines that the given operation will
+break any dependencies of the packages that have been added to the
+graph. Like the <b>--deep</b> option, the <b>--complete-graph</b>
+option will significantly increase the time taken for dependency
+calculations. Note that, unlike the <b>--deep</b> option, the
+<b>--complete-graph</b> option does not cause any more packages to
+be updated than would have otherwise been updated with the option disabled.
+Using <b>--with-bdeps=y</b> together with <b>--complete-graph</b> makes
+the graph as complete as possible.
+</dd>
+
+
+<dt><b>--complete-graph-if-new-use &lt; y | n &gt;</b></dt>
+<dd>
+Trigger the <b>--complete-graph</b> behavior if USE or IUSE will
+change for an installed package. This option is enabled by default.
+</dd>
+
+<dt><b>--complete-graph-if-new-ver &lt; y | n &gt;</b></dt>
+<dd>Trigger the <b>--complete-graph</b> behavior if an installed package version will change (upgrade or downgrade). This option is enabled by default.</dd>
+
+
+<dt><b>--with-bdeps &lt; y | n &gt;</b></dt>
+<dd>
+In dependency calculations, pull in build time dependencies
+that are not strictly required. This defaults to 'n' for
+installation actions, meaning they will not be installed, and
+'y' for the <b>--depclean</b> action, meaning they will not be removed.
+</dd>
+
+
+<dt><b>--with-test-deps [ y | n ]</b></dt>
+<dd>
+For packages matched by arguments, this option will pull in dependencies
+that are conditional on the "test" USE flag, even if "test" is not
+enabled in <b>FEATURES</b> for the matched packages. (see <b><a href="https://dev.gentoo.org/~zmedico/portage/doc/man/make.conf.5.html">make.conf</a></b>(5)
+for more information about <b>FEATURES</b> settings).
+</dd>
+
+</dl>
+These settings can be added to
+<b>EMERGE_DEFAULT_OPTS</b> (see <a href="https://dev.gentoo.org/~zmedico/portage/doc/man/make.conf.5.html">make.conf</a>(5)) and later overridden via the
+command line.
+<br />
+<br />
+<font style="color:red">I don't understood the words above why "modular" design is worse for package manager. There should be a more detailed explaination with description of detailed operations and their count/amount.</font>
+
+
+
+
+
+<h2>what is <strong>gx86</strong>?</h2>
+what is gx86 (without multilib as in <a href="https://wiki.gentoo.org/wiki/Gx86-multilib">https://wiki.gentoo.org/wiki/Gx86-multilib</a>? )
+<br />
+By the way, the multilib page is also doesn't explain everything clearly 
+<br />
+<br />
+for now i assume that it is shortname for "gtk-x86"
+
+
+
+
+<h2>Stetic</h2>
+<a href="http://www.monodevelop.com/documentation/stetic-gui-designer/">http://www.monodevelop.com/documentation/stetic-gui-designer/</a>
+<br />
+<a href="http://www.mono-project.com/archived/stetic/">http://www.mono-project.com/archived/stetic/</a>
+<br />
+it's distributed as part of monodevelop (i think so looking at screenshots). That is why there is no ebuilds found on <a href="https://gpo.zugaina.org/">gpo.zugaina.org</a>
+
+</body>
+</html>

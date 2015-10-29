@@ -14,10 +14,28 @@
 &nbsp;
 </td></tr></table>
 
-<font style="color:red">we don't know</font>
+<h2>downloading mono key</h2>
 
+add line <strong>mirror://gentoo/mono.snk.bz2</strong> to SRC_URI variable:
+<pre><xmp>
+SRC_URI="${REPOSITORY}/archive/${EGIT_BRANCH}/${EGIT_COMMIT}.zip -> ${PF}.zip
+	mirror://gentoo/mono.snk.bz2"
+</xmp></pre>
 <br />
 <br />
+not all key formats are supported:
+<br />
+<a href="http://stackoverflow.com/questions/7492822/mono-xbuild-error-cs1548-key-file-has-incorrect-format">http://stackoverflow.com/questions/7492822/mono-xbuild-error-cs1548-key-file-has-incorrect-format</a>
+<h2>signing assembly</h2>
+signing support is added into the Microsoft.Common.targets file.
+<br />
+To do this via the command line you need to set two properties: SignAssembly and AssemblyOriginatorKeyFile.
+<pre><xmp>
+	exbuild /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=${WORKDIR}/mono.snk "${METAFILETOBUILD}"
+</xmp></pre>
+<a href="http://blogs.msdn.com/b/msbuild/archive/2005/09/26/474079.aspx">http://blogs.msdn.com/b/msbuild/archive/2005/09/26/474079.aspx</a>
+<h2>Installing</h2>
+
 egacinstall is from undocumented <strong>dotnet.eclass</strong>
 <br />
 <br />

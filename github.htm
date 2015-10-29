@@ -14,20 +14,27 @@
 &nbsp;
 </td></tr></table>
 
-<font style="color:red">we don't know</font>
-<br />
-<br />
-<pre><xmp>
-NAME="ProjectName"
+<h2>Example</h2>
+Code on github can be in the master branch
+<pre><xmp>NAME="ProjectName"
 HOMEPAGE="https://github.com/AccountName/${NAME}"
 
 EGIT_COMMIT="061d8a27b13db5a76cae4757bb902b2808494a83"
 SRC_URI="${HOMEPAGE}/archive/${EGIT_COMMIT}.zip -> ${P}.zip"
-S="${WORKDIR}/${NAME}-${EGIT_COMMIT}" 
-</xmp></pre>
-<br />
-<br />
+S="${WORKDIR}/${NAME}-${EGIT_COMMIT}" </xmp></pre>
 
+or in the antoher branch
+<br />
+<pre><xmp>NAME="NLog"
+HOMEPAGE="https://github.com/ArsenShnurkov/${NAME}"
+
+EGIT_BRANCH="MONO_4_0"
+EGIT_COMMIT="c3eb07ff89523154dc2385c7db0ba9437bff3362"
+SRC_URI="${HOMEPAGE}/archive/${EGIT_BRANCH}/${EGIT_COMMIT}.zip -> ${PF}.zip"
+S="${WORKDIR}/${NAME}-${EGIT_COMMIT}"</xmp></pre>
+
+
+<h2>Specs</h2>
 sha1 is described in <strong>RFC 3174</strong> (<a href="https://tools.ietf.org/html/rfc3174">https://tools.ietf.org/html/rfc3174</a>),
 <br />
 The usage of sha1 in git is described in <a href="https://illustrated-git.readthedocs.org/en/latest/">https://illustrated-git.readthedocs.org/en/latest/</a> with examples and .svg illustrations

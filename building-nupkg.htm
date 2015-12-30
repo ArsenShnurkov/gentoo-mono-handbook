@@ -3,6 +3,16 @@
 <head>
 <meta charset="utf8" />
 <title>How to build and install nuget packages (.nupkg) from sources ?</title>
+<style>
+span.tab1 { margin-left:32px;}
+span.tab2 { margin-left:64px;}
+</style>
+<!--
+span.tab3 { margin-left:192px;}
+span.tab4 { margin-left:256px;}
+span.tab5 { margin-left:288px;}
+span.tab6 { margin-left:320px;}
+-->
 </head>
 <body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
 <table><tr><td valign="top">
@@ -12,7 +22,7 @@
 <br />
 &nbsp;
 </td></tr></table>
-manifest is used to build a package and is also stored in the package after the package is built.
+.nuspec manifest is used to build a package and is also stored in the package after the package is built.
 
 <h2>Typical .nuspec file</h2>
 
@@ -73,12 +83,12 @@ Replace line
 </xmp></pre>
 with property:
 <pre><xmp>
-        <version>$BuildVersion$</version>
+        <version>$version$</version>
 </xmp></pre>
 specify the property through nuget command line arguments in the ebuild:
 <br />
 <pre><xmp>
-	enuspec -Prop BuildVersion=4.1.3 ./src/NuGet/NLog/NLog.nuspec
+	enuspec -Prop version=4.1.3 ./src/NuGet/NLog/NLog.nuspec
 </xmp></pre>
 
 
@@ -116,6 +126,50 @@ The file will have following content:
   </metadata>
 </package>
 </xmp></pre>
+
+
+
+
+<h2>Default paths</h2>
+you generate a blank nuspec file with:
+<br />
+nuget spec
+<br />
+If you use that file and then put your dlls in a folder under it named lib, it will package them up.
+<br />
+If you manually reference any files in the nuspec file, the conventions are not used.
+<br />
+you can tell nuget the location of your .\lib folder via the -BasePath command line:
+<br />
+build\nuget.exe pack nuget\Company.Project.nuspec -BasePath nuget\
+<br />
+<br />
+You'll run NuGet on a single project (or nuspec file), but it supports pointers to other projects via the file element.
+<br />
+This element uses the names of your project's References, so you avoid having to
+<br />
+a) find the location of other project files, and
+<br />
+b) copy files to a particular place as a post-build step.
+<br />
+Supposing you have a nuspec file for MyLibrary.Core.csproj, and it references MyLibrary.Extensions and MyLibrary.Tests such that they end up in the bin directory after a build:
+<br />
+<br /><font type="tt">&lt;package xmlns=&quot;http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd&quot;&gt;<br />
+<span class="tab1">&lt;metadata&gt;</span><br />
+<span class="tab2">...</span><br />
+<span class="tab1">&lt;/metadata&gt;</span><br />
+<span class="tab1">&lt;files&gt;</span><br />
+<span class="tab2">&lt;file src=&quot;bin\Release\MyLibrary.Extensions.dll&quot; target=&quot;lib\net40&quot; /&gt;</span><br />
+<span class="tab2">&lt;file src=&quot;bin\Release\MyLibrary.Tests.dll&quot; target=&quot;lib\net40&quot; /&gt;</span><br />
+<span class="tab1">&lt;/files&gt;</span><br />
+&lt;/package&gt;</font><br />
+<br />
+With this setup, all of your references should end up in the appropriate place in the NuGet package.
+<br />
+You still have the hard-coded 'Release' in there, but I'd wager
+most probably don't distribute NuGet packages of their debug builds anyway.
+
+
 
 </body>
 </html>

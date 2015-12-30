@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>types of project files</title>
+</head>
+<body>
+
+<table><tr><td style="vertical-align:top;">
+<h1>types of project files</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<a href="http://stackoverflow.com/questions/2007689/is-there-a-standard-file-extension-for-msbuild-files">http://stackoverflow.com/questions/2007689/is-there-a-standard-file-extension-for-msbuild-files</a>
+<div class="post-text" itemprop="text">
+<p><strong><em>UPDATE:</em></strong><em> In retrospect, I've updated the answer to include more conventions. Credit goes to <a href="http://stackoverflow.com/users/105999/sayed-ibrahim-hashimi">Sayed Ibrahim Hashimi</a> and others on this thread.</em></p>
+
+<h2>.proj</h2>
+
+<p>A popular convention for generic use. Commonly used by a main build script.</p>
+
+<p>Examples:</p>
+
+<pre style="" class="lang-xml prettyprint prettyprinted"><code><span class="pln">build.proj
+main.proj 
+company.product.build.proj</span></code></pre>
+
+<hr>
+
+<h2>.targets</h2>
+
+<p><code>.targets</code> files are those which is meant to be imported into other files using the Import element. Since these files are strictly re-useable they don't actually build anything. They typically are missing the properties and item values to actually build anything.</p>
+
+<p>Examples:</p>
+
+<pre style="" class="lang-xml prettyprint prettyprinted"><code><span class="pln">Microsoft.Common.targets
+Microsoft.CSharp.targets
+Microsoft.Data.Entity.targets</span></code></pre>
+
+<hr>
+
+<h2>.**proj</h2>
+
+<p>Language specific convention where **** represents the language short acronym.</p>
+
+<p>Well-known extensions:</p>
+
+<pre style="" class="lang-xml prettyprint prettyprinted"><code><span class="pln">.csproj    | C#
+.vbproj    | VB.NET
+.vcxproj   | Visual C++
+.dbproj    | Database project
+.fsproj    | F#
+.pyproj    | IronPython
+.rbproj    | IronRuby
+.wixproj   | Windows Installer XML (WiX)
+.vdproj    | Visual Studio Deployment Project
+.isproj    | InstallShield 
+.pssproj   | PowerShell
+.modelproj | Modeling project</span></code></pre>
+
+<hr>
+
+<h2>.props</h2>
+
+<p><a href="http://msdn.microsoft.com/en-us/library/a4xbdz1e.aspx">A project property sheet</a> used by Visual C++ projects (<code>.vcxproj</code>).</p>
+
+<p>Examples:</p>
+
+<pre style="" class="lang-xml prettyprint prettyprinted"><code><span class="pln">Microsoft.Cl.Common.props
+Microsoft.Cpp.CoreWin.props
+Microsoft.Cpp.props
+Microsoft.Link.Common.props</span></code></pre>
+
+<hr>
+
+<h2>.tasks</h2>
+
+<p>A common include file to be imported by a calling MSBuild project. Contains a list of <code>&lt;UsingTask&gt;</code> elements.</p>
+
+<p>Examples:</p>
+
+<pre style="" class="lang-xml prettyprint prettyprinted"><code><span class="pln">Microsoft.Common.Tasks
+MSBuild.ExtensionPack.tasks</span></code></pre>
+
+<hr>
+
+<h2>.settings.targets</h2>
+
+<p>(This is a related convention if not strictly-speaking a file extension.)</p>
+
+<p>A common include file to be imported by a calling MSBuild project. Contains <em>"various properties related to shared utilities used during the build and deployment processes as well as any other common settings"</em> (<a href="https://msdn.microsoft.com/en-us/magazine/dd419659.aspx#id0090116">Sayed Ibrahim Hashimi, 2009</a>).</p>
+
+<p>Examples:</p>
+
+<p><a href="http://entityframework.codeplex.com/SourceControl/latest#tools/EntityFramework.settings.targets"><code>EntityFramework.settings.targets</code></a></p>
+
+<p><a href="https://github.com/dotnet/coreclr/blob/master/src/md/compiler/Compiler.settings.targets"><code>Compiler.settings.targets</code></a></p>
+
+<p><a href="https://github.com/Azure/azure-sdk-for-net/blob/master/tools/Library.Settings.targets"><code>Library.Settings.targets</code></a></p>
+    </div>
+
+<h2>Other links</h2>
+
+<a href="https://www.safaribooksonline.com/library/view/mastering-visual-studio/0596003609/ch01.html">https://www.safaribooksonline.com/library/view/mastering-visual-studio/0596003609/ch01.html</a>
+    
+</body>
+</html>

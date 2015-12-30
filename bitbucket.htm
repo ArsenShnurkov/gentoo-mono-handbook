@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>How to obtain source code from bitbucket.org</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>How to obtain source code from bitbucket.org</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+see also <a href="https://devmanual.gentoo.org/eclass-reference/mercurial.eclass/index.html">mercurial</a>, 
+<a href="https://devmanual.gentoo.org/eclass-reference/vcs-snapshot.eclass/index.html">vcs-snapshot</a>
+</td></tr></table>
+
+It is not very good idea to use mercurial itself, because it will clone the epository.
+<br />
+<br />
+EHG_REPO_URI
+<br />
+EHG_PROJECT
+<br />
+EHG_REVISION = 40-digit hexadecimal string is treated as a unique revision identifier, see `hg help revisions`
+<br />
+EHG_STORE_DIR = "${PORTAGE_ACTUAL_DISTDIR:-${DISTDIR}}/hg-src"
+<br />
+<br />
+Github provides snapshot for each sha1. The same does bitbucket - provides snapshot by id.
+<br />
+<br />
+inherit vcs-snapshot
+<br />
+SRC_URI=...
+<br />
+<br />
+Where is described the bitbucket feature for converting revision indentifier to snapshot archive name?
+
+<br />
+<br />
+<a href="http://stackoverflow.com/a/16930983/1709408">http://stackoverflow.com/a/16930983/1709408</a>
+<br />
+<a href="http://stackoverflow.com/a/28424137/1709408">http://stackoverflow.com/a/28424137/1709408</a>
+
+<br />
+<dl>
+<dt>${P}</dt><dd>Package name and version (excluding revision, if any), for example vim-6.3.</dd>
+<dt>${PN}</dt><dd>Package name, for example vim.</dd>
+<dt>${PV}<dt><dd>Package version (excluding revision, if any), for example 6.3. It should reflect the upstream versioning scheme.</dd>
+</dl>
+
+# find /usr/portage -iname *.ebuild -print0 | xargs -0 grep -lE "inherit.*vcs-snapshot" | xargs grep -h SRC_URI | grep bitbucket | sed "s/[ \t]*//" | sort | uniq
+<br />
+SRC_URI="https://bitbucket.org/camlspotter/camlimages/get/${PV}.tar.bz2 -> ${P}.tar.bz2"
+<br />
+SRC_URI="https://bitbucket.org/camlspotter/camlimages/get/v4.0.1.tar.bz2 -> ${P}.tar.bz2"
+<br />
+SRC_URI="https://bitbucket.org/cthedot/cssutils/get/${HG_COMMIT}.tar.gz -> ${P}.tar.gz"
+<br />
+SRC_URI="https://bitbucket.org/DavidVilla/python-${PN}/get/v${PV}.tar.gz -> ${P}.tar.gz"
+<br />
+SRC_URI="https://bitbucket.org/glotzer/${PN}/get/v${PV}.tar.bz2 -> ${P}.tar.bz2"
+<br />
+SRC_URI="https://bitbucket.org/ignitionrobotics/ign-math/get/${PN}2_${PV}.tar.bz2"
+<br />
+SRC_URI="https://bitbucket.org/ignitionrobotics/ign-math/get/${PN}_${PV}.tar.bz2"
+<br />
+SRC_URI="https://bitbucket.org/kovisoft/${PN}/get/${PV}.tar.bz2 -> ${P}.tar.bz2"
+<br />
+SRC_URI="https://bitbucket.org/mmueller2012/${PN}/get/v${PV}.tar.gz -> ${P}.tar.gz"
+<br />
+SRC_URI="https://bitbucket.org/neilb/csvfix/get/version-${PV}.tar.bz2 -> ${P}.tar.bz2
+<br />
+SRC_URI="https://bitbucket.org/${PN//+/p}/${PN//+/p}/get/v${PV}.tar.bz2 -> ${P}.tar.bz2"
+<br />
+SRC_URI="https://bitbucket.org/sinbad/ogre/get/v${PV//./-}.tar.bz2 -> ${P}.tar.bz2"
+<br />
+<br />
+
+</body>
+</html>

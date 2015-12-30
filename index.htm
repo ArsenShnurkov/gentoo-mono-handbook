@@ -31,37 +31,65 @@ Where to find examples/templates for ebuilds for various types of applications
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="webapps-xsp.htm">xsp-server hosted</a>
 <br />
 <font style="color:red">(we don't have other docs beside <a href="https://github.com/gentoo/dotnet/">dotnet overlay</a> ebuilds!)</font>
-<br />
-<br />
-How to obtain source code from <a href="github.htm">github.com</a>,  from <a href="bitbucket.htm">bitbucket.org</a>?
-<br />
-<a href="test/index.htm">testing with NUnit</a>
-<br />
-<a href="how-to-create-patch-with-git-for-a-new-release-of-ebuild.htm">How to create patch with git for a new release of ebuild</a>
-<br />
-<a href="types-of-project-files.htm">types of project files</a>
-<br />
-<a href="gtk-plus-packaging/index.htm">GTK  packaging</a>
-<br />
-<a href="use_dotnet.htm">USE_DOTNET</a>
-<br />
+
+<h3>ebuild name and settings</h3>
 <a href="recommended_readings.htm">What to read before starting .ebuild writing?</a>
 <br />
 <a href="categories.htm">Which package categories to use for a new package?</a>
+<br />
+<a href="Using_versionator_to_cut_version.htm">Using versionator to cut version</a>
 <br />
 <a href="use-flags.htm">Which USE flags are recommended for what purpose?</a>
 <br />
 <a href="lecenses.htm">How to check short license name?</a>
 <br />
-<a href="define.htm">how to pass #define from .ebuild into compiler?</a> <font style="color:red">we don't know</font>
-<br />
-<a href="InternalsVisibleTo.htm">InternalsVisibleTo</a>
-<br />
 <a href="howto-add-gentoo-dotnet-overlay-from-github.htm">How to use cutting edge version of dotnet overlay from github?</a>
+
+<h3>src_unpack</h3>
+How to obtain source code from <a href="github.htm">github.com</a>,  from <a href="bitbucket.htm">bitbucket.org</a>?
+<br />
+<a href="use_dotnet.htm">USE_DOTNET</a>
+
+<h3>src_patch</h3>
+<a href="how-to-create-patch-with-git-for-a-new-release-of-ebuild.htm">How to create patch with git for a new release of ebuild</a>
+<br />
+<a href="types-of-project-files.htm">types of project files</a>
+
+<h3>src_compile</h3>
+<a href="define.htm">how to pass #define from .ebuild into compiler?</a> <font style="color:red">we don't know</font>
 <br />
 <a href="building.htm"><strong>exbuild</strong> = How to compile solutions and projects with assemblies (executables and dynamic libraries) ?</a>
 <br />
+<a href="building-nupkg.htm"><strong>nuget</strong> packages - How to build and install them (.nupkg) from sources ?</a>
+<br />
+<a href="IL-Repack/index.htm">IL-Repack</a>
+<br />
+SHFB (ex sandcastle)
+
+<h3>src_test</h3>
+<a href="NUnit.htm">NUnit</a>,
+<a href="xUnit.htm">xUnit</a>,
+<a href="test/index.htm">testing with portage</a>
+<br />
+<a href="InternalsVisibleTo.htm">InternalsVisibleTo</a>
+
+<h3>src_install</h3>
 <a href="locations.htm">Where to place compiled binaries in file system according to File Hierarchy Standart 3.0 ?</a>
+<br />
+<a href="gac.htm">How to install libraries with <strong>egacinstall</strong> ?</a>
+<br />
+Where to install documemntation for applications and libraries in filesystem?<font style="color:red">we don't know</font>
+<br />
+Where to document .ebuild files ? <font style="color:red">we don't know</font>
+<br />
+<a href="daemons.htm">How to install daemons?</a>
+
+<h3>src_postinst</h3>
+<a href="adonet-data-providers.htm">How to register ADO .NET data providers in machine.config ?</a> <font style="color:red">we don't know</font>
+<br />
+How to determine the location of proper GAC? <font style="color:red">we don't know</font>
+<br />
+How to install web applications with gentoo utilities for web applications maintenance? <font style="color:red">we don't know</font>
 <br />
 How to determine the location of used mono environment, if several of them are installed ?  <font style="color:red">we don't know</font>
 <br />
@@ -70,35 +98,13 @@ How to make mono portable? <font style="color:red">we don't know</font>
 How to make mono slotted?  <font style="color:red">we don't know</font>
 <br />
 How to make monodevelop slotted? <font style="color:red">we don't know</font>
+
+<h3>general programming questions</h3>
+<a href="How-to-modify-the-code-of-mono.htm">How to modify the code of mono</a>
 <br />
-How to determine the location of proper GAC? <font style="color:red">we don't know</font>
-<br />
-<a href="gac.htm">How to install libraries with <strong>egacinstall</strong> ?</a>
-<br />
-<a href="building-nupkg.htm"><strong>nuget</strong> packages - How to build and install them (.nupkg) from sources ?</a>
-<br />
-Where to install documemntation for applications and libraries in filesystem?<font style="color:red">we don't know</font>
-<br />
-Where to document .ebuild files ? <font style="color:red">we don't know</font>
-<br />
-<a href="adonet-data-providers.htm">How to register ADO .NET data providers in machine.config ?</a> <font style="color:red">we don't know</font>
-<br />
-How to install web applications with gentoo utilities for web applications maintenance? <font style="color:red">we don't know</font>
-<br />
-<a href="daemons.htm">How to install daemons?</a>
+<a href="gtk-plus-packaging/index.htm">GTK  packaging</a>
 <br />
 <a href="signals.htm">How to work with signals (from <strong>signal.h</strong>)?</a>
-<br />
-<a href="Using_versionator_to_cut_version.htm">Using versionator to cut version</a>
-<br />
-<a href="NUnit.htm">NUnit</a>
-<br />
-xUnit
-<br />
-sandcastle
-<br />
-<a href="IL-Repack/index.htm">IL-Repack</a>
-<br />
-<a href="How-to-modify-the-code-of-mono.htm">How to modify the code of mono</a>
+
 </body>
 </html>

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>what is current overlay name?</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>what is current overlay name?</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+${PORTAGE_REPO_NAME} when using Portage as package manager.
+<br />
+(There is also <a href="https://bugs.gentoo.org/show_bug.cgi?id=414813">https://bugs.gentoo.org/show_bug.cgi?id=414813</a> about support for ${REPOSITORY} variable in a future EAPI (which would be supported by all package managers).)
+<br />
+<br />
+to circumscribe in a more clear way
+<br />
+there is currently no way to do it. (You should not use ${PORTAGE_REPO_NAME} because it will break with every other package manager.) 
+
+</body>
+</html>

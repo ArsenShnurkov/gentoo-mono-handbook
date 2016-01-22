@@ -23,13 +23,52 @@ Example:
 <br />
 <a href="http://download-codeplex.sec.s-msft.com/Download/SourceControlFileDownload.ashx?ProjectName=irony&changeSetId=09918247d378">http://download-codeplex.sec.s-msft.com/Download/SourceControlFileDownload.ashx?ProjectName=irony&changeSetId=09918247d378</a>
 <br />
-How I know how meny digits I need from 40-letters identifier ?
+How I know how many digits I need from 40-letters identifier ?
 <br />
 It's impossible to predict accurately without having the entire repo, but if you know the total number of commits in the repo, you can use the birthday paradox calculation to figure out how many digits you need in order to make them unique.
 <br />
 Mercurial defaults to the first 12 because that requires something like ten million commits before a collision is likely.
 <br />
 full (40 letter) hashes will work too.
+
+
+<h2>metadata.xml</h2>
+repoman will give the messages
+<br />
+validity error : Value "codeplex" for attribute type of remote-id is not among the enumerated set
+<br />
+if this line is added to metadata.xml:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;remote-id type=&quot;codeplex&quot;&gt;irony&lt;/remote-id&gt;
+<br />
+<a href="https://bugs.gentoo.org/show_bug.cgi?id=563578">https://bugs.gentoo.org/show_bug.cgi?id=563578</a>
+<br />
+<a href="https://devmanual.gentoo.org/ebuild-writing/misc-files/metadata/">https://devmanual.gentoo.org/ebuild-writing/misc-files/metadata/</a>
+<br />
+<a href="https://gitweb.gentoo.org/data/dtd.git/tree/metadata.dtd?id=551e00fc42ed21f6a6ff6129b5b85e64725d9665#n76">https://gitweb.gentoo.org/data/dtd.git/tree/metadata.dtd?id=551e00fc42ed21f6a6ff6129b5b85e64725d9665#n76</a>
+<br />
+<br />
+&lt;!ATTLIST remote-id type (
+bitbucket|
+cpan|
+cpan-module|
+cpe|
+cran|
+ctan|
+freecode|
+freshmeat|
+github|
+gitorious|
+google-code|
+launchpad|
+pear|pecl|
+pypi|
+rubyforge|
+rubygems|
+sourceforge|
+sourceforge-jp|
+vim) #REQUIRED&gt;
+
 
 </body>
 </html>

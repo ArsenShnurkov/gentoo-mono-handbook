@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>How to install localized applications</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>How to install localized applications</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<h2>Portage</h2>
+single ebuild can prepare several local nuget packages for <a href="https://wiki.gentoo.org/wiki/Localization/Guide/en#LINGUAS">LINGUAS</a>
+<br />
+<br />
+and ebuild can configure application (in compile time) to use some language using LANG variable
+(see <a href="http://superuser.com/questions/370228/how-do-i-add-global-environment-variables-in-gentoo">http://superuser.com/questions/370228/how-do-i-add-global-environment-variables-in-gentoo</a>).
+<br />
+LANG="ru-RU.UTF-8"
+<br />
+or even better in runtime, if application supports this. Mono supports.
+
+<h2>NuGet</h2>
+<a href="https://docs.nuget.org/release-notes/nuget-1.8#satellite-packages-for-localized-resources">docs.nuget.org/release-notes/nuget-1.8#satellite-packages-for-localized-resources</a>
+<br />
+<br />
+NuGet &gt;= 1.8 supports the ability to create separate packages for localized resources, similar to the satellite assembly capabilities of the .NET Framework.  A satellite package is created in the same way as any other NuGet package with the addition of a few conventions:
+<ul>
+<li>The satellite package ID and file name should include a suffix that matches one of the standard <a href="http://msdn.microsoft.com/en-us/goglobal/bb896001.aspx">culture strings used by the .NET Framework</a>.</li>
+<li>In its .nuspec file, the satellite package should define a language element with the same culture string used in the ID</li>
+<li>The satellite package should define a dependency in its .nuspec file to its core package, which is simply the package with the same ID minus the language suffix.  The core package needs to be available in the repository for successful installation.</li>
+</ul>
+<br />
+To install a package with localized resources, a developer explicitly selects the localized package from the repository. At present, the NuGet gallery does not give any kind of special treatment to satellite packages.
+
+<h2>GettextResourceManager</h2>
+<a href="https://www.gnu.org/software/gettext/manual/html_node/C_0023.html">https://www.gnu.org/software/gettext/manual/html_node/C_0023.html</a>
+<br />
+<br />
+a .dll file containing a subclass of GettextResourceSet, which itself is a subclass of ResourceSet
+<br />
+<br />
+the .dll format is a binary file that is compiled from .cs source code and can support plural forms (provided it is accessed through the GNU gettext API).
+<br />
+<br />
+To convert a PO file to a .resources file, the msgfmt program can be used with the option ‘--csharp-resources’.
+<br />
+To convert a .resources file back to a PO file, the msgunfmt program can be used with the option ‘--csharp-resources’.
+
+<h2>PublicResXFileCodeGenerator</h2>
+
+a specialized compiler being used (custom Tool property) on the .resx files (ResXCodeGen)
+<br />
+The name of the class is generated as follows:
+<br />
+{project namespace}{folder structure}{filename}.resx (.resx is NOT part of the generated name)
+<br />
+<br />
+
+
+<h2>native C#/.NET internationalization mechanism</h2>
+(namely the classes ResourceManager and ResourceSet)
+<br />
+<br />
+Applications use ResourceManager methods to retrieve the native language translation of strings.
+<br />
+The instance of this class is accessible through the generated class's ResourceManager property.
+<br />
+Internally, the generated class uses an instance of the ResourceManager class, which is defined in the System.Resources namespace.
+<br />
+if you use generated code from the resx-Files all it does is the following:
+<pre>public static string MyResourceName {
+    get {
+        return ResourceManager.GetString("MyResourceName", resourceCulture);
+    }
+}</pre>
+This is great, since you get Compile-Time validation of your resource-names for free.
+<br />
+<br />
+The ResourceManager loads and accesses ResourceSet instances as needed to look up the translations.
+<br />
+(Class: ResourceSet, Assembly: Mscorlib.dll, Namespace: System.Resources)
+<br />
+An instance of ResourceSet is the in-memory representation of a message catalog file.
+<br />
+The ResourceSet class enumerates over an IResourceReader, loading every name and value, and storing them in a Hashtable. A custom IResourceReader can be used.
+<br />
+<br />
+The .resources format is a binary file usually generated through the <strong>resgen</strong> or <strong>monoresgen</strong> utility.
+<br />
+the resgen program is from the pnet package, the monoresgen program is from the mono/mcs package (in year 2004). These programs can also convert a .resources file back to a PO file.
+<br />
+.resources files and .dll files are two formats that can be directly loaded by the C# runtime into ResourceSets.
+This only affects whether a file system access is performed to load the message catalog; it doesn’t affect the contents of the message catalog.
+.resources files can also be embedded in .exe files.
+
+<!--
+http://stackoverflow.com/questions/5246584/c-sharp-cannot-getting-a-string-from-resourcemanager-from-satellite-assembly
+-->
+
+<h2>ASP .NET MVC</h2>
+<a href="http://stackoverflow.com/questions/192465/how-to-localize-asp-net-mvc-application">http://stackoverflow.com/questions/192465/how-to-localize-asp-net-mvc-application</a>
+
+<!-- 
+where are sources of ResourceSet class in mono repository ?
+how mscorlib.dll is built in mono? 
+does mscorlib.dll in linux really contain ResourceManager class?
+where mscorlib.dll is deployed in linux?
+ -->
+ 
+ <!--
+ASP.NET uses a class called System.Resources.ResourceManager for localizing text.
+There are a few noteworthy points to make about the interaction of IDE, other tools and the resource files.
+How to create a resource file using Monodevelop
+What packages to include for working with ResourceManager and related classes.
+How to instantiate a resource manager class.
+How to use a resource manager to read resource strings.
+Satellite assemblies and the IDE.
+Creating resources for multiple languages.
+Setting the locales to test resource retrieval.
+
+/ App_LocalResources // App_LocalResources is also mostly for <asp:Localize /> tag isn't it?
+    System.Web.Page's base GetLocalResourceObject()
+http://stackoverflow.com/questions/3193984/how-to-use-app-globalresource-or-app-localresource
+http://stackoverflow.com/questions/2970935/how-does-the-app-localresources-work-with-mvc
+/ App_GlobalResources
+  |_ Locale.en-US.resx
+  |_ Locale.ru-RU.resx
+
+string mytitle = HttpContext.GetGlobalResourceObject("MyMetaTagResource", "MyTitle").ToString();
+  
+The XML section of .resx file, that you plan to edit will look something like this:
+     <data name="MyKey1">
+          <value>MyValue1</value>
+     </data>
+     <data name="MyKey2">
+          <value>MyValue2</value>
+     </data>
+
+The reflection package is necessary because you need access to an assembly to instantiate a resource manager.
+
+// Locale.Initialize();
+CultureInfo ci = new CultureInfo("en-gb");
+Thread.CurrentThread.CurrentCulture = ci; //  dates, numbers, currency, units, etc.
+Thread.CurrentThread.CurrentUICulture = ci; // it is this setting -- not CurrentCulture -- at which the resource manager looks for strings
+      
+var assembly = Assembly.GetExecutingAssembly(); // assembly where these resources are available.
+ResourceManager rm = new ResourceManager("YourID", assembly);
+var text = rm.GetString("MyKey1"); // The resource manager uses the UICulture variable that is available on the current thread.
+
+When the project is built with these language-specific resource files,
+the IDE creates the satellite assemblies for these language-dependent files.
+
+bin/Debug/en-US/MyLocalizationSampleResources.dll
+bin/Debug/ru-RU/MyLocalizationSampleResources.dll
+
+
+
+https://habrahabr.ru/post/165705/
+Вполне возможно, что через пару лет в Москве будет большая потребность в «Яндекс.Картах» на таджикском языке.
+https://habrahabr.ru/post/143204/
+-->
+
+</body>
+</html>

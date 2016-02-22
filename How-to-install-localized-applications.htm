@@ -39,6 +39,8 @@ NuGet &gt;= 1.8 supports the ability to create separate packages for localized r
 To install a package with localized resources, a developer explicitly selects the localized package from the repository. At present, the NuGet gallery does not give any kind of special treatment to satellite packages.
 
 <h2>GettextResourceManager</h2>
+<a href="https://www.gnu.org/software/gettext/manual/csharpdoc/GNU_Gettext_GettextResourceManager.html">http://www.gnu.org/software/gettext/manual/csharpdoc/GNU_Gettext_GettextResourceManager.html</a>
+<br />
 <a href="https://www.gnu.org/software/gettext/manual/html_node/C_0023.html">https://www.gnu.org/software/gettext/manual/html_node/C_0023.html</a>
 <br />
 <br />
@@ -91,10 +93,6 @@ An instance of ResourceSet is the in-memory representation of a message catalog 
 The ResourceSet class enumerates over an IResourceReader, loading every name and value, and storing them in a Hashtable. A custom IResourceReader can be used.
 <br />
 <br />
-The .resources format is a binary file usually generated through the <strong>resgen</strong> or <strong>monoresgen</strong> utility.
-<br />
-the resgen program is from the pnet package, the monoresgen program is from the mono/mcs package (in year 2004). These programs can also convert a .resources file back to a PO file.
-<br />
 .resources files and .dll files are two formats that can be directly loaded by the C# runtime into ResourceSets.
 This only affects whether a file system access is performed to load the message catalog; it doesn’t affect the contents of the message catalog.
 .resources files can also be embedded in .exe files.
@@ -113,6 +111,44 @@ does mscorlib.dll in linux really contain ResourceManager class?
 where mscorlib.dll is deployed in linux?
  -->
  
+ <h2>resgen</h2>
+ 
+The .resources format is a binary file usually generated through the <strong>resgen</strong> or <strong>monoresgen</strong> utility.
+<br />
+the resgen program is from the pnet package, the monoresgen program is from the mono/mcs package (in year 2004). These programs can also convert a .resources file back to a PO file.
+<br />
+<br />
+ # which resgen
+ <br />
+/usr/bin/resgen
+<br />
+# file /usr/bin/resgen
+<br />
+/usr/bin/resgen: POSIX shell script, ASCII text executable
+<br />
+# cat /usr/bin/resgen
+<br />
+#!/bin/sh
+<br />
+exec /usr/bin/mono $MONO_OPTIONS /usr/lib/mono/4.5/resgen.exe "$@"
+<br />
+<a href="https://github.com/mono/mono/blob/b440b2e7651a5e91d2fca27b5131a417199f1eea/mcs/build/executable.make#L54">PROGRAM_INSTALL_DIR = $(mono_libdir)/mono/$(FRAMEWORK_VERSION)</a>
+<br />
+# qfile /usr/lib/mono/4.5/resgen.exe
+<br />
+dev-lang/mono (/usr/lib/mono/4.5/resgen.exe)
+<!-- -how resgen.exe is generated? How to exclude it from build of mono? (in order to include it into a separate ebuild later)
+i think it is possible just to delete a folder with Makefile, and it will not be processed (compiled) recursively
+but how it is installed? Obviously with recursive "make install"
+How gentoo ebuild for mono knows that resgen.exe file should be copied?
+-->
+<br />
+<br />
+<a href="https://github.com/mono/mono/tree/master/mcs/tools/resgen">https://github.com/mono/mono/tree/master/mcs/tools/resgen</a>
+ <br />
+<br />
+<a href="https://github.com/gentoo/dotnet/blob/master/dev-lang/mono/mono-4.2.2.30.ebuild#L109">https://github.com/gentoo/dotnet/blob/master/dev-lang/mono/mono-4.2.2.30.ebuild#L109</a>
+
  <!--
 ASP.NET uses a class called System.Resources.ResourceManager for localizing text.
 There are a few noteworthy points to make about the interaction of IDE, other tools and the resource files.

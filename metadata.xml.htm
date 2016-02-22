@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>metadata.xml</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>metadata.xml</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+<a href="https://devmanual.gentoo.org/ebuild-writing/misc-files/metadata/">https://devmanual.gentoo.org/ebuild-writing/misc-files/metadata/</a>
+</td></tr></table>
+
+mono-xmltool --validate-dtd https://raw.githubusercontent.com/gentoo/dotnet/master/dev-dotnet/referenceassemblies-pcl/metadata.xml
+<br />
+The element 'pkgmetadata' has invalid child element 'herd'. List of possible elements expected: 'maintainer natural-name longdescription slots use upstream'.
+<br />
+<br />
+repoman -d
+<br />
+checks with xmllint from libxml2
+<br />
+see <a href="http://stackoverflow.com/questions/35530009/how-to-validate-metadata-xml-against-dtd-in-gentoo">http://stackoverflow.com/questions/35530009/how-to-validate-metadata-xml-against-dtd-in-gentoo</a>
+<br />
+<br />
+XSD schema itself is XML too, therefore it can be validated against the W3 DTD like this:
+<br />
+wget -c http://www.gentoo.org/dtd/metadata.dtd
+<br />
+xmllint --noout --dtdvalid <a href="http://www.w3.org/2001/XMLSchema.dtd">http://www.w3.org/2001/XMLSchema.dtd</a> metadata.xsd
+
+
+</body>
+</html>

@@ -11,10 +11,67 @@
 </td><td style="vertical-align:top;">
 <a href="index.htm">Gentoo Mono Handbook</a>
 <br />
-&nbsp;
 </td></tr></table>
 
+General overview of .so files:
+<br />
+<a href="http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html">http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html</a>
+<br />
+<br />
 <a href="http://www.mono-project.com/docs/advanced/pinvoke/#linux-shared-library-search-path">http://www.mono-project.com/docs/advanced/pinvoke/#linux-shared-library-search-path</a>
+
+<h3>Installation</h3>
+<a href="https://wiki.gentoo.org/wiki/Clang">https://wiki.gentoo.org/wiki/Clang</a>
+<br />
+<br />
+use /etc/portage/env file to enable the use of clang per-package. 
+<br />
+create a new <a href="https://wiki.gentoo.org/wiki//etc/portage/package.env">environment override</a> file (/etc/portage/env/clang):
+<br />
+CC=clang
+<br />
+CXX=clang++
+<br />
+enable use of clang for packages using /etc/portage/package.env file
+<br />
+app-foo/bar clang
+<br />
+app-bar/baz clang
+
+<h3>Packaging</h3>
+libraries are installed with <a href="https://github.com/gentoo/portage/blob/master/bin/ebuild-helpers/dolib">dolib</a> in portage - <a href="https://devmanual.gentoo.org/function-reference/install-functions/">https://devmanual.gentoo.org/function-reference/install-functions/</a>
+<br />
+<dl>
+<dt><a href="https://github.com/gentoo/portage/blob/master/bin/ebuild-helpers/dolib.so">dolib.so</a></dt>
+<dd>Install a library (shared object) file</dd>
+<dt><a href="https://github.com/gentoo/portage/blob/master/bin/ebuild-helpers/newlib.so">newlib.so</a></dt>
+<dd>Install a .so library file using the second argument as the name</dd>
+</dl>
+
+<h3>Building automation (Autotools)</h3>
+<a href="http://mij.oltrelinux.com/devel/autoconf-automake/">http://mij.oltrelinux.com/devel/autoconf-automake/</a>
+
+<h3>Checking/debugging</h3>
+LD_LIBRARY_PATH is a colon-separated list of directories
+<br />
+LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH  my_program
+
+<h3>Compiling (clang)</h3>
+<a href="http://clang.llvm.org/docs/CommandGuide/clang.html">http://clang.llvm.org/docs/CommandGuide/clang.html</a>
+<br />
+You can pass the <strong>soname</strong> the -Wl flags to clang:
+<br />
+clang -shared file.o -Wl,-soname,<strong>libfile.so.8</strong> -o file.so
+<br />
+the <strong>-shared</strong> command line parameter - <a href="http://stackoverflow.com/questions/9170000/how-use-llvm-linker">http://stackoverflow.com/questions/9170000/how-use-llvm-linker</a>
+
+<table><tr><td style="vertical-align:top;">
+<h3>Creating</h3>
+</td><td style="vertical-align:top;">
+<a href="solibrary.htm">.so library example</a>
+</td></tr></table>
+
+<a href="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/CreatingDynamicLibraries.html">https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/CreatingDynamicLibraries.html</a>
 
 </body>
 </html>

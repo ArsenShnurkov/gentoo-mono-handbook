@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>.so library example</title>
+</head>
+<body><a href="https://github.cppom/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>.so library example</h1>
+</td><td style="vertical-align:top;">
+<a href="pinvoke.htm">PInvoke</a>,
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<pre>#!/bin/bash
+
+OUTDIR=./bin/Debug
+mkdir -p ${OUTDIR}
+
+CXX=clang++
+CCARGS=&quot;-Ishared-object -Wall&quot;
+LIBRARY=&quot;-shared -fPIC -Wl,-soname=shared-objects.so.1&quot;
+LDFLAGS=&quot;-L${OUTDIR} -Wl,-rpath=.&quot;
+
+echo &quot;building shared object&quot;
+
+${CXX} ${CCARGS} &quot;./shared-object/shared-object.cpp&quot; ${LIBRARY} -o ${OUTDIR}/shared-objects.so.1.20160226.0
+cd ${OUTDIR}
+ln -sfn shared-objects.so.1.20160226.0 shared-objects.so.1
+cd ../..
+
+echo &quot;building first app&quot;
+
+${CXX} ${CCARGS} &quot;./first-app/first-app.cpp&quot; ${OUTDIR}/shared-objects.so.1 ${LDFLAGS} -o ${OUTDIR}/first-app.exe
+
+echo &quot;building second app&quot;
+
+${CXX} ${CCARGS} &quot;./second-app/second-app.cpp&quot; ${OUTDIR}/shared-objects.so.1 ${LDFLAGS} -o ${OUTDIR}/second-app.exe</pre>
+
+Library API (./shared-object/shared-object.h):
+
+<pre>#ifndef __SHARED_OBJECT_H__
+#define __SHARED_OBJECT_H__
+
+extern "C" int calc(int a, int b);
+
+#endif</pre>
+
+Library implementation (./shared-object/shared-object.cpp):
+
+<pre>#include "shared-object.h"
+
+int calc(int a, int b)
+{
+    return a+b;
+}</pre>
+
+First application (./first-app/first-app.cpp):
+
+<pre>#include <iostream>
+#include "shared-object.h"
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    cout << "first-app " << calc (3,11) << endl;
+    return 0;
+}</pre>
+
+Second application (./second-app/second-app.cpp):
+
+<pre>#include <iostream>
+#include "shared-object.h"
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    cout << "second-app " << calc(2,5) << endl;
+    return 0;
+}</pre>
+
+
+</body>
+</html>

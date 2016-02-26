@@ -15,35 +15,31 @@
 &nbsp;
 </td></tr></table>
 
-<pre><font style="color:red">15:17 &lt;ams`&gt; VsyachePuz: that isn't the code you are compiling.
-15:18 &lt;ams`&gt; VsyachePuz: and notice how it does not use the standard name for a library.
-15:18 &lt;ams`&gt; i.e. libFOO.so.1 or whatever, which is what -lFOO will look for.
-15:19 &lt;ams`&gt; so maybe if you show  what YOU are doing and not what someone else is doing we can help you</font></pre>
-
 <pre>#!/bin/bash
 
 OUTDIR=./bin/Debug
 mkdir -p ${OUTDIR}
 
 CXX=clang++
-CCARGS=&quot;-Ishared-object -Wall&quot;
-LIBRARY=&quot;-shared -fPIC -Wl,-soname=shared-objects.so.1&quot;
-LDFLAGS=&quot;-L${OUTDIR} -Wl,-rpath=.&quot;
+CCARGS="-Ishared-object -Wall"
+LIBRARY="-shared -fPIC"
+LDFLAGS="-L${OUTDIR}"
 
-echo &quot;building shared object&quot;
+echo "building shared object"
 
-${CXX} ${CCARGS} &quot;./shared-object/shared-object.cpp&quot; ${LIBRARY} -o ${OUTDIR}/shared-objects.so.1.20160226.0
+${CXX} ${CCARGS} "./shared-object/shared-object.cpp" ${LIBRARY} -o ${OUTDIR}/libshared-objects.so.1.20160226.0
 cd ${OUTDIR}
-ln -sfn shared-objects.so.1.20160226.0 shared-objects.so.1
+ln -sfn libshared-objects.so.1.20160226.0 libshared-objects.so.1
+ln -sfn libshared-objects.so.1 libshared-objects.so
 cd ../..
 
-echo &quot;building first app&quot;
+echo "building first app"
 
-${CXX} ${CCARGS} &quot;./first-app/first-app.cpp&quot; ${OUTDIR}/shared-objects.so.1 ${LDFLAGS} -o ${OUTDIR}/first-app.exe
+${CXX} ${CCARGS} "./first-app/first-app.cpp" -lshared-objects ${LDFLAGS} -o ${OUTDIR}/first-app.exe
 
-echo &quot;building second app&quot;
+echo "building second app"
 
-${CXX} ${CCARGS} &quot;./second-app/second-app.cpp&quot; ${OUTDIR}/shared-objects.so.1 ${LDFLAGS} -o ${OUTDIR}/second-app.exe</pre>
+${CXX} ${CCARGS} "./second-app/second-app.cpp" -lshared-objects ${LDFLAGS} -o ${OUTDIR}/second-app.exe</pre>
 
 Library API (./shared-object/shared-object.h):
 

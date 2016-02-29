@@ -21,13 +21,16 @@ here are the sample vaules:
 <a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass#L40">https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass#L40</a>
 <br />
 <br />
-This affects on IUSE variable:
-<a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass#L28-L36">https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass#L28-L36</a>
+The platforms, specified in USE_DOTNET are checked against IUSE variable (should be added to this variable if dotnet inherited):
+<a href="https://github.com/gentoo/dotnet/blob/7b316f212e670192162257791d231c7a050ed489/eclass/dotnet.eclass#L32-L40">https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass#L28-L36</a>
 <br />
 <br />
 FRAMEWORK variable is set in pkg_setup, so it should be available in src_prepare
 <a href="https://devmanual.gentoo.org/ebuild-writing/functions/">https://devmanual.gentoo.org/ebuild-writing/functions/</a>
 this allow to apply patches based on FRAMEWORK variable value
+<br />
+<br />
+DOTNET_TARGETS variable?
 
 </body>
 </html>

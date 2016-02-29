@@ -56,6 +56,54 @@ LD_LIBRARY_PATH is a colon-separated list of directories
 <br />
 LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH  my_program
 
+<h3>Calling</h3>
+<a href="http://www.mono-project.com/docs/advanced/pinvoke/">http://www.mono-project.com/docs/advanced/pinvoke/</a>
+<br />
+<br />
+In principle, all you need to do is create a DllImport function declaration for the existing code to invoke, and the runtime will handle the rest. For example:
+<br />
+[DllImport ("shared-objects.dll")]
+<br />
+private static extern int calc(int a, int b);
+<br />
+It is possible to redefine name with myassembly.dll.config file
+<br />
+<br />
+&lt;configuration&gt;
+<br />
+&nbsp;&nbsp;&lt;dllmap dll=&quot;shared-objects.dll&quot; target=&quot;libshared-objects.so.1&quot; /&gt;
+<br />
+&lt;/configuration&gt;
+<br />
+<br />
+C ABI is assumed (extern "C"), under Unix platforms, System.Runtime.InteropServices.CallingConvention.<a href="https://en.wikipedia.org/wiki/X86_calling_conventions#cdecl">Cdecl</a> is the default.
+<br />
+<br />
+The general rule of advice is this: never pass classes or structures containing members of reference type (classes) to unmanaged code.
+This is because unmanaged code can’t do anything safely with the unmanaged reference (pointer), and the CLI runtime doesn’t do a deep marshal” (marshal members of marshaled classes, and their members, ad infinitum).
+<br />
+<br />
+The immediate net effect of this is that you can’t have array members in marshaled classes
+<br />
+<br />
+For simple types, such as integers and floating-point numbers, marshaling is a bitwise-copy (ǋlitting”), just as would be the case for unmanaged code.
+In some cases, marshaling can be avoided, such as when passing structures by reference to unmanaged code (a pointer to the structure is copied instead).
+It’s also possible to obtain more control over marshaling, through custom marshaling and manual marshaling.
+<br />
+<!-- For strings DllImport.CharSet default value is CharSet.Ansi -->
+Mono on all platforms currently uses UTF-8 encoding for all string marshaling operations.
+<br />
+StringBuilder gets special marshaling support from the runtime. Always call EnsureCapacity() before passing it into the native method
+<br />
+you MUST use the StructLayout attribute and specify a LayoutKind value of LayoutKind.Sequential or LayoutKind.Explicit
+<br />
+structures are LayoutKind.Sequential by default,
+<br />
+<br />
+What do you do if you don’t want the runtime to free the memory? Don’t return a class.
+Instead, return an IntPtr (the moral equivalent of a C void* pointer), and then use the Marshal class methods to manipulate that pointer,
+such as Marshal.PtrToStructure, which works for both C# struct types and class types marked [StructLayout(LayoutKind.Sequential)].
+ 
 <h3>Compiling (clang)</h3>
 <a href="http://clang.llvm.org/docs/CommandGuide/clang.html">http://clang.llvm.org/docs/CommandGuide/clang.html</a>
 <br />

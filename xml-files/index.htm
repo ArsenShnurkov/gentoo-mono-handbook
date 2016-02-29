@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>How to patch XML-files</title>
+</head>
+<body>
+
+<table><tr><td style="vertical-align:top;">
+<h1>How to patch XML-files</h1>
+</td><td style="vertical-align:top;">
+<a href="../index.htm">Gentoo Mono Handbook</a>
+<br />
+<a href="https://en.wikipedia.org/wiki/XSLT">https://en.wikipedia.org/wiki/XSLT</a>,
+<a href="http://www.mono-project.com/docs/tools+libraries/libraries/xml/">http://www.mono-project.com/docs/tools libraries/libraries/xml/</a>,
+<a href="http://tirania.org/blog/archive/2003/Sep-14.html">XSLT in Mono: the story of a young hacker</a>,
+<br />
+<a href="https://visualstudio.uservoice.com/forums/121579-visual-studio-2015/suggestions/4450357-implement-xslt-3-0-for-net">https://visualstudio.uservoice.com/forums/121579-visual-studio-2015/suggestions/4450357-implement-xslt-3-0-for-net</a>
+</td></tr></table>
+XSLT to remove "&lt;b&gt;&quot;nodes from <a href="http://stackoverflow.com/a/2562335/1709408">here</a>:
+<br />
+<br />
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+<br />&nbsp;&nbsp;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;
+<br />
+<br />&nbsp;&nbsp;&lt;!--Identity transform copies all items by default --&gt;
+<br />&nbsp;&nbsp;&lt;xsl:template match=&quot;@* | node()&quot;&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:copy&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;xsl:apply-templates select=&quot;@*|node()&quot;/&gt;
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;/xsl:copy&gt;
+<br />&nbsp;&nbsp;&lt;/xsl:template&gt;
+<br />
+<br />&nbsp;&nbsp;&lt;!--Empty template to match on b elements and prevent it from being copied to output --&gt;
+<br />&nbsp;&nbsp;&lt;xsl:template match=&quot;b&quot;/&gt;
+<br />
+<br />&lt;/xsl:stylesheet&gt;
+<br />
+<br />
+<a href="http://stackoverflow.com/questions/18352193/xsltemplate-in-mono">http://stackoverflow.com/questions/18352193/xsltemplate-in-mono</a>
+<br />
+For running an xsl[t] transformation over xml, you should be able to use either System.Xml.Xsl.XslTransform or System.Xml.Xsl.XslCompiledTransform from System.Xml.dll.
+<br />
+<br />
+xslt processors:
+<br />
+If you want to use XSLT/XPath 2.0 with .NET you could use Saxon.NET - <a href="http://sourceforge.net/projects/saxondotnet/">http://sourceforge.net/projects/saxondotnet/</a> (this is just the Java version of Saxon running inside IKVM)
+<br />
+<a href="https://github.com/Softwariness/XSLT">https://github.com/Softwariness/XSLT</a>
+<br />
+<a href="https://github.com/lendres/XSLT-Processor">https://github.com/lendres/XSLT-Processor</a>
+<br />
+msbuild tasks:
+<br />
+<a href="https://github.com/alphacloud/MSBuild.Xslt">https://github.com/alphacloud/MSBuild.Xslt</a> - msbuild task for SAXON xslt processor (Java, MPL, Michael Kay - <a href="https://saxon.sourceforge.net/">saxon.sourceforge.net</a>)
+<br />
+<br />
+<a href="http://blogs.msdn.com/b/dareobasanjo/archive/2004/05/13/131166.aspx">2004-05-13, DareObasanjo, Why You Won't See XSLT 2.0 or XPath 2.0 in the Next Version of the .NET Framework</a>
+<br />
+<a href="http://web.archive.org/web/20100118203004/http://blogs.msdn.com/xmlteam/archive/2007/01/29/xslt-2-0.aspx">2007-01-29, XmlTeam, will be putting out Community Technology Previews (CTP) with the XSLT 2 functionality and appropriate tooling as the implementation matures</a>
+<br />
+<a href="http://stackoverflow.com/questions/831300/what-is-the-current-state-of-xslt-2-0-availability-within-net">http://stackoverflow.com/questions/831300/what-is-the-current-state-of-xslt-2-0-availability-within-net</a>
+
+</body>
+</html>

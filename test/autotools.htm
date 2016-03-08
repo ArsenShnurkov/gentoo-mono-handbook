@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>testing with autotools</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="../images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>testing with autotools</h1>
+</td><td style="vertical-align:top;">
+<a href="../index.htm">Gentoo Mono Handbook</a>,
+<a href="index.htm">testing with NUnit</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<dl>
+ <dt>make check</dt>
+ <dd>tests the files in the source tree</dd>
+ <dt>make installcheck</dt>
+ <dd>tests the installed copies</dd>
+ </dl>
+
+<h2>checking a specific directory</h2>
+<a href="http://stackoverflow.com/a/8422390/6017919">http://stackoverflow.com/a/8422390/6017919</a>
+<br />
+<br />
+if you only wanted to check in a specific directory, override <em>check-recursive</em> target in your Makefile.am:
+<br />
+<br />
+check-recursive:
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$(MAKE) -C src check
+<!-- how this "-recursive" target is called at all ? -->
+
+</body>
+</html>

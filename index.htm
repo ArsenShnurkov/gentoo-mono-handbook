@@ -14,6 +14,31 @@
 
 <a href="recommended_readings.htm">What to read before starting .ebuild writing?</a>
 
+<h3>Gray area of tarball creation</h3>
+Tarballs are not created by gentoo developers (usually they are provided by upstream).
+<br />
+But sometimes tarball creation by gentoo developers is necessary.
+<br />
+If upstream project is alive it is better to join it and to create necessary tarballs.
+<br />
+Or to ask authors to create some release.
+<br />
+<br />
+If this is not possible (for dead projects or uncooperative (too principial for example) upstream authors), then
+it is necessary to create and store tarballs by ourselves.
+<br />
+There is no central storage of gentoo-rolled tarballs in gentoo.
+
+<h3>Ebuild processing phases</h3>
+<img src="https://devmanual.gentoo.org/ebuild-writing/functions/diagram.png" alt="https://devmanual.gentoo.org/ebuild-writing/functions/diagram.png" />
+<br />
+<a href="https://devmanual.gentoo.org/ebuild-writing/functions/">https://devmanual.gentoo.org/ebuild-writing/functions/</a>
+<br />
+<a href="https://github.com/gentoo/portage/blob/master/doc/package/ebuild/phases.docbook">https://github.com/gentoo/portage/blob/master/doc/package/ebuild/phases.docbook</a>
+<br />
+<a href="https://archives.gentoo.org/gentoo-dev/message/aab4352449fefbf31c39b687c9204c9a">src_fetch / pkg_fetch</a>
+
+
 <h3>ebuild name and settings</h3>
 <a href="categories.htm">Which package categories to use for a new package?</a>
 <br />
@@ -37,14 +62,18 @@
 <br />
 what is current overlay URL? <font style="color:red">we don't know</font>
 
+
 <h3>src_unpack</h3>
 How to obtain source code from 
 <br />
-<a href="github.htm">github.com</a>,  
+<a href="github.htm">github.com (GIT)</a>,  
 <br />
-<a href="bitbucket.htm">bitbucket.org</a>
+<a href="bitbucket.htm">bitbucket.org (GIT, Mercurial)</a>
 <br />
-<a href="codeplex.htm">codeplex</a>
+<a href="codeplex.htm">codeplex (Mercurial)</a>
+<br />
+<a href="sourceforge-cvs.htm">sourceforge (CVS)</a> <font style="color:red">we don't know</font>
+<br />
 ?
 
 <h3>src_patch</h3>

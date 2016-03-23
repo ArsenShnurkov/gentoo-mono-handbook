@@ -21,6 +21,18 @@ In this type of projects we need to:
 2) provide an ability to sign and install into GAC
 <br />
 3) provide an ability to create a local .nupkg (which may require writing .nuspec file)
+<br />
+<br />
+which part of Makefile.include installs the .pc files?
+<br />
+not everything uses that Makefile.include
+<br />
+that is what MonoDevelop auto-generate
+<br />
+with the LINUX_PKGCONFIG var
+<br />
+so patching the path in that include file should do the trick
+
 
 </body>
 </html>

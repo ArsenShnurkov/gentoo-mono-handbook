@@ -14,14 +14,32 @@
 &nbsp;
 </td></tr></table>
 
-Add a line 
+Each gentoo developer may make new ebuilds for  both main gentoo tree and for each overlay.
+<br />
+So, he should have several github projects - one for the fork of gentoo tree, one for forks of each overlay. 
+<br />
+<br />
+Layman should know which overlays belong to this developer.
+<br />
+Configuring layman for personal overlays will allow to test ebuilds when they are not yet accepted to the corresponding upstreams
+<br />
+So somewhere should be the file  on github with the metainformation about overlays (list of personal overlays)
+<br />
+<br />
+Also developer probably will write notes about his steps. I think it is possible to combine personal site with the list of personal overlays.
+
+<h2>"overlays:" section of /etc/layman/layman.cfg</h2>
+Add some line similar to this one:
 <br />
 https://raw.githubusercontent.com/ArsenShnurkov/shnurise/master/github-gentoo-dotnet-metadata-for-layman.xml
+
 <br />
-into "overlays:" section of /etc/layman/layman.cfg.
 <br />
+To change repository name locally without modification of .gitignore file:
 <br />
-This will allow you not to wait the synchronization with sync gentoo.org
+git update-index --assume-unchanged profiles/repo_name
+<br />
+This labels the file "profiles/repo_name" as unchanged, even if it differs from the content of online repossitory
 
 </body>
 </html>

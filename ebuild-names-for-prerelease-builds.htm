@@ -20,15 +20,34 @@ Sometimes it is neccessary to have an ebuild for software, which was not release
 This can be done by postfixing version number:
 <br />
 <br />
-<a href="https://github.com/gentoo/dotnet/blob/master/dev-dotnet/nunit/nunit-3.0.0_beta3-r201508190.ebuild">https://github.com/gentoo/dotnet/blob/master/dev-dotnet/nunit/nunit-3.0.0_beta3-r201508190.ebuild</a>
-<br />
-<br />
 <a href="https://dev.gentoo.org/~ulm/pms/head/pms.html#x1-290003.2">https://dev.gentoo.org/~ulm/pms/head/pms.html#x1-290003.2</a>
 <br />
 zero <strong>or more</strong> of the suffixes _alpha, _beta, _pre, _rc or _p, which themselves may be followed by an optional integer. Suffix and integer count as separate version components. 
 <br />
+nunit-3.0.0_alpha
 <br />
-nunit-3.0.0_pre_alpha_p20160101-r0
-
+nunit-3.0.0_beta
+<br />
+nunit-3.0.0_pre
+<br />
+nunit-3.0.0_pre_p20160101
+<br />
+nunit-3.0.0_pre_p20160101-r1
+<br />
+nunit-3.0.0_pre_alpha_p20160101
+<br />
+nunit-3.0.0_pre_alpha_p20160101-r1
+<br />
+nunit-3.0.0_rc1
+<br />
+nunit-3.0.0_rc2
+<br />
+nunit-3.0.0
+<br />
+<br />
+I am unsure about ordering of "_pre_alpha" and "_alpha". For me it looks like _pre_alpfa will be preferred when two versions of ebuild exists, which mean that the above naming scheme is not very good (<font style="color:red">need to check this</font>)
+<br />
+<br />
+Also I am unsure about ordering of nunit-3.0.0 and nunit-3.0.0_p1 (looks like the latter supercedes the former, which is not correct)
 </body>
 </html>

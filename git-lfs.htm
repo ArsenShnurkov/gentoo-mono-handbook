@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>dev-vcs/git-lfs</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>dev-vcs/git-lfs</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+<a href="https://git-lfs.github.com/">https://git-lfs.github.com/</a>
+</td></tr></table>
+
+Git LFS is a command line extension and specification for managing large files with Git.
+<br />
+an open source (MIT) project - <a href="https://github.com/github/git-lfs">https://github.com/github/git-lfs</a>
+<br />
+ebuild - <a href="http://gpo.zugaina.org/dev-vcs/git-lfs">http://gpo.zugaina.org/dev-vcs/git-lfs</a>
+<br />
+it is supported by
+<br />
+Github - <a href="https://help.github.com/articles/distributing-large-binaries/">https://help.github.com/articles/distributing-large-binaries/</a>
+<br />
+BitBucket - <a href="https://confluence.atlassian.com/bitbucketserver/git-large-file-storage-lfs-794364846.html">https://confluence.atlassian.com/bitbucketserver/git-large-file-storage-lfs-794364846.html</a>
+<br />
+GitLabs - <a href="https://about.gitlab.com/2015/11/23/announcing-git-lfs-support-in-gitlab/">https://about.gitlab.com/2015/11/23/announcing-git-lfs-support-in-gitlab/</a>
+<br />
+<br />
+<img src="https://git-lfs.github.com/images/graphic.gif" alt="https://git-lfs.github.com/images/graphic.gif" />
+<br />
+
+# git lfs install
+<br />
+Updated pre-push hook.
+<br />
+Git LFS initialized.
+<br />
+# git lfs
+<br />
+git-lfs/1.1.0 (GitHub; linux amd64; go 1.5.1)
+<br />
+Sorry, no usage text found for "git-lfs"
+<a href="https://help.github.com/articles/configuring-git-large-file-storage/">https://help.github.com/articles/configuring-git-large-file-storage/</a>
+<br />
+Change your current working directory to an existing repository you'd like to use with Git LFS.
+<br />
+To associate a file type in your repository with Git LFS, enter git lfs track followed by the name of a file extension to associate that file type.
+<br />
+# git lfs track "*.tag.gz"
+<br />
+Tracking *.tag.gz
+<br />
+This command amends your repository's .gitattributes file and associates large files with Git LFS.
+<br />
+# cat .gitattributes
+<br />
+*.tag.gz filter=lfs diff=lfs merge=lfs -text
+<br />
+# git add .gitattributes
+<br />
+We strongly suggest that you commit your local .gitattributes file into your repository. Relying on a global .gitattributes file associated with Git LFS may cause conflicts when contributing to other Git projects.
+<br />
+<br />
+<a href="https://help.github.com/articles/versioning-large-files/">https://help.github.com/articles/versioning-large-files/</a>
+<br />
+<a href="https://help.github.com/articles/viewing-storage-and-bandwidth-usage-for-a-personal-account/">https://help.github.com/articles/viewing-storage-and-bandwidth-usage-for-a-personal-account/</a>
+
+</body>
+</html>

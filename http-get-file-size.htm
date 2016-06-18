@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>How to obtain file size through HTTP</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>How to obtain file size through HTTP</h1>
+</td><td style="vertical-align:top;">
+<a href="/index.htm">Gentoo Mono Handbook</a>,
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<a href="http://stackoverflow.com/questions/4497759/how-to-get-remote-file-size-from-a-shell-script">http://stackoverflow.com/questions/4497759/how-to-get-remote-file-size-from-a-shell-script</a>
+<br />
+<br />
+
+$ curl --head --location --silent "https://media.githubusercontent.com/media/ArsenShnurkov/shnurise-tarballs/master/mono-4.5.2_p2016061606.tar.bz2" | grep Content-Length
+<br />
+Content-Length: 82657303
+
+</body>
+</html>

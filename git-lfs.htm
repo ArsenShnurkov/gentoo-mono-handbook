@@ -12,6 +12,8 @@
 <a href="index.htm">Gentoo Mono Handbook</a>
 <br />
 <a href="https://git-lfs.github.com/">https://git-lfs.github.com/</a>
+<br />
+Terms of service: <a href="lfs-github-terms.htm">github </a> (1G), <a href="lfs-bitbucket-terms.htm">bitbucket</a> (2G), <a href="lfs-gitlab-terms.htm">gitlab terms</a> (10G)
 </td></tr></table>
 
 Git LFS is a command line extension and specification for managing large files with Git.
@@ -67,6 +69,17 @@ We strongly suggest that you commit your local .gitattributes file into your rep
 <a href="https://help.github.com/articles/versioning-large-files/">https://help.github.com/articles/versioning-large-files/</a>
 <br />
 <a href="https://help.github.com/articles/viewing-storage-and-bandwidth-usage-for-a-personal-account/">https://help.github.com/articles/viewing-storage-and-bandwidth-usage-for-a-personal-account/</a>
+<br />
+<br />
+<a href="https://github.com/Sabayon/for-gentoo/tree/master/dev-vcs/git-lfs">https://github.com/Sabayon/for-gentoo/tree/master/dev-vcs/git-lfs</a>
+
+<h2>File structure organnization</h2>
+you may be able to manage the files in a separate repo and then use git-submodule to pull them into your project in a sane way.
+So, you'd still have the full history of all your source but, as I understand it, you'd only have the one relevant revision of your images submodule.
+The git-submodule facility should help you keep the correct version of the code in line with the correct version of the images.
+<br />
+<br />
+submodules can be also used to assemble several repositories into larger one 
 
 </body>
 </html>

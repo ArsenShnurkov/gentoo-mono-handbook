@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>OTABS</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>OTABS</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<a href="http://stackoverflow.com/a/31390846/6017919">http://stackoverflow.com/a/31390846/6017919</a>
+<br />
+The solution I'd like to propose is based on orphan branches and a slight abuse of the tag mechanism, henceforth referred to as <em>Orphan Tags Binary Storage <strong></strong></em><strong>(OTABS)</strong></p>
+
+<p><strong>Desirable properties of OTABS</strong></p>
+
+<ul>
+<li>it is a <strong>pure git</strong> and <strong>git only</strong> solution -- it gets the job done without any 3rd party software (like git-annex) or 3rd party infrastructure (like github's LFS).</li>
+<li>it stores the binary files <strong>efficiently</strong>, i.e. it doesn't bloat the history of your repository.</li>
+<li><code>git pull</code> and <code>git fetch</code>, including <code>git fetch --all</code> are still <strong>bandwidth efficient</strong>, i.e. not all large binaries are pulled from the remote by default.</li>
+<li>it works on <strong>Windows</strong>.</li>
+<li>it stores everything in a <strong>single git repository</strong>.</li>
+<li>it allows for <strong>deletion</strong> of outdated binaries (unlike bup).</li>
+</ul>
+
+<p><strong>Undesirable properties of OTABS</strong></p>
+
+<ul>
+<li>it makes <code>git clone</code> potentially inefficient (but not necessarily, depending on your usage). If you deploy this solution you might have to advice your colleagues to use <code>git clone -b master --single-branch &lt;url&gt;</code> instead of <code>git clone</code>. This is because git clone by default literally clones <strong>entire</strong> repository, including things you wouldn't normally want to waste your bandwidth on, like unreferenced commits. Taken from <a href="http://stackoverflow.com/questions/4811434/clone-only-one-branch">SO 4811434</a>.</li>
+<li>it makes <code>git fetch &lt;remote&gt; --tags</code> bandwidth inefficient, but not necessarily storage inefficient. You can can always advise your colleagues not to use it. </li>
+<li>you'll have to periodically use a <code>git gc</code> trick to clean your repository from any files you don't want any more.</li>
+<li>it is not as efficient as <a href="https://github.com/bup/bup">bup</a> or <a href="http://caca.zoy.org/wiki/git-bigfiles">git-bigfiles</a>. But it's respectively more suitable for what you're trying to do and more off-the-shelf. You are likely to run into trouble with hundreds of thousands of small files or with files in range of gigabytes, but read on for workarounds.</li>
+</ul>
+
+<p><strong>Adding the Binary Files</strong></p>
+
+<p>Before you start make sure that you've committed all your changes, your working tree is up to date and your index doesn't contain any uncommitted changes. It might be a good idea to push all your local branches to your remote (github etc.) in case any disaster should happen.</p>
+
+<ol>
+<li>Create a new orphan branch. <code>git checkout --orphan binaryStuff</code> will do the trick. This produces a branch that is entirely disconnected from any other branch, and the first commit you'll make in this branch will have no parent, which will make it a root commit.</li>
+<li>Clean your index using <code>git rm --cached * .gitignore</code>.</li>
+<li>Take a deep breath and delete entire working tree using <code>rm -fr * .gitignore</code>. Internal <code>.git</code> directory will stay untouched, because the <code>*</code> wildcard doesn't match it.</li>
+<li>Copy in your VeryBigBinary.exe, or your VeryHeavyDirectory/.</li>
+<li>Add it &amp;&amp; commit it.</li>
+<li>Now it becomes tricky -- if you push it into the remote as a branch all your developers will download it the next time they invoke <code>git fetch</code> clogging their connection. You can avoid this by pushing a tag instead of a branch. This can still impact your colleague's bandwidth and filesystem storage if they have a habit of typing <code>git fetch &lt;remote&gt; --tags</code>, but read on for a workaround. Go ahead and <code>git tag 1.0.0bin</code></li>
+<li>Push your orphan tag <code>git push &lt;remote&gt; 1.0.0bin</code>.</li>
+<li>Just so you never push your binary branch by accident, you can delete it <code>git branch -D binaryStuff</code>. Your commit will not be marked for garbage collection, because an orphan tag pointing on it <code>1.0.0bin</code> is enough to keep it alive.</li>
+</ol>
+
+<p><strong>Checking out the Binary File</strong></p>
+
+<ol>
+<li>How do I (or my colleagues) get the VeryBigBinary.exe checked out into the current working tree? If your current working branch is for example master you can simply <code>git checkout 1.0.0bin -- VeryBigBinary.exe</code>.</li>
+<li>This will fail if you don't have the orphan tag <code>1.0.0bin</code> downloaded, in which case you'll have to <code>git fetch &lt;remote&gt; 1.0.0bin</code> beforehand.</li>
+<li>You can add the <code>VeryBigBinary.exe</code> into your master's <code>.gitignore</code>, so that no-one on your team will pollute the main history of the project with the binary by accident.</li>
+</ol>
+
+<p><strong>Completely Deleting the Binary File</strong></p>
+
+<p>If you decide to completely purge VeryBigBinary.exe from your local repository, your remote repository and your colleague's repositories you can just:</p>
+
+<ol>
+<li>Delete the orphan tag on the remote <code>git push &lt;remote&gt; :refs/tags/1.0.0bin</code></li>
+<li>Delete the orphan tag locally (deletes all other unreferenced tags) <code>git tag -l | xargs git tag -d &amp;&amp; git fetch --tags</code>. Taken from <a href="http://stackoverflow.com/questions/1841341/remove-local-tags-that-are-no-longer-on-the-remote-repository">SO 1841341</a> with slight modification.</li>
+<li>Use a git gc trick to delete your now unreferenced commit locally. <code>git -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 -c gc.rerereresolved=0 -c gc.rerereunresolved=0 -c gc.pruneExpire=now gc "$@"</code>. It will also delete all other unreferenced commits. Taken from <a href="http://stackoverflow.com/questions/1904860/how-to-remove-unreferenced-blobs-from-my-git-repo">SO 1904860</a></li>
+<li>If possible, repeat the git gc trick on the remote. It is possible if you're self-hosting your repository and might not be possible with some git providers, like github or in some corporate environments. If you're hosting with a provider that doesn't give you ssh access to the remote just let it be. It is possible that your provider's infrastructure will clean your unreferenced commit in their own sweet time. If you're in a corporate environment you can advice your IT to run a cron job garbage collecting your remote once per week or so. Whether they do or don't will not have any impact on your team in terms of bandwidth and storage, as long as you advise your colleagues to always <code>git clone -b master --single-branch &lt;url&gt;</code> instead of <code>git clone</code>.</li>
+<li>All your colleagues who want to get rid of outdated orphan tags need only to apply steps 2-3.</li>
+<li>You can then repeat the steps 1-8 of <em>Adding the Binary Files</em> to create a new orphan tag <code>2.0.0bin</code>. If you're worried about your colleagues typing <code>git fetch &lt;remote&gt; --tags</code> you can actually name it again <code>1.0.0bin</code>. This will make sure that the next time they fetch all the tags the old <code>1.0.0bin</code> will be unreferenced and marked for subsequent garbage collection (using step 3). When you try to overwrite a tag on the remote you have to use <code>-f</code> like this: <code>git push -f &lt;remote&gt; &lt;tagname&gt;</code></li>
+</ol>
+
+<p><strong>Afterword</strong></p>
+
+<ul>
+<li><p>OTABS doesn't touch your master or any other source code/development branches. The commit hashes, all of the history, and small size of these branches is unaffected. If you've already bloated your source code history with binary files you'll have to clean it up as a separate piece of work. <a href="https://gist.github.com/afternoon/1433794">This script</a> might be useful.</p></li>
+<li><p>Confirmed to work on Windows with git-bash.</p></li>
+<li><p>It is a good idea to apply a <a href="http://blogs.atlassian.com/2014/05/handle-big-repositories-git/">set of standard trics</a> to make storage of binary files more efficient. Frequent running of <code>git gc</code> (without any additional arguments) makes git optimise underlying storage of your files by using binary deltas. However, if your files are unlikely to stay similar from commit to commit you can switch off binary deltas altogether. Additionally, because it makes no sense to compress already compressed or encrypted files, like .zip, .jpg or .crypt, git allows you to switch off compression of the underlying storage. Unfortunately it's an all-or-nothing setting affecting your source code as well.</p></li>
+<li><p>You might want to script up parts of OTABS to allow for quicker usage. In particular, scripting steps 2-3 from <em>Completely Deleting Binary Files</em> into an <code>update</code> git hook could give a compelling but perhaps dangerous semantics to git fetch ("fetch and delete everything that is out of date").</p></li>
+<li><p>You might want to skip the step 4 of <em>Completely Deleting Binary Files</em> to keep a full history of all binary changes on the remote at the cost of the central repository bloat. Local repositories will stay lean over time.</p></li>
+<li><p>In Java world it is possible to combine this solution with <code>maven --offline</code> to create a reproducible offline build stored entirely in your version control (it's easier with maven than with gradle). In Golang world it is feasible to build on this solution to manage your GOPATH instead of <code>go get</code>. In python world it is possible to combine this with virtualenv to produce a self-contained development environment without relying on PyPi servers for every build from scratch.</p></li>
+<li><p>If your binary files change very often, like build artifacts, it might be a good idea to script a solution which stores 5 most recent versions of the artifacts in the orphan tags <code>monday_bin</code>, <code>tuesday_bin</code>, ..., <code>friday_bin</code>, and also an orphan tag for each release <code>1.7.8bin</code> <code>2.0.0bin</code>, etc. You can rotate the <code>weekday_bin</code> and delete old binaries daily. This way you get the best of two worlds: you keep the <strong>entire</strong> history of your source code but only the <strong>relevant</strong> history of your binary dependencies. It is also very easy to get the binary files for a given tag <strong>without</strong> getting entire source code with all its history: <code>git init &amp;&amp; git remote add &lt;name&gt; &lt;url&gt; &amp;&amp; git fetch &lt;name&gt; &lt;tag&gt;</code> should do it for you.</p>
+</ul>
+
+</body>
+</html>

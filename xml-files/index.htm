@@ -37,11 +37,37 @@ XSLT to remove "&lt;b&gt;&quot;nodes from <a href="http://stackoverflow.com/a/25
 <br />
 <br />
 <a href="http://stackoverflow.com/questions/18352193/xsltemplate-in-mono">http://stackoverflow.com/questions/18352193/xsltemplate-in-mono</a>
+
+
+<h2>xslt processors</h2>
+
+<h3>mono-xmltool</h3>
+<a href="http://linux.die.net/man/1/mono-xmltool">http://linux.die.net/man/1/mono-xmltool</a>
+<pre>mono-xmltool
+
+Usage: mono-xmltool [options]
+
+options:
+
+	--validate [*.rng | *.rnc | *.nvdl | *.xsd] [instances]
+	--validate-rng relax-ng-grammar-xml [instances]
+	--validate-rnc relax-ng-compact-grammar-file [instances]
+	--validate-nvdl nvdl-script-xml [instances]
+	--validate-xsd xml-schema [instances]
+	--validate-xsd2 xml-schema [instances] (in .NET 2.0 validator)
+	--validate-dtd instances
+	--transform stylesheet instance-xml [output-xml]
+	--prettyprint [source] [result]
+
+environment variable that affects behavior:
+
+	MONO_XMLTOOL_ERROR_DETAILS = yes : to get exception details.
+</pre>
+<a href="http://www.mono-project.com/docs/tools+libraries/libraries/xml/">http://www.mono-project.com/docs/tools libraries/libraries/xml/</a>
+<br />
 <br />
 For running an xsl[t] transformation over xml, you should be able to use either System.Xml.Xsl.XslTransform or System.Xml.Xsl.XslCompiledTransform from System.Xml.dll.
 <br />
-<br />
-xslt processors:
 <br />
 If you want to use XSLT/XPath 2.0 with .NET you could use Saxon.NET - <a href="http://sourceforge.net/projects/saxondotnet/">http://sourceforge.net/projects/saxondotnet/</a> (this is just the Java version of Saxon running inside IKVM)
 <br />

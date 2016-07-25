@@ -11,10 +11,46 @@
 </td><td valign="top">
 <a href="index.htm">Gentoo Mono Handbook</a>
 <br />
-&nbsp;
+<a href="https://msdn.microsoft.com/ru-ru/library/system.runtime.compilerservices.internalsvisibletoattribute%28v=vs.110%29.aspx">MSDN</a>
 </td></tr></table>
 
+<h2>Getting public key</h2>
+sn -tp mono.snk
+<pre>Mono StrongName - version 4.5.2.0
+StrongName utility for signing assemblies
+Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD licensed.
+
+Public Key:
+002400000480000094000000060200000024000052534131000400000100010079159977d2d03a
+8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c
+3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fd
+dafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef00
+65d016df
+
+Public Key Token: 0738eb9f132ed756</pre>
+
+<h2>Adding into project</h2>
+[assembly: InternalsVisibleTo("Newtonsoft.Json.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010079159977d2d03a8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fddafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef0065d016df")]
+
+<h2>Links</h2>
 <a href="http://stackoverflow.com/questions/8983097/internalsvisibleto-attribute-not-compiling-under-xbuild-mono-2-10-6-but-works">http://stackoverflow.com/questions/8983097/internalsvisibleto-attribute-not-compiling-under-xbuild-mono-2-10-6-but-works</a>
+<br />
+without strongly-naming the assemblies and the error doesn't occur if they're not.
+<br />
+<a href="https://github.com/JamesNK/Newtonsoft.Json/issues/353">https://github.com/JamesNK/Newtonsoft.Json/issues/353</a>
+<br />
+Src/Newtonsoft.Json/Properties/AssemblyInfo.cs
+<br />
+[assembly: InternalsVisibleTo("Newtonsoft.Json.Tests")]
+<br />
+<br />
+Properties/AssemblyInfo.cs(92,12): error CS1726: Friend assembly reference `Newtonsoft.Json.Tests' is invalid. Strong named assemblies must specify a public key in their InternalsVisibleTo declarations
+<br />
+<br />
+Properties/AssemblyInfo.cs(92,12): error CS0117: `System.Runtime.CompilerServices.InternalsVisibleToAttribute' does not contain a definition for `PublicKey'
+<br />
+^^ that's because PublicKey should be inside the string, not as a separate attribute
+
 
 </body>
 </html>

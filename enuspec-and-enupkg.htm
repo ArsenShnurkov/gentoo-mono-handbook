@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>enuspec &amp; enupkg</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>enuspec &amp; enupkg</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+These functions are defined in <a href="https://github.com/gentoo/dotnet/blob/master/eclass/nupkg.eclass">nupkg.eclass</a> ( :<a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass">dotnet</a> : eutils versionator <a href="https://github.com/gentoo/dotnet/blob/master/eclass/mono-env.eclass">mono-env</a> )
+<pre>
+inherit nupkg
+</pre>
+
+<h2>enuspec</h2>
+runs "<a href="https://docs.nuget.org/consume/command-line-reference#pack-command">nuget pack</a>"
+<br />
+pack command combine files into .nupkg achive according to specification given in a .nuspec file.
+<br />
+Supposed to be used from src_compile
+
+<h2>enupkg</h2>
+installs .nupkg into local repository. Supposed to be used from src_install
+<br />
+/usr/local/nuget/nupkg
+<br />
+or
+<br />
+/var/calculate/remote/packages/NuGet
+
+</body>
+</html>

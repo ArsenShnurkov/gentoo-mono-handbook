@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>How to restore nuget packages for solution</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>How to restore nuget packages for solution</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+By default, the NuGet.Config file instructs NuGet to bypass adding package binaries to source control.
+
+<h2>.gitignore</h2>
+<a href="https://docs.nuget.org/consume/package-restore">https://docs.nuget.org/consume/package-restore</a>
+<pre>
+# Ignore NuGet Packages
+*.nupkg
+# Ignore the packages folder
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/packages/repositories.config
+</pre>
+
+<h2>Three approaches</h2>
+NuGet offers three approaches to using package restore.
+<br />
+Command-Line Package Restore is required when building a solution from the command-line; it was introduced in early versions of NuGet, but was improved in NuGet 2.7.
+<br />
+The MSBuild-integrated package restore approach is the original Package Restore implementation and though it continues to work in many scenarios, it does not cover the full set of scenarios addressed by the other two approaches.
+<br />
+Automatic Package Restore is the NuGet team's recommended approach to Package Restore within Visual Studio, and it was introduced in NuGet 2.7.
+
+<h3>Command-Line Package Restore</h3>
+nuget restore TheSolutionFilname.sln
+
+<h3>MSBuild-Integrated approach</h3>
+In the old way, you right click on your solution in VS and choose Enable package restore. This causes VS to modify your csproj files, and create .nuget folder containing nuget.exe and some other files.
+<br />
+<br />
+NuGet modifies the project files in the solution to reference the NuGet.targets file 
+so it can participate in the build process.
+<br />
+the presence of a NuGet.targets file 
+determines whether NuGet will continue to use the MSBuild-Integrated approach.
+<br />
+<br />
+Each project file contain the fragment like
+<pre>
+&lt;RestorePackages&gt;true&lt;/RestorePackages&gt;  
+...
+&lt;Import Project=&quot;$(SolutionDir)\.nuget\nuget.targets&quot; /&gt;  
+...
+&lt;Target Name=&quot;EnsureNuGetPackageBuildImports&quot; BeforeTargets=&quot;PrepareForBuild&quot;&gt;  
+    &lt;PropertyGroup&gt;
+        &lt;ErrorText&gt;This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.&lt;/ErrorText&gt;
+    &lt;/PropertyGroup&gt;
+    &lt;Error Condition=&quot;!Exists('$(SolutionDir)\.nuget\NuGet.targets')&quot; Text=&quot;$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))&quot; /&gt;
+&lt;/Target&gt;
+</pre>
+
+<h3>Automatic Package Restore</h3>
+Nuget Automatic Package Restore has changed in Nuget 2.7+. Do not mix 'old' and new methods for automatic package restoration.
+<br />
+<br />
+Edit each project file (e.g., .csproj, .vbproj) in the solution and remove any references to the NuGet.targets file.
+Open the project file(s) in the editor of your choice and remove the settings
+<br />
+<br />
+when building from the command line, you need to run ‘nuget restore’ yourself before msbuild.
+
+
+<h2>NuGet.targets</h2>
+An example of content:
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;Project xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot; ToolsVersion=&quot;4.0&quot;&gt;
+
+	&lt;PropertyGroup Condition=&quot;'$(OS)' == 'Windows_NT'&quot;&gt;
+		&lt;NuGetPath&gt;$(MSBuildThisFileDirectory).nuget&lt;/NuGetPath&gt;
+		&lt;NuGetExe&gt;$(NuGetPath)\NuGet.exe&lt;/NuGetExe&gt;
+		&lt;CachedNuGet&gt;$(LocalAppData)\NuGet\NuGet.exe&lt;/CachedNuGet&gt;	
+	&lt;/PropertyGroup&gt;
+
+	&lt;PropertyGroup Condition=&quot;'$(OS)' != 'Windows_NT'&quot;&gt;
+		&lt;NuGetExe&gt;nuget&lt;/NuGetExe&gt;
+	&lt;/PropertyGroup&gt;
+
+	&lt;Target Name=&quot;RestorePackages&quot; BeforeTargets=&quot;Build&quot; DependsOnTargets=&quot;GetNuGet&quot;&gt;
+		&lt;Exec Command=&quot;&amp;quot;$(NuGetExe)&amp;quot; Restore &amp;quot;$(SolutionPath)&amp;quot;&quot; Condition=&quot;'$(SolutionPath)' != ''&quot; /&gt;
+		&lt;Exec Command=&quot;&amp;quot;$(NuGetExe)&amp;quot; Restore &amp;quot;%(Solution.Identity)&amp;quot;&quot; Condition=&quot;'%(Solution.Identity)' != ''&quot; /&gt;
+	&lt;/Target&gt;
+
+	&lt;PropertyGroup Condition=&quot;'$(OS)' == 'Windows_NT'&quot;&gt;
+		&lt;CodeTaskAssembly Condition=&quot;'$(MSBuildAssemblyVersion)' == ''&quot;&gt;$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll&lt;/CodeTaskAssembly&gt;
+		&lt;!-- In VS2013, the assembly contains the VS version. --&gt;
+		&lt;CodeTaskAssembly Condition=&quot;'$(MSBuildAssemblyVersion)' == '12.0'&quot;&gt;$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll&lt;/CodeTaskAssembly&gt;
+		&lt;!-- In VS2015+, the assembly was renamed, hopefully this will be the last condition! --&gt;
+		&lt;CodeTaskAssembly Condition=&quot;'$(MSBuildAssemblyVersion)' != '' and '$(MSBuildAssemblyVersion)' &amp;gt;= '14.0'&quot;&gt;$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll&lt;/CodeTaskAssembly&gt;
+	&lt;/PropertyGroup&gt;
+
+	&lt;Target Name=&quot;GetNuGet&quot; Condition=&quot;'$(OS)' == 'Windows_NT' And !Exists('$(NuGetExe)')&quot;&gt;
+		&lt;MakeDir Directories=&quot;$(NuGetPath)&quot; Condition=&quot;!Exists($(NuGetPath))&quot; /&gt;
+		&lt;DownloadNuGet TargetPath=&quot;$(CachedNuGet)&quot; Condition=&quot;!Exists($(NuGetExe)) And !Exists($(CachedNuGet))&quot; /&gt;
+		&lt;Copy SourceFiles=&quot;$(CachedNuGet)&quot; DestinationFolder=&quot;$(NuGetPath)&quot; Condition=&quot;!Exists($(NuGetExe))&quot; /&gt;
+	&lt;/Target&gt;
+
+	&lt;UsingTask TaskName=&quot;DownloadNuGet&quot; TaskFactory=&quot;CodeTaskFactory&quot; AssemblyFile=&quot;$(CodeTaskAssembly)&quot; Condition=&quot;'$(OS)' == 'Windows_NT'&quot;&gt;
+		&lt;ParameterGroup&gt;
+			&lt;TargetPath ParameterType=&quot;System.String&quot; Required=&quot;true&quot; /&gt;
+		&lt;/ParameterGroup&gt;
+		&lt;Task&gt;
+			&lt;Reference Include=&quot;System.Core&quot; /&gt;
+			&lt;Using Namespace=&quot;System&quot; /&gt;
+			&lt;Using Namespace=&quot;System.IO&quot; /&gt;
+			&lt;Using Namespace=&quot;System.Net&quot; /&gt;
+			&lt;Using Namespace=&quot;Microsoft.Build.Framework&quot; /&gt;
+			&lt;Using Namespace=&quot;Microsoft.Build.Utilities&quot; /&gt;
+			&lt;Code Type=&quot;Fragment&quot; Language=&quot;cs&quot;&gt;
+				&lt;![CDATA[
+                try {
+                    TargetPath = Path.GetFullPath(TargetPath);
+                    if (!Directory.Exists(Path.GetDirectoryName(TargetPath)))
+                        Directory.CreateDirectory(Path.GetDirectoryName(TargetPath));
+
+                    Log.LogMessage(&quot;Downloading latest version of NuGet.exe...&quot;);
+                    WebClient webClient = new WebClient();
+                    webClient.DownloadFile(&quot;https://www.nuget.org/nuget.exe&quot;, TargetPath);
+
+                    return true;
+                }
+                catch (Exception ex) {
+                    Log.LogErrorFromException(ex);
+                    return false;
+                }
+            ]]&gt;
+			&lt;/Code&gt;
+		&lt;/Task&gt;
+	&lt;/UsingTask&gt;
+&lt;/Project&gt;
+</pre>
+Here we see, that it just ensures, that <strong>nuget restore</strong> command was executed once at the start of build process
+<br />
+it can be absent, or just in wrong relative path:
+<br />
+<a href="http://ikeptwalking.com/this-project-references-nuget-packages-that-are-missing-on-this-computer/">http://ikeptwalking.com/this-project-references-nuget-packages-that-are-missing-on-this-computer/</a>
+
+</body>
+</html>

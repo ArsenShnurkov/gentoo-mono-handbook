@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>.gitattributes</title>
+</head>
+<body>
+
+<table><tr><td style="vertical-align:top;">
+<h1>.gitattributes</h1>
+</td><td style="vertical-align:top;">
+<a href="../index.htm">Gentoo Mono Handbook</a>,
+<br />
+&nbsp;
+</td></tr></table>
+inpired by <a href="https://github.com/nsubstitute/NSubstitute/blob/master/.gitattributes">https://github.com/nsubstitute/NSubstitute/blob/master/.gitattributes</a>
+<br />
+<pre>
+# These files are text and should be normalized (convert crlf => lf)
+*.sln     text
+*.proj  text
+*.csproj  text
+*.cs      text diff=csharp
+*.tt      text
+*.ps1     text
+*.sh     text
+*.htm      text
+*.css      text
+*.md      text
+*.nuspec  text
+*.msbuild text
+*.cmd     text
+*.xaml    text
+
+# Images should be treated as binary
+# (binary is a macro for -text -diff)
+*.png     binary
+*.jpeg    binary
+*.gif    binary
+</pre>
+
+</body>
+</html>

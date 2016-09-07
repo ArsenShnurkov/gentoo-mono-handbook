@@ -39,12 +39,33 @@ To do this via the command line you need to set two properties: SignAssembly and
 	exbuild /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=${WORKDIR}/mono.snk "${METAFILETOBUILD}"
 </xmp></pre>
 <a href="http://blogs.msdn.com/b/msbuild/archive/2005/09/26/474079.aspx">http://blogs.msdn.com/b/msbuild/archive/2005/09/26/474079.aspx</a>
+<br />
+when the AssemblyKeyFile flag is specified, you need to add a path because the al command is executed in the binDebug directory
+<br />
+/p:DelaySign=true
+
 <h2>Installing</h2>
 
-egacinstall is from undocumented <strong>dotnet.eclass</strong>
+egacinstall is from undocumented <strong>gac.eclass</strong>
 <br />
 <br />
-<a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass">https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass</a>
+<a href="https://github.com/gentoo/dotnet/blob/master/eclass/gac.eclass">https://github.com/gentoo/dotnet/blob/master/eclass/gac.eclass</a>
+
+<h2>Default keys of mono</h2>
+<a href="http://www.mono-project.com/docs/advanced/assemblies-and-the-gac/">http://www.mono-project.com/docs/advanced/assemblies-and-the-gac/</a>
+<br />
+PublicKeyToken:
+<br />
+b77a5c561934e089 = <a href="https://github.com/mono/mono/blob/master/mcs/class/ecma.pub">./mcs/class/ecma.pub</a>
+<br />
+b03f5f7f11d50a3a = <a href="https://github.com/mono/mono/blob/master/mcs/class/msfinal.pub">./mcs/class/msfinal.pub</a>
+<br />
+0738eb9f132ed756 = <a href="https://github.com/mono/mono/blob/master/mcs/class/mono.snk">./mcs/class/mono.snk</a>,  Mono's PublicKeyToken
+<br />
+35e10195dab3c99f
+<br />
+
 
 </body>
 </html>
+

@@ -18,5 +18,74 @@ pkg-config files (*.pc) which are installed
 <br />
 allows the MonoDevelop IDE to find the bindings.
 
+<br />
+<br />
+Guide to pkg-config, Dan Nicholson, 2010
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://people.freedesktop.org/~dbn/pkg-config-guide.html">https://people.freedesktop.org/~dbn/pkg-config-guide.html</a>
+<br />
+<br />
+Checklist for writing pkg-config files, Philip Withnall, 2014-12-09
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://tecnocode.co.uk/2014/12/09/a-checklist-for-writing-pkg-config-files/">https://tecnocode.co.uk/2014/12/09/a-checklist-for-writing-pkg-config-files/</a>
+<br />
+<br />
+Example of .pc file for some .dll:
+<pre>
+# cat /usr/lib/pkgconfig/system-web.pc 
+prefix=${pcfiledir}/../..
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib64
+Name: system-web
+Description: Framework for developing web-applications
+Version: 4.6.0.150
+Libs: -r:${libdir}/mono/system-web/System.Web.dll
+</pre>
+Example of .ebuild piece
+<br />
+<pre>
+src_install()
+{
+	if use debug; then
+		DIR=&quot;Debug&quot;
+	else
+		DIR=&quot;Release&quot;
+	fi
+	egacinstall &quot;${S}/mcs/class/${NAME}/obj/${DIR}/${NAME}.dll&quot;
+	egacinstall &quot;${S}/policy.4.0.System.Web.dll&quot;
+	install_pc_file &quot;${PN}&quot; &quot;${NAME}.dll&quot;
+}
+
+# The file format contains predefined metadata keywords and freeform variables (like ${prefix} and ${exec_prefix})
+# $1 = ${PN}
+# $2 = myassembly.dll
+install_pc_file()
+{
+	if use pkg-config; then
+		dodir /usr/$(get_libdir)/pkgconfig
+		ebegin &quot;Installing ${PC_FILE_NAME}.pc file&quot;
+		sed \
+			-e &quot;s:@LIBDIR@:$(get_libdir):&quot; \
+			-e &quot;s:@PACKAGENAME@:$1:&quot; \
+			-e &quot;s:@DESCRIPTION@:${DESCRIPTION}:&quot; \
+			-e &quot;s:@VERSION@:${PV}:&quot; \
+			-e 's*@LIBS@*-r:${libdir}'&quot;/mono/$1/$2&quot;'*' \
+			&lt;&lt;-EOF &gt;&quot;${D}/usr/$(get_libdir)/pkgconfig/$1.pc&quot; || die
+				prefix=\${pcfiledir}/../..
+				exec_prefix=\${prefix}
+				libdir=\${exec_prefix}/@LIBDIR@
+				Name: @PACKAGENAME@
+				Description: @DESCRIPTION@
+				Version: @VERSION@
+				Libs: @LIBS@
+			EOF
+
+		einfo PKG_CONFIG_PATH=&quot;${D}/usr/$(get_libdir)/pkgconfig/&quot; pkg-config --exists &quot;$1&quot;
+		PKG_CONFIG_PATH=&quot;${D}/usr/$(get_libdir)/pkgconfig/&quot; pkg-config --exists &quot;$1&quot; || die &quot;.pc file failed to validate.&quot;
+		eend $?
+	fi
+}
+</pre>
+
 </body>
 </html>

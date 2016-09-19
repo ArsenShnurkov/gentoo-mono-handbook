@@ -4,14 +4,14 @@
 <meta charset="utf8" />
 <title>pkg-config</title>
 </head>
-<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="../images/forkme.png" align="right" width="100" /></a>
 
 <table><tr><td style="vertical-align:top;">
 <h1>pkg-config</h1>
 </td><td style="vertical-align:top;">
 <a href="../index.htm">Gentoo Mono Handbook</a>
 <br />
-&nbsp;
+<a href="../pc-files.htm">.pc-files</a>
 </td></tr></table>
 
 MonoDevelop does not look for assemblies in the GAC.
@@ -28,6 +28,17 @@ A package specifies this list of assemblies in a .pc file which has to be instal
 If you are developing a library, MonoDevelop can automatically generate a .pc file for your project 
 (in the project options dialog, select “Linux Deployment Settings”, and check the “Generate .pc file” option).
 
+<br />
+<br />
+which part of Makefile.include installs the .pc files?
+<br />
+not everything uses that Makefile.include
+<br />
+that is what MonoDevelop auto-generate
+<br />
+with the LINUX_PKGCONFIG var
+<br />
+so patching the path in that include file should do the trick
 
 </body>
 </html>

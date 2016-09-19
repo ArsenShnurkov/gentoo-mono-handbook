@@ -20,23 +20,16 @@ In this type of projects we need to:
 <br />
 2) provide an ability to sign and install into GAC
 <br />
-3) provide .pc file for monodevelop "References"->"Packages" tab
+3) provide a <a href="pc-files.htm">.pc -file</a> (for <a href="pkg-config/index.htm">pkg-config</a>) to allow to populate monodevelop's "References"-&gt;"Packages" tab 
 <br />
 4) provide an ability to create a local .nupkg (which may require writing .nuspec file)
 <br />
 5) perform AOT-compilation
+<br />
+6) optionally do tests
+<br />
+7) install documentation (.xml files, generated .html files)
 
-<br />
-<br />
-which part of Makefile.include installs the .pc files?
-<br />
-not everything uses that Makefile.include
-<br />
-that is what MonoDevelop auto-generate
-<br />
-with the LINUX_PKGCONFIG var
-<br />
-so patching the path in that include file should do the trick
 
 
 </body>

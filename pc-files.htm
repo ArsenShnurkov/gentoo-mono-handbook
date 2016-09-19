@@ -12,6 +12,8 @@
 <a href="index.htm">Gentoo Mono Handbook</a>
 <br />
 <a href="pinvoke.htm">PInvoke</a>
+<br />
+<a href="pkg-config/index.htm">pkg-config</a>
 </td></tr></table>
 
 pkg-config files (*.pc) which are installed 
@@ -41,7 +43,9 @@ Description: Framework for developing web-applications
 Version: 4.6.0.150
 Libs: -r:${libdir}/mono/system-web/System.Web.dll
 </pre>
-Example of .ebuild piece
+Example of .ebuild piece ("&lt;&lt;-" operator of bash is used, see <a href="https://www.gnu.org/software/bash/manual/bash.html">&sect;3.6.6 Here Documents</a>)
+<br />
+note, how $ sign is escaped inside of .pc-file content (it's highlighted with red color)
 <br />
 <pre>
 src_install()
@@ -70,10 +74,10 @@ install_pc_file()
 			-e &quot;s:@DESCRIPTION@:${DESCRIPTION}:&quot; \
 			-e &quot;s:@VERSION@:${PV}:&quot; \
 			-e 's*@LIBS@*-r:${libdir}'&quot;/mono/$1/$2&quot;'*' \
-			&lt;&lt;-EOF &gt;&quot;${D}/usr/$(get_libdir)/pkgconfig/$1.pc&quot; || die
-				prefix=\${pcfiledir}/../..
-				exec_prefix=\${prefix}
-				libdir=\${exec_prefix}/@LIBDIR@
+			<font style="color:red">&lt;&lt;-</font>EOF &gt;&quot;${D}/usr/$(get_libdir)/pkgconfig/$1.pc&quot; || die
+				prefix=<font style="color:red">\$</font>{pcfiledir}/../..
+				exec_prefix=<font style="color:red">\$</font>{prefix}
+				libdir=<font style="color:red">\$</font>{exec_prefix}/@LIBDIR@
 				Name: @PACKAGENAME@
 				Description: @DESCRIPTION@
 				Version: @VERSION@

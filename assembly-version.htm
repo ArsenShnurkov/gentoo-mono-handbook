@@ -16,11 +16,30 @@
 
 <a href="http://stackoverflow.com/questions/8446693/specify-assembly-version-number-as-a-command-line-argument-in-msbuild">http://stackoverflow.com/questions/8446693/specify-assembly-version-number-as-a-command-line-argument-in-msbuild</a>
 
+<br />
+<a href="http://stackoverflow.com/questions/10980249/msbuild-task-for-setting-custom-attribute-in-assemblyinfo-cs">http://stackoverflow.com/questions/10980249/msbuild-task-for-setting-custom-attribute-in-assemblyinfo-cs</a>
+
 <h2>loresoft/msbuildtasks</h2>
 <a href="https://github.com/loresoft/msbuildtasks/blob/master/Documentation/TaskDocs.md#AssemblyInfo">https://github.com/loresoft/msbuildtasks/blob/master/Documentation/TaskDocs.md#AssemblyInfo</a>
 
+<pre>
+   &lt;Import Project=&quot;$(MSBuildBinPath)\MSBuild.Community.Tasks.Targets&quot; Condition=&quot;Exists('$(MSBuildBinPath)\MSBuild.Community.Tasks.Targets')&quot; /&gt;
+   &lt;Target Name=&quot;BeforeBuild&quot;&gt;
+		&lt;PropertyGroup Condition=&quot; '$(VersionNumber)' == '' &quot;&gt;
+		    &lt;VersionNumber&gt;1.0.0.0&lt;/VersionNumber&gt;
+		&lt;/PropertyGroup&gt;
+		&lt;AssemblyInfo CodeLanguage=&quot;C#&quot;
+			OutputFile=&quot;Properties/AssemblyInfo.cs&quot; 
+            AssemblyVersion=&quot;$(VersionNumber)&quot; 
+            AssemblyFileVersion=&quot;$(VersionNumber)&quot;
+		/&gt;
+   &lt;/Target&gt;
+</pre>
+
 <h2>mikefourie/MSBuildExtensionPack</h2>
 <a href="https://github.com/mikefourie/MSBuildExtensionPack">https://github.com/mikefourie/MSBuildExtensionPack</a>
-
+<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://stackoverflow.com/questions/3585444/how-can-i-change-assemblyproduct-assemblytitle-using-msbuild">http://stackoverflow.com/questions/3585444/how-can-i-change-assemblyproduct-assemblytitle-using-msbuild</a>
 </body>
 </html>

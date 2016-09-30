@@ -41,10 +41,32 @@ S="${WORKDIR}/${NAME}-${EGIT_COMMIT}"</xmp></pre>
 <h3>Specs</h3>
 sha1 is described in <strong>RFC 3174</strong> (<a href="https://tools.ietf.org/html/rfc3174">https://tools.ietf.org/html/rfc3174</a>),
 <br />
+<br />
 The usage of sha1 in git is described in <a href="https://illustrated-git.readthedocs.org/en/latest/">https://illustrated-git.readthedocs.org/en/latest/</a> with examples and .svg illustrations
 <br />
-In github web interface it looks like this:
+Git References - <a href="https://git-scm.com/book/tr/v2/Git-Internals-Git-References">https://git-scm.com/book/tr/v2/Git-Internals-Git-References</a>
 <br />
+&nbsp;&nbsp;&nbsp;&nbsp;the files that contain the SHA-1 values in the .git/refs directory.
+<br />
+<br />
+<a href="https://help.github.com/">https://help.github.com/</a>
+<br />
+<a href="https://developer.github.com/v3/repos/contents/#get-archive-link">https://developer.github.com/v3/repos/contents/#get-archive-link</a>
+<br />
+<img src="github/get-archive-link.png" alt="github/get-archive-link.png" />
+<br />
+In github web interface it looks like this: <font style="color:red">TODO</font>
+<br />
+<br />
+Nodeload - <a href="https://github.com/blog/678-meet-nodeload-the-new-download-server">https://github.com/blog/678-meet-nodeload-the-new-download-server</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;any time you download a tarball or zip file of any repository branch or tag, you're going through nodeload. 
+<br />
+<br />
+looks like "ebuild ... digest" doesn't work with 302 redirect (<font style="color:red">need to be investigated deeper</font>)
+<br />
+<br />
+<a href="http://stackoverflow.com/questions/8377081/github-api-download-zip-or-tarball-link">http://stackoverflow.com/questions/8377081/github-api-download-zip-or-tarball-link</a>
 
 <h2>by tag</h2>
 github provide links for packaged sources for each commit:

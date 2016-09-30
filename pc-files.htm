@@ -14,12 +14,31 @@
 <a href="pinvoke.htm">PInvoke</a>
 <br />
 <a href="pkg-config/index.htm">pkg-config</a>
+<br />
+<a href="https://en.wikipedia.org/wiki/Pkg-config">https://en.wikipedia.org/wiki/Pkg-config</a>
 </td></tr></table>
 
 pkg-config files (*.pc) which are installed 
 <br />
 allows the MonoDevelop IDE to find the bindings.
-
+<br />
+MonoDevelop does not look for assemblies in the GAC.
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.monodevelop.com/help/faq/">http://www.monodevelop.com/help/faq/</a>
+<br />
+On Mac and Linux, MonoDevelop uses pkg-config to locate installed packages
+and get the list of assemblies that each package provides.
+A package specifies this list of assemblies in a .pc file which has to be installed in the standard pkg-config directory.
+<br />
+The GAC is an assembly registry meant to be used at run-time, not at development time.
+If your application depends on another assembly,
+that assembly either has to be provided by a package (and advertised through a .pc file)
+or has to be bundled together with your application.
+<br />
+Assemblies you see when you choose Project + Add Reference is not created from the GAC.
+You should keep a copy of the assemblies stored in any location other than the GAC.
+Microsoft stores them in c:\windows\microsoft.net and c:\program files\reference assemblies.
+Using either the Project or the Browse tab is the most common way to add the reference or hack the registry.
 <br />
 <br />
 Guide to pkg-config, Dan Nicholson, 2010
@@ -30,6 +49,11 @@ Guide to pkg-config, Dan Nicholson, 2010
 Checklist for writing pkg-config files, Philip Withnall, 2014-12-09
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://tecnocode.co.uk/2014/12/09/a-checklist-for-writing-pkg-config-files/">https://tecnocode.co.uk/2014/12/09/a-checklist-for-writing-pkg-config-files/</a>
+<br />
+<br />
+Debian policy for .pc files:
+<br />
+<a href="http://pkg-mono.alioth.debian.org/cli-policy/ch-packaging.html#s-pkg-config-file">http://pkg-mono.alioth.debian.org/cli-policy/ch-packaging.html#s-pkg-config-file</a>
 <br />
 <br />
 Example of .pc file for some .dll:
@@ -47,6 +71,29 @@ Example of .ebuild piece ("&lt;&lt;-" operator of bash is used, see <a href="htt
 <br />
 note, how $ sign is escaped inside of .pc-file content (it's highlighted with red color)
 <br />
+
+<h2>gac.eclass</h2>
+gac.eclass contains <a href="https://github.com/gentoo/dotnet/blob/91dd57dca99c01b951b87d22e23e13e32a5f084f/eclass/gac.eclass#L63-L93">einstall_pc_file</a> bash function:
+<br />
+<pre>
+# @FUNCTION: einstall_pc_file
+# @DESCRIPTION:  installs .pc file
+# The file format contains predefined metadata keywords and freeform variables (like ${prefix} and ${exec_prefix})
+# $1 = ${PN}
+# $2 = myassembly.dll</pre>
+example of usage:
+<br />
+<a href="https://github.com/gentoo/dotnet/blob/a0ce339bbffbff02f393d80c6bd58746c012f2c7/dev-dotnet/conemu-control-winforms/conemu-control-winforms-1.0.0_p2016051802-r1.ebuild#L49">dev-dotnet/conemu-control-winforms/conemu-control-winforms-1.0.0_p2016051802-r1.ebuild#L49</a>
+<br />
+<pre>
+src_install()
+{
+	einstall_pc_file &quot;${PN}&quot; &quot;${NAME}.dll&quot;
+}
+</pre>
+
+
+<h2>Independent creation of .pc file</h2>
 <pre>
 src_install()
 {

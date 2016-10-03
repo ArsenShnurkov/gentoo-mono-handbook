@@ -18,7 +18,25 @@
 
 <br />
 <a href="http://stackoverflow.com/questions/10980249/msbuild-task-for-setting-custom-attribute-in-assemblyinfo-cs">http://stackoverflow.com/questions/10980249/msbuild-task-for-setting-custom-attribute-in-assemblyinfo-cs</a>
-
+<pre>
+  &lt;Target Name=&quot;BeforeBuild&quot;&gt;
+    &lt;PropertyGroup Condition=&quot; '$(VersionNumber)' == '' &quot;&gt;
+      &lt;VersionNumber&gt;1.0.0.0&lt;/VersionNumber&gt;
+    &lt;/PropertyGroup&gt;
+    &lt;ItemGroup&gt;
+      &lt;AssemblyAttributes Include=&quot;AssemblyVersion&quot;&gt;
+        &lt;_Parameter1&gt;$(VersionNumber)&lt;/_Parameter1&gt;
+      &lt;/AssemblyAttributes&gt;
+      &lt;AssemblyAttributes Include=&quot;AssemblyFileVersion&quot;&gt;
+        &lt;_Parameter1&gt;$(VersionNumber)&lt;/_Parameter1&gt;
+      &lt;/AssemblyAttributes&gt;
+      &lt;AssemblyAttributes Include=&quot;AssemblyInformationalVersion&quot;&gt;
+        &lt;_Parameter1&gt;$(VersionNumber)&lt;/_Parameter1&gt;
+      &lt;/AssemblyAttributes&gt;   
+      &lt;/ItemGroup&gt;
+    &lt;WriteCodeFragment Language=&quot;C#&quot; OutputFile=&quot;Properties/AssemblyVersion.cs&quot; AssemblyAttributes=&quot;@(AssemblyAttributes)&quot; /&gt;
+  &lt;/Target&gt;
+</pre>
 <h2>loresoft/msbuildtasks</h2>
 <a href="https://github.com/loresoft/msbuildtasks/blob/master/Documentation/TaskDocs.md#AssemblyInfo">https://github.com/loresoft/msbuildtasks/blob/master/Documentation/TaskDocs.md#AssemblyInfo</a>
 

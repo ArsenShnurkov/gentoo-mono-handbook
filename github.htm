@@ -20,12 +20,13 @@ see also <a href="https://devmanual.gentoo.org/eclass-reference/git-2.eclass/ind
 
 <h3>Example</h3>
 Code on github can be in the master branch
-<pre><xmp>NAME="ProjectName"
-HOMEPAGE="https://github.com/AccountName/${NAME}"
+<pre>NAME="<font style="color:red">ProjectName</font>"
+HOMEPAGE="https://github.com/<font style="color:red">AccountName</font>/${NAME}"
 
-EGIT_COMMIT="061d8a27b13db5a76cae4757bb902b2808494a83"
-SRC_URI="${HOMEPAGE}/archive/${EGIT_COMMIT}.zip -> ${P}.zip"
-S="${WORKDIR}/${NAME}-${EGIT_COMMIT}" </xmp></pre>
+EGIT_COMMIT="<font style="color:red">061d8a27b13db5a76cae4757bb902b2808494a83</font>"
+SRC_URI="${HOMEPAGE}/archive/${EGIT_COMMIT}.tar.gz -&gt; ${PN}-${PV}.tar.gz"
+RESTRICT="mirror"
+S="${WORKDIR}/${NAME}-${EGIT_COMMIT}"</pre>
 
 or in the antoher branch
 <br />
@@ -35,6 +36,7 @@ HOMEPAGE="https://github.com/ArsenShnurkov/${NAME}"
 EGIT_BRANCH="MONO_4_0"
 EGIT_COMMIT="c3eb07ff89523154dc2385c7db0ba9437bff3362"
 SRC_URI="${HOMEPAGE}/archive/${EGIT_BRANCH}/${EGIT_COMMIT}.zip -> ${PF}.zip"
+RESTRICT="mirror"
 S="${WORKDIR}/${NAME}-${EGIT_COMMIT}"</xmp></pre>
 
 

@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="utf8" />
-<title>some commands</title>
+<title>Commands for creating source tarballs</title>
 </head>
 <body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
 
 <table><tr><td style="vertical-align:top;">
-<h1>some commands</h1>
+<h1>Commands for creating source tarballs</h1>
 </td><td style="vertical-align:top;">
 <a href="/OTABS.htm">OTABS</a>,
 <a href="index.htm">Gentoo Mono Handbook</a>
@@ -15,7 +15,13 @@
 <a href="otabs-how-to-remove-remote-tag.htm">How to remove remote tag</a>
 </td></tr></table>
 
-/usr/libexec/git-core/git-check-ref-format dev-dotnet/system-web/system-web-4.6.182.tar.gz
+# branch name should be defferent from tag name, and branch will be deleted later, only tag will stay
+<br />
+BRANCH_NAME=temporary-branch-name123
+<br />
+TAG_NAME=dev-dotnet/system-web/system-web-4.6.0.182.tar.gz
+<br />
+/usr/libexec/git-core/git-check-ref-format  ${TAG_NAME}
 <br />
 cd ${DISTDIR} # /var/calculate/remote/distfiles
 <br />
@@ -28,7 +34,7 @@ git remote set-url --push origin https://0000000000000token000000000000000000000
 <br />
 cd /var/tmp/aaa/shnurise-tarballs.git
 <br />
-git checkout --orphan "branch123"
+git checkout --orphan "${BRANCH_NAME}"
 <br />
 git rm --cached * .gitignore .gitattributes
 <br />
@@ -38,15 +44,15 @@ cp /var/tmp/tarballs/dotnet/dev-dotnet/system-web/system-web-4.6.0.182.tar.gz .
 <br />
 git add *
 <br />
-git commit -m "dev-dotnet/system-web/system-web-4.6.182.tar.gz"
+git commit -m "dev-dotnet/system-web/system-web-4.6.0.182.tar.gz"
 <br />
-git tag dev-dotnet/system-web/system-web-4.6.182.tar.gz
+git tag "${TAG_NAME}"
 <br />
-git push origin dev-dotnet/system-web/system-web-4.6.182.tar.gz
+git push origin "${TAG_NAME}"
 <br />
 git checkout master
 <br />
-git branch -D branch123
+git branch -D "${BRANCH_NAME}"
 <br />
 <br />
 https://github.com/ArsenShnurkov/shnurise-tarballs/raw/089b59ec221cfd6b1d6c4d2b160f5caf3e1229f8/system-web-4.6.0.182.tar.gz
@@ -56,7 +62,7 @@ $ git log -1
 <br />
 fatal: your current branch 'branch123' does not have any commits yet
 <br />
-$ git tag dev-dotnet/system-web/system-web-4.6.182.tar.gz
+$ git tag "${TAG_NAME}"
 <br />
 fatal: Failed to resolve 'HEAD' as a valid ref.
 

@@ -11,9 +11,92 @@
 </td><td valign="top">
 <a href="index.htm">Gentoo Mono Handbook</a>
 <br />
-&nbsp;
+FHS: <a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard">overview</a>,
+<a href="http://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html">3.0</a>
 </td></tr></table>
 
+<dl>
+
+<dt><a href="http://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s11.html">/usr/share</a></dt>
+<dd>The /usr/share hierarchy is for all read-only architecture independent data files.</dd>
+
+<dt><a href="http://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s04.html">/usr/bin</a></dt>
+<dd>Non-essential command binaries (not needed in single user mode); for all users.</dd>
+
+</dl>
+
+<br />
+<a href="https://devmanual.gentoo.org/eclass-reference/eutils.eclass/">https://devmanual.gentoo.org/eclass-reference/eutils.eclass/</a>
+<dl>
+<dt><a href="https://github.com/gentoo/gentoo/blob/f7d866b62b7040b98e1bd81257f506dbc417672f/eclass/eutils.eclass#L1346-L1390">make_wrapper</a> &lt;<span style="color:orange">wrapper</span>&gt; &lt;target&gt; [chdir] [libpaths] [installpath]</dt>
+<dd>Create a shell wrapper script named <span style="color:orange">wrapper</span> in installpath (defaults to the bindir) to execute target (default of wrapper) by first optionally setting LD_LIBRARY_PATH to the colon-delimited libpaths followed by optionally changing directory to chdir.</dd>
+</dl>
+
+<br />
+<a href="https://www.gnu.org/prep/standards/html_node/Directory-Variables.html">https://www.gnu.org/prep/standards/html_node/Directory-Variables.html</a>  
+<dl>
+<dt><code>bindir</code></dt>
+<dd><a name="index-bindir"></a>
+<p>The directory for installing executable programs that users can run.
+This should normally be <samp>/usr/local/bin</samp>, but write it as
+<samp>$(exec_prefix)/bin</samp>.
+(If you are using Autoconf, write it as ‘<samp>@bindir@</samp>’.)
+</p>
+</dd>
+</dl>
+<br />
+/usr/share/${PN}-${SLOT}/
+<br />
+<br />
+<a href="http://tldp.org/LDP/abs/html/string-manipulation.html">http://tldp.org/LDP/abs/html/string-manipulation.html</a>
+<dl>
+<dt>${string%substring}</dt>
+<dd>Deletes shortest match of $substring from back of $string.</dd>
+</dl>
+
+<h2>Some examples</h2>
+
+make_wrapper nant "mono /usr/share/nant/NAnt.exe"
+<br />
+<br />
+SLOTTEDDIR="/usr/share/${PN}-${SLOT}/"
+<br />
+insinto "${SLOTTEDDIR}"
+<br />
+doins bin/${DIR}/*.{config,dll,exe}
+<br />
+# install: cannot stat 'bin/Release/*.mdb': No such file or directory
+<br />
+make_wrapper nunit264 "mono ${SLOTTEDDIR}/nunit-console.exe"
+<br />
+<br />
+make_wrapper ${exe} &quot;mono /usr/$(get_libdir)/${MY_PN}/${exe}.exe&quot; || die
+<br />
+make_wrapper pash "mono /usr/lib/pash/Pash.exe"
+<br />
+MONO=/usr/bin/mono
+<br />
+make_wrapper "$1" "${MONO} --debug /usr/share/${PN}-${SLOT}/$1.exe"
+<br />
+make_wrapper fake "mono /usr/lib/mono/FAKE/${FRAMEWORK}/FAKE.exe"
+<br />
+make_wrapper mypad "mono /usr/lib/mypad-${PV}/MyPad.exe"
+<br />
+<br />
+cat /usr/bin/pinta
+<pre>
+#!/bin/sh 
+prefix=/usr
+exec_prefix=${prefix}
+
+exec /usr/bin/mono /usr/lib64/pinta/Pinta.exe "$@"
+</pre>
+<br />
+grep "\.exe" /usr/bin/monodevelop
+<br />
+EXE_PATH="/usr/lib/monodevelop/bin/MonoDevelop.exe"
+<br />
+<br />
 
 </body>
 </html>

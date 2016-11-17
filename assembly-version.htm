@@ -14,6 +14,7 @@
 &nbsp;
 </td></tr></table>
 
+
 <a href="http://stackoverflow.com/questions/8446693/specify-assembly-version-number-as-a-command-line-argument-in-msbuild">http://stackoverflow.com/questions/8446693/specify-assembly-version-number-as-a-command-line-argument-in-msbuild</a>
 
 <br />
@@ -53,11 +54,62 @@
 		/&gt;
    &lt;/Target&gt;
 </pre>
+exbuild /p:VersionNumber="${ASSEMBLY_VERSION}"
 
 <h2>mikefourie/MSBuildExtensionPack</h2>
 <a href="https://github.com/mikefourie/MSBuildExtensionPack">https://github.com/mikefourie/MSBuildExtensionPack</a>
 <br />
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://stackoverflow.com/questions/3585444/how-can-i-change-assemblyproduct-assemblytitle-using-msbuild">http://stackoverflow.com/questions/3585444/how-can-i-change-assemblyproduct-assemblytitle-using-msbuild</a>
+
+<h2>Maximum of version part is 65534</h2>
+Properties/AssemblyInfo.cs(11,30): error CS7034: The specified version string `4.3.11.65536' does not conform to the required format - major[.minor[.build[.revision]]]
+<br />
+<a href="https://blogs.msdn.microsoft.com/msbuild/2007/01/03/why-are-build-numbers-limited-to-65535/">https://blogs.msdn.microsoft.com/msbuild/2007/01/03/why-are-build-numbers-limited-to-65535/</a>
+<br />
+<a href="http://stackoverflow.com/questions/37941195/the-specified-version-string-does-not-conform-to-the-required-format-major-mi">http://stackoverflow.com/questions/37941195/the-specified-version-string-does-not-conform-to-the-required-format-major-mi</a>
+<br />
+for 65535 it gives another error:
+<pre>
+Mono.CSharp.InternalErrorException: Failed to import assembly `System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' ---&gt; System.ArgumentException: Value does not fall within the expected range.
+				  at IKVM.Reflection.Fusion.CompareAssemblyIdentityPure (System.String assemblyIdentity1, System.Boolean unified1, System.String assemblyIdentity2, System.Boolean unified2, IKVM.Reflection.AssemblyComparisonResult&amp; result) [0x000e3] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Universe.CompareAssemblyIdentity (System.String assemblyIdentity1, System.Boolean unified1, System.String assemblyIdentity2, System.Boolean unified2, IKVM.Reflection.AssemblyComparisonResult&amp; result) [0x0001c] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.StaticLoader.AssemblyReferenceResolver (System.Object sender, IKVM.Reflection.ResolveEventArgs args) [0x0004b] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Universe.Load (System.String refname, IKVM.Reflection.Module requestingModule, System.Boolean throwOnError) [0x00060] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Reader.ModuleReader.ResolveAssemblyRefImpl (IKVM.Reflection.Metadata.AssemblyRefTable+Record&amp; rec) [0x00095] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Reader.ModuleReader.ResolveAssemblyRef (System.Int32 index) [0x0002e] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Reader.ModuleReader.ResolveType (System.Int32 metadataToken, IKVM.Reflection.IGenericContext context) [0x000d2] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Reader.TypeDefImpl.get_BaseType () [0x0002f] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.MetadataImporter.CreateType (IKVM.Reflection.Type type, Mono.CSharp.TypeSpec declaringType, Mono.CSharp.MetadataImporter+DynamicTypeReader dtype, System.Boolean canImportBaseType) [0x0037f] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.MetadataImporter.ImportTypes (IKVM.Reflection.Type[] types, Mono.CSharp.Namespace targetNamespace, System.Boolean importExtensionTypes) [0x0005a] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.StaticImporter.ImportAssembly (IKVM.Reflection.Assembly assembly, Mono.CSharp.RootNamespace targetNamespace) [0x0000f] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				   --- End of inner exception stack trace ---
+				  at Mono.CSharp.StaticImporter.ImportAssembly (IKVM.Reflection.Assembly assembly, Mono.CSharp.RootNamespace targetNamespace) [0x00054] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.StaticLoader.LoadReferences (Mono.CSharp.ModuleContainer module) [0x0009a] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.Driver.Compile () [0x0022e] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.Driver.Main (System.String[] args) [0x00052] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				[ERROR] FATAL UNHANDLED EXCEPTION: Mono.CSharp.InternalErrorException: Failed to import assembly `System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' ---&gt; System.ArgumentException: Value does not fall within the expected range.
+				  at IKVM.Reflection.Fusion.CompareAssemblyIdentityPure (System.String assemblyIdentity1, System.Boolean unified1, System.String assemblyIdentity2, System.Boolean unified2, IKVM.Reflection.AssemblyComparisonResult&amp; result) [0x000e3] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Universe.CompareAssemblyIdentity (System.String assemblyIdentity1, System.Boolean unified1, System.String assemblyIdentity2, System.Boolean unified2, IKVM.Reflection.AssemblyComparisonResult&amp; result) [0x0001c] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.StaticLoader.AssemblyReferenceResolver (System.Object sender, IKVM.Reflection.ResolveEventArgs args) [0x0004b] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Universe.Load (System.String refname, IKVM.Reflection.Module requestingModule, System.Boolean throwOnError) [0x00060] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Reader.ModuleReader.ResolveAssemblyRefImpl (IKVM.Reflection.Metadata.AssemblyRefTable+Record&amp; rec) [0x00095] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Reader.ModuleReader.ResolveAssemblyRef (System.Int32 index) [0x0002e] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Reader.ModuleReader.ResolveType (System.Int32 metadataToken, IKVM.Reflection.IGenericContext context) [0x000d2] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at IKVM.Reflection.Reader.TypeDefImpl.get_BaseType () [0x0002f] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.MetadataImporter.CreateType (IKVM.Reflection.Type type, Mono.CSharp.TypeSpec declaringType, Mono.CSharp.MetadataImporter+DynamicTypeReader dtype, System.Boolean canImportBaseType) [0x0037f] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.MetadataImporter.ImportTypes (IKVM.Reflection.Type[] types, Mono.CSharp.Namespace targetNamespace, System.Boolean importExtensionTypes) [0x0005a] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.StaticImporter.ImportAssembly (IKVM.Reflection.Assembly assembly, Mono.CSharp.RootNamespace targetNamespace) [0x0000f] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				   --- End of inner exception stack trace ---
+				  at Mono.CSharp.StaticImporter.ImportAssembly (IKVM.Reflection.Assembly assembly, Mono.CSharp.RootNamespace targetNamespace) [0x00054] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.StaticLoader.LoadReferences (Mono.CSharp.ModuleContainer module) [0x0009a] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.Driver.Compile () [0x0022e] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				  at Mono.CSharp.Driver.Main (System.String[] args) [0x00052] in &lt;65ad872b0e564119b94b07e7497063eb&gt;:0 
+				Tool /usr/lib64/mono/4.5/mcs.exe execution finished.
+</pre>
+/usr/lib64/mono/xbuild/14.0/bin/Microsoft.CSharp.targets: error : Compiler crashed with code: 1.
+<br />
+<a href="https://msdn.microsoft.com/en-us/library/system.reflection.assemblyversionattribute.aspx">https://msdn.microsoft.com/en-us/library/system.reflection.assemblyversionattribute.aspx</a>
+
 </body>
 </html>

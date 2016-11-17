@@ -17,9 +17,24 @@
 ${PREFIX}/usr/lib/mono/${EBUILD_FRAMEWORK}
 <br />
 <br />
+/usr/lib = ${libdir}
+<br />
 for example
 <br />
 /usr/lib/mono/4.5/mydll.dll
+<br />
+<br />
+egacinstall seems to create symlink in /usr/lib/mono/${PN}/mydll.dll -> /usr/lib/mono/gac/..
+<br />
+.pc files use that symlink
+<br />
+<br />
+alternative:
+<br />
+/usr/lib/mono/${PN}/slot-${SLOT}/mydll.dll
+<br />
+<br />
+/use/share/${PN}/slot-${SLOT}/myexe.exe
 
 </body>
 </html>

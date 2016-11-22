@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>Assembly name</title>
+</head>
+<body>
+
+<table><tr><td style="vertical-align:top;">
+<h1>Assembly name</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<a href="http://stackoverflow.com/questions/1410312/parsing-assembly-qualified-name">http://stackoverflow.com/questions/1410312/parsing-assembly-qualified-name</a>
+<br />
+<br />
+There is a parser implementation in <a href="https://github.com/mono/mono/blob/master/mcs/class/corlib/System/TypeSpec.cs">Mono</a> and <a href="http://msdn.microsoft.com/en-us/library/yfsftwz6.aspx">BNF grammar on MSDN</a>
+<br />
+<br />
+<pre>
+AssemblyNameSpec           :=   IDENTIFIER
+
+                                        |     IDENTIFIER ',' AssemblyProperties
+
+AssemblyProperties            :=   AssemblyProperty
+
+                                        |     AssemblyProperties ',' AssemblyProperty
+
+AssemblyProperty              :=   AssemblyPropertyName '=' AssemblyPropertyValue
+</pre>
+<br />
+<br />
+The AssemblyName class can parse the assembly name for you, just pass in the string to its constructor.
+<br />
+Stripping the name is usually very complex. 
+<br />
+Consider even simple Tuple&lt;int,string&gt;: 
+<br />
+&quot;System.Tuple`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;
+<br />
+AssemblyName constructor throws FileLoadException unless it's able to load the assembly
+<br />
+<br />
+Func&lt;AssemblyName, Assembly&gt; assemblyResolver
+<br />
+
+
+</body>
+</html>

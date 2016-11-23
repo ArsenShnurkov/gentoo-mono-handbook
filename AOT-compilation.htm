@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>AOT compilation</title>
+</head>
+<body>
+
+<table><tr><td style="vertical-align:top;">
+<h1>AOT compilation</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<a href="http://www.mono-project.com/docs/advanced/runtime/#ahead-of-time-compilation">http://www.mono-project.com/docs/advanced/runtime/#ahead-of-time-compilation</a>
+<br />
+<br />
+<a href="http://www.mono-project.com/docs/advanced/aot/">http://www.mono-project.com/docs/advanced/aot/</a>
+<br />
+"In some operating system configurations (mostly embedded systems)
+the operating system services for generating code dynamically are not available,
+this prevents Mono’s JIT from working."
+<br />
+<br />
+<a href="http://stackoverflow.com/questions/5311515/gcc-fpic-option">http://stackoverflow.com/questions/5311515/gcc-fpic-option</a>
+<br />
+GCC's -fPIC = "Position Independent Code means that the generated machine code
+is not dependent on being located at a specific address in order to work."
+<br />
+<br />
+<a href="http://www.mono-project.com/docs/advanced/runtime/docs/aot/">http://www.mono-project.com/docs/advanced/runtime/docs/aot/</a>
+<br />
+image-writer.c. It can either emit assembly code (.s), or it can produce a shared image directly.
+<br />
+<br />
+To compile your assemblies with this, just run this command:
+<br />
+$ mono -O=all --aot program.exe
+<br />
+turn on all optimizations (-O=all) and 
+<br />
+then instructs Mono to compile the code to native code.
+<br />
+<br />
+if you want to do full static builds (and be able to run without the JIT engine),
+<br />
+you can use:
+<br />
+$ mono -O=all --aot --full-aot program.exe
+<br />
+<br />
+Then you can configure your Mono runtime with 
+<br />
+–enable-minimal to remove the JIT engine.
+<br />
+<br />
+Some features like Reflection.Emit 
+<br />
+and other forms of dynamic code generation are not support in this scenario.
+
+
+</body>
+</html>

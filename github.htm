@@ -17,6 +17,9 @@ see also <a href="https://devmanual.gentoo.org/eclass-reference/git-2.eclass/ind
 </td></tr></table>
 
  <h2>by sha1</h2>
+ When using a distributed source control system such as Git, it's important to understand 
+ that the latest check-in on the GitHub repository is not necessarily the one 
+ you want to download or sync to as it may be a different branch than the master branch.
 
 <h3>Example</h3>
 Code on github can be in the <strong>master</strong> branch
@@ -89,5 +92,7 @@ NUSPEC_VERSION=$(get_version_component_range 1-3)"${PR//r/.}"
 
 <h1>Other</h1>
 <a href="http://webapps.stackexchange.com/questions/46113/how-to-see-list-of-issues-reported-by-me-on-github">http://webapps.stackexchange.com/questions/46113/how-to-see-list-of-issues-reported-by-me-on-github</a>
+<br />
+<a href="https://github.com/blog/12-tarball-downloads">https://github.com/blog/12-tarball-downloads</a>
 </body>
 </html>

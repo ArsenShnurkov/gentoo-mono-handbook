@@ -11,60 +11,15 @@
 </td><td valign="top">
 <a href="index.htm">Gentoo Mono Handbook</a>
 <br />
-&nbsp;
+<a href="how-to-make-signed-assembly.htm">How to make signed assembly?</a>
+<br />
+<a href="InternalsVisibleTo.htm">InternalsVisibleTo</a>
 </td></tr></table>
 
-There is a special function <strong>exbuild_strong</strong> in <a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass">dotnet.eclass</a>
-<br />
-<br />
-<a href="https://github.com/gentoo/dotnet/blob/7b316f212e670192162257791d231c7a050ed489/eclass/dotnet.eclass#L131">https://github.com/gentoo/dotnet/blob/7b316f212e670192162257791d231c7a050ed489/eclass/dotnet.eclass#L131</a>
-
-<h2>downloading mono key</h2>
-
-add line <strong>mirror://gentoo/mono.snk.bz2</strong> to SRC_URI variable:
-<pre><xmp>
-SRC_URI="${REPOSITORY}/archive/${EGIT_BRANCH}/${EGIT_COMMIT}.zip -> ${PF}.zip
-	gac? ( mirror://gentoo/mono.snk.bz2 )"
-</xmp></pre>
-<br />
-<br />
-not all key formats are supported:
-<br />
-<a href="http://stackoverflow.com/questions/7492822/mono-xbuild-error-cs1548-key-file-has-incorrect-format">http://stackoverflow.com/questions/7492822/mono-xbuild-error-cs1548-key-file-has-incorrect-format</a>
-<h2>signing assembly</h2>
-signing support is added into the Microsoft.Common.targets file.
-<br />
-To do this via the command line you need to set two properties: SignAssembly and AssemblyOriginatorKeyFile.
-<pre><xmp>
-	exbuild /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=${WORKDIR}/mono.snk "${METAFILETOBUILD}"
-</xmp></pre>
-<a href="http://blogs.msdn.com/b/msbuild/archive/2005/09/26/474079.aspx">http://blogs.msdn.com/b/msbuild/archive/2005/09/26/474079.aspx</a>
-<br />
-when the AssemblyKeyFile flag is specified, you need to add a path because the al command is executed in the binDebug directory
-<br />
-/p:DelaySign=true
-
-<h2>Installing</h2>
-
-egacinstall is from undocumented <a href="https://github.com/gentoo/dotnet/blob/master/eclass/gac.eclass">gac.eclass</a>
+egacinstall is from <a href="https://github.com/gentoo/dotnet/blob/master/eclass/gac.eclass">gac.eclass</a>
 <br />
 <br />
 see also <a href="./pc-files.htm">.pc-files</a> and <a href="pkg-config/index.htm">pkg-config</a>
-
-<h2>Default keys of mono</h2>
-<a href="http://www.mono-project.com/docs/advanced/assemblies-and-the-gac/">http://www.mono-project.com/docs/advanced/assemblies-and-the-gac/</a>
-<br />
-PublicKeyToken:
-<br />
-b77a5c561934e089 = <a href="https://github.com/mono/mono/blob/master/mcs/class/ecma.pub">./mcs/class/ecma.pub</a>
-<br />
-b03f5f7f11d50a3a = <a href="https://github.com/mono/mono/blob/master/mcs/class/msfinal.pub">./mcs/class/msfinal.pub</a>
-<br />
-0738eb9f132ed756 = <a href="https://github.com/mono/mono/blob/master/mcs/class/mono.snk">./mcs/class/mono.snk</a>,  Mono's PublicKeyToken
-<br />
-35e10195dab3c99f
-<br />
-
 
 </body>
 </html>

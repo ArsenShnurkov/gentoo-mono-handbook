@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>How to make signed assembly?</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>How to make signed assembly?</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+<a href="mono.snk.htm">mono.snk - installation and usage</a>
+</td></tr></table>
+
+There are 4 tools to sign the assembly - 
+<a href="#portage">portage</a>, 
+<a href="#msbuild">msbuild</a>, 
+<a href="#sn">sn</a> and 
+<a href="#mcs">mcs</a>
+
+<h2 id="portage">portage</h2>
+There is a special function <strong>exbuild_strong</strong> in <a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass">dotnet.eclass</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/gentoo/dotnet/blob/7b316f212e670192162257791d231c7a050ed489/eclass/dotnet.eclass#L131">https://github.com/gentoo/dotnet/blob/7b316f212e670192162257791d231c7a050ed489/eclass/dotnet.eclass#L131</a>
+
+<h2 id="msbuild">msbuild</h2>
+<a href="https://github.com/gentoo/dotnet/blob/118bf4f185f884cec522c066dd148df870897961/dev-dotnet/monotorrent/monotorrent-1.0.0_p2015101302.ebuild">dev-dotnet/monotorrent</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;exbuild /p:SignAssembly=true "/p:AssemblyOriginatorKeyFile=${WORKDIR}/mono.snk" "${METAFILETOBUILD}"
+<br />
+<a href="https://github.com/gentoo/dotnet/blob/118bf4f185f884cec522c066dd148df870897961/eclass/dotnet.eclass#L145">dotnet.eclass</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;KARGS2=/p:AssemblyKeyContainerName=mono
+<br />
+<br />
+signing support is added into the Microsoft.Common.targets file.
+<br />
+To do this via the command line you need to set two properties: SignAssembly and AssemblyOriginatorKeyFile.
+<pre><xmp>
+	exbuild /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=${WORKDIR}/mono.snk "${METAFILETOBUILD}"
+</xmp></pre>
+<a href="http://blogs.msdn.com/b/msbuild/archive/2005/09/26/474079.aspx">http://blogs.msdn.com/b/msbuild/archive/2005/09/26/474079.aspx</a>
+<br />
+when the AssemblyKeyFile flag is specified, you need to add a path because the al command is executed in the binDebug directory
+<br />
+/p:DelaySign=true
+
+<h2 id="sn">sn</h2>
+<a href="https://github.com/gentoo/dotnet/blob/118bf4f185f884cec522c066dd148df870897961/dev-dotnet/microsoft-web-infrastructure/microsoft-web-infrastructure-1.0.0.0.ebuild">dev-dotnet/microsoft-web-infrastructure</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;sn -R "${S}/mcs/class/${NAME}/bin/${DIR}/${NAME}.dll" "${S}/mcs/class/mono.snk" || die
+
+<h2 id="mcs">mcs</h2>
+<a href="https://github.com/gentoo/dotnet/blob/118bf4f185f884cec522c066dd148df870897961/dev-dotnet/mono-options/mono-options-4.4.0.0.ebuild">dev-dotnet/mono-options</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS=-keyfile:mcs/class/mono.snk
+<br />
+<br />
+not all key formats are supported:
+<br />
+<a href="http://stackoverflow.com/questions/7492822/mono-xbuild-error-cs1548-key-file-has-incorrect-format">http://stackoverflow.com/questions/7492822/mono-xbuild-error-cs1548-key-file-has-incorrect-format</a>
+
+
+</body>
+</html>

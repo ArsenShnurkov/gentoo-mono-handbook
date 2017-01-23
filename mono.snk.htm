@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>mono.snk - installation and usage</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>mono.snk - installation and usage</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+<a href="how-to-make-signed-assembly.htm">How to make signed assembly?</a>
+<br />
+<a href="InternalsVisibleTo.htm">InternalsVisibleTo</a>
+</td></tr></table>
+
+
+<h2>Default keys of mono</h2>
+<a href="http://www.mono-project.com/docs/advanced/assemblies-and-the-gac/">http://www.mono-project.com/docs/advanced/assemblies-and-the-gac/</a>
+<br />
+PublicKeyToken:
+<br />
+b77a5c561934e089 = <a href="https://github.com/mono/mono/blob/master/mcs/class/ecma.pub">./mcs/class/ecma.pub</a>
+<br />
+b03f5f7f11d50a3a = <a href="https://github.com/mono/mono/blob/master/mcs/class/msfinal.pub">./mcs/class/msfinal.pub</a>
+<br />
+0738eb9f132ed756 = <a href="https://github.com/mono/mono/blob/master/mcs/class/mono.snk">./mcs/class/mono.snk</a>,  Mono's PublicKeyToken
+<br />
+35e10195dab3c99f
+
+<h2>Getting public key</h2>
+<a href="https://github.com/mono/mono/raw/master/mcs/class/mono.snk">https://github.com/mono/mono/raw/master/mcs/class/mono.snk</a>
+<br />
+<a href="https://github.com/mono/mono/blob/master/mcs/class/mono.snk">https://github.com/mono/mono/blob/master/mcs/class/mono.snk</a>
+<br />
+sn -tp mono.snk
+<pre>Mono StrongName - version 4.5.2.0
+StrongName utility for signing assemblies
+Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD licensed.
+
+Public Key:
+002400000480000094000000060200000024000052534131000400000100010079159977d2d03a
+8e6bea7a2e74e8d1afcc93e8851974952bb480a12c9134474d04062447c37e0e68c080536fcf3c
+3fbe2ff9c979ce998475e506e8ce82dd5b0f350dc10e93bf2eeecf874b24770c5081dbea7447fd
+dafa277b22de47d6ffea449674a4f9fccf84d15069089380284dbdd35f46cdff12a1bd78e4ef00
+65d016df
+
+Public Key Token: 0738eb9f132ed756</pre>
+<br />
+<br />
+<a href="http://stackoverflow.com/questions/29768562/obtain-net-publickeytoken-from-snk-file">http://stackoverflow.com/questions/29768562/obtain-net-publickeytoken-from-snk-file</a>
+<br />
+Given a <code>byte[]</code> cotnaining the snk file, like</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> snk </span><span class="pun">=</span><span class="pln"> </span><span class="typ">File</span><span class="pun">.</span><span class="typ">ReadAllBytes</span><span class="pun">(</span><span class="str">"YourSnkFile.snk"</span><span class="pun">);</span></code></pre>
+
+<p>use</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> publicKey </span><span class="pun">=</span><span class="pln"> </span><span class="typ">GetPublicKey</span><span class="pun">(</span><span class="pln">snk</span><span class="pun">);</span><span class="pln">
+</span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> publicKeyToken </span><span class="pun">=</span><span class="pln"> </span><span class="typ">GetPublicKeyToken</span><span class="pun">(</span><span class="pln">publicKey</span><span class="pun">);</span></code></pre>
+
+<p>with these utility methods</p>
+
+<pre style="" class="default prettyprint prettyprinted"><code><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> </span><span class="typ">GetPublicKey</span><span class="pun">(</span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> snk</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">var</span><span class="pln"> snkp </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">System.Reflection.StrongNameKeyPair</span><span class="pun">(</span><span class="pln">snk</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> publicKey </span><span class="pun">=</span><span class="pln"> snkp</span><span class="pun">.</span><span class="typ">PublicKey</span><span class="pun">;</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> publicKey</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> </span><span class="typ">GetPublicKeyToken</span><span class="pun">(</span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> publicKey</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">using</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">var</span><span class="pln"> csp </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> SHA1CryptoServiceProvider</span><span class="pun">())</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> hash </span><span class="pun">=</span><span class="pln"> csp</span><span class="pun">.</span><span class="typ">ComputeHash</span><span class="pun">(</span><span class="pln">publicKey</span><span class="pun">);</span><span class="pln">
+
+        </span><span class="kwd">byte</span><span class="pun">[]</span><span class="pln"> token </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="kwd">byte</span><span class="pun">[</span><span class="lit">8</span><span class="pun">];</span><span class="pln">
+
+        </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">8</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            token</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> hash</span><span class="pun">[</span><span class="pln">hash</span><span class="pun">.</span><span class="typ">Length</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> i </span><span class="pun">-</span><span class="pln"> </span><span class="lit">1</span><span class="pun">];</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+
+        </span><span class="kwd">return</span><span class="pln"> token</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+    
+
+<h2>downloading mono key</h2>
+wget -c  https://github.com/mono/mono/raw/master/mcs/class/mono.snk
+<br />
+<br />
+add line <strong>mirror://gentoo/mono.snk.bz2</strong> to SRC_URI variable:
+<pre><xmp>
+SRC_URI="${REPOSITORY}/archive/${EGIT_BRANCH}/${EGIT_COMMIT}.zip -> ${PF}.zip
+	gac? ( mirror://gentoo/mono.snk.bz2 )"
+</xmp></pre>
+
+/var/calculate/remote/distfiles/egit-src/mono-packaging-tools.git/mono.snk
+
+<h2>Installation in mono.ebuild</h2>
+<a href="https://github.com/ArsenShnurkov/dotnet/blob/06a2bb02bb742910154e5f34ff3cd8de61675490/dev-lang/mono/mono-4.9.0.729-r2.ebuild#L64">dev-lang/mono/mono-4.9.0.729-r2.ebuild#L64</a>
+<br />
+<br />
+# sn -i mono.snk mono
+<br />
+Mono StrongName - version 4.9.0.0
+<br />
+StrongName utility for signing assemblies
+<br />
+Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD licensed.
+
+</body>
+</html>

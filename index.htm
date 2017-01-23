@@ -13,6 +13,8 @@
 </td></tr></table>
 
 <a href="recommended_readings.htm">What to read before starting .ebuild writing?</a>
+<br />
+<a href="what-to-package.htm">What to package</a>
 
 <h3>Tarballs</h3>
 <a href="where-to-store-tarballs.htm">where to store tarballs</a>
@@ -85,37 +87,53 @@ How to obtain source code from
 <a href="nuget-icon.htm">nuget icon</a>
 
 <h3>src_compile</h3>
-<a href="building.htm"><strong>exbuild</strong> = How to compile solutions and projects with assemblies (executables and dynamic libraries) ?</a>
+<strong>versioning and defines</strong>
 <br />
-<a href="mdtool-build.htm">mdtool build</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="assembly-version.htm">Assembly version</a>, <a href="Assembly-name.htm">Assembly name</a>
 <br />
-<a href="AOT-compilation.htm">AOT compilation</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="define.htm">how to pass #define from .ebuild into compiler?</a> <font style="color:red">we don't know</font>
 <br />
-<a href="assembly-version.htm">Assembly version</a>, <a href="Assembly-name.htm">Assembly name</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="pc-files.htm">.pc-files</a>
 <br />
-<a href="define.htm">how to pass #define from .ebuild into compiler?</a> <font style="color:red">we don't know</font>
+<strong>compiling</strong>
 <br />
-<a href="gac.htm">How to make signed assembly?</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="building.htm"><strong>exbuild</strong> = How to compile solutions and projects with assemblies (executables and dynamic libraries) ?</a>
 <br />
-<a href="building-nupkg.htm">How to build .nupkg from .nuspec?</a>  (see <a href="https://github.com/gentoo/dotnet/blob/a54e1710c21e4d6f1126b96a5ce99cbe304c7f2b/eclass/nupkg.eclass#L75-L89">enuspec</a>)
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="mdtool-build.htm">mdtool build</a>
 <br />
-<a href="IL-Repack/index.htm">IL-Repack</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="pinvoke.htm">PInvoke</a>
 <br />
-How to compile documentation (<a href="http://stackoverflow.com/questions/8548826/c-sharp-documentation-generator-that-runs-on-mono">SO8548826</a>):
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="IL-Repack/index.htm">IL-Repack</a>
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.mono-project.com/docs/tools+libraries/tools/monodoc/">monodoc</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="building-nupkg.htm">How to build .nupkg from .nuspec?</a>  (see <a href="https://github.com/gentoo/dotnet/blob/a54e1710c21e4d6f1126b96a5ce99cbe304c7f2b/eclass/nupkg.eclass#L75-L89">enuspec</a>)
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/Geaz/sharpDox">sharpDox</a>
+<strong>sigining and strongnames</strong>
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/jagregory/docu">docu</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="how-to-make-signed-assembly.htm">How to make signed assembly?</a>
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/dotnet/docfx">DocFX</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="gac.htm">Installing strongnamed assemblies into GAC</a>
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;SHFB (ex sandcastle)
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="mono.snk.htm">mono.snk - installation and usage</a>
 <br />
-&nbsp;&nbsp;&nbsp;&nbsp;Doxygen (unmanaged)
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="InternalsVisibleTo.htm">InternalsVisibleTo</a>
 <br />
-<a href="pinvoke.htm">PInvoke</a>, <a href="pc-files.htm">.pc-files</a>
+<strong>AOT, documentation</strong>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="AOT-compilation.htm">AOT compilation</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;How to compile documentation (<a href="http://stackoverflow.com/questions/8548826/c-sharp-documentation-generator-that-runs-on-mono">SO8548826</a>):
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.mono-project.com/docs/tools+libraries/tools/monodoc/">monodoc</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/Geaz/sharpDox">sharpDox</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/jagregory/docu">docu</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/dotnet/docfx">DocFX</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHFB (ex sandcastle)
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Doxygen (unmanaged)
 
 <h3>src_test</h3>
 <a href="test/index.htm">testing with portage</a>
@@ -160,6 +178,9 @@ How to make mono slotted?  <font style="color:red">we don't know</font>
 <br />
 How to make monodevelop slotted? <font style="color:red">we don't know</font>
 
+<h3>merge</h3>
+<a href="how-to-force-merge-despite-of-collisions.htm">How to force merge despite of collisions</a>
+
 <h2>Caches</h2>
 <a href="https://github.com/vaeth/eix/issues/18">https://github.com/vaeth/eix/issues/18</a>
 <br />
@@ -179,6 +200,8 @@ emerge --regen
 <h3>general programming questions</h3>
 
 <a href="How-to-modify-the-code-of-mono.htm">How to modify the code of mono</a>
+<br />
+<a href="github/index.htm">working with github</a>
 <br />
 <a href="gtk-plus-packaging/index.htm">GTK  packaging</a>
 <br />

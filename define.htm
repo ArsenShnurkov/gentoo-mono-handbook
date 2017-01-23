@@ -16,6 +16,9 @@
 
 <a href="http://forums.xamarin.com/discussion/45804/specify-define-on-command-line-for-xbuild">http://forums.xamarin.com/discussion/45804/specify-define-on-command-line-for-xbuild</a>
 <br />
+The <code>/p:</code> option is for setting a <em>project</em> variable. The "Configuration" and "Platform" variables are for defining the build configuration and target platform, which are common project concepts (they show up in the IDE as things like "Debug|iPhone", where "Debug" is the configuration and "iPhone" is the platform). They aren't <code>#define</code>s. The way you add defines is to have a configuration in your project file that defines those values and then specify that configuration at build time.
+
+<br />
 <br />
 <a href="https://bugzilla.xamarin.com/show_bug.cgi?id=21521">https://bugzilla.xamarin.com/show_bug.cgi?id=21521</a>
 

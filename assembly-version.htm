@@ -11,10 +11,60 @@
 </td><td style="vertical-align:top;">
 <a href="index.htm">Gentoo Mono Handbook</a>
 <br />
-&nbsp;
+<a href="../Using_versionator_to_cut_version.htm">Using versionator to cut version</a>
+<br />
+<table><tr><td>$PV</td><td>Package version (excluding revision, if any), for example 6.3. It should reflect the upstream versioning scheme.</td></tr></table>
 </td></tr></table>
 
+<h2>loresoft/msbuildtasks</h2>
+<a href="https://github.com/loresoft/msbuildtasks/blob/master/Documentation/TaskDocs.md#AssemblyInfo">https://github.com/loresoft/msbuildtasks/blob/master/Documentation/TaskDocs.md#AssemblyInfo</a>
 
+<h3>For own project</h3>
+1. Modify .csproj file, insert the following code:
+<pre>
+   &lt;Import Project=&quot;$(MSBuildExtensionsPath)\MSBuild.Community.Tasks.Targets&quot; /&gt;
+   &lt;Target Name=&quot;BeforeBuild&quot;&gt;
+		&lt;PropertyGroup Condition=&quot; '$(VersionNumber)' == '' &quot;&gt;
+		    &lt;VersionNumber&gt;1.0.0.0&lt;/VersionNumber&gt;
+		&lt;/PropertyGroup&gt;
+		&lt;AssemblyInfo CodeLanguage=&quot;C#&quot;
+			OutputFile=&quot;Properties/AssemblyVersion.cs&quot; 
+            AssemblyVersion=&quot;$(VersionNumber)&quot; 
+            AssemblyFileVersion=&quot;$(VersionNumber)&quot;
+		/&gt;
+   &lt;/Target&gt;
+<br />
+2. Modify AssemblyInfo.cs to remove version attributes duplication
+</pre>
+3. Add .AssemblyVersion.cs into .gitignore
+<br />
+4. Make a commit to sources repository, make new digest for new archive
+<br />
+5. Add 
+<br />
+DEPEND=&quot;&gt;=dev-dotnet/msbuildtasks-1.5.0.240&quot;
+<br />
+6. Insert these lines into ebuild:
+<br />
+ASSEMBLY_VERSION="${PV}"
+<br />
+exbuild /p:VersionNumber="${ASSEMBLY_VERSION}"
+<br />
+<br />
+example of change:
+<br />
+<a href="https://github.com/ArsenShnurkov/ApacheModmono.Web.Administration/commit/d720185fbb5fe1ef959d608c468ec3027c58164d">in sources</a>
+<br />
+<a href="https://github.com/ArsenShnurkov/shnurise/commit/d2795c59d589ef7af3ad529f1dffc5905474d943">in ebuild</a>
+
+<h3>For external project</h3>
+1. Make patch for .csproj file
+<br />
+2. Insert eapply into ebuild
+<br />
+then preform steps 5. and 6 from above
+
+<h2>How to do the same without msbuildtasks</h2>
 <a href="http://stackoverflow.com/questions/8446693/specify-assembly-version-number-as-a-command-line-argument-in-msbuild">http://stackoverflow.com/questions/8446693/specify-assembly-version-number-as-a-command-line-argument-in-msbuild</a>
 
 <br />
@@ -38,23 +88,6 @@
     &lt;WriteCodeFragment Language=&quot;C#&quot; OutputFile=&quot;Properties/AssemblyVersion.cs&quot; AssemblyAttributes=&quot;@(AssemblyAttributes)&quot; /&gt;
   &lt;/Target&gt;
 </pre>
-<h2>loresoft/msbuildtasks</h2>
-<a href="https://github.com/loresoft/msbuildtasks/blob/master/Documentation/TaskDocs.md#AssemblyInfo">https://github.com/loresoft/msbuildtasks/blob/master/Documentation/TaskDocs.md#AssemblyInfo</a>
-
-<pre>
-   &lt;Import Project=&quot;$(MSBuildBinPath)\MSBuild.Community.Tasks.Targets&quot; Condition=&quot;Exists('$(MSBuildBinPath)\MSBuild.Community.Tasks.Targets')&quot; /&gt;
-   &lt;Target Name=&quot;BeforeBuild&quot;&gt;
-		&lt;PropertyGroup Condition=&quot; '$(VersionNumber)' == '' &quot;&gt;
-		    &lt;VersionNumber&gt;1.0.0.0&lt;/VersionNumber&gt;
-		&lt;/PropertyGroup&gt;
-		&lt;AssemblyInfo CodeLanguage=&quot;C#&quot;
-			OutputFile=&quot;Properties/AssemblyInfo.cs&quot; 
-            AssemblyVersion=&quot;$(VersionNumber)&quot; 
-            AssemblyFileVersion=&quot;$(VersionNumber)&quot;
-		/&gt;
-   &lt;/Target&gt;
-</pre>
-exbuild /p:VersionNumber="${ASSEMBLY_VERSION}"
 
 <h2>mikefourie/MSBuildExtensionPack</h2>
 <a href="https://github.com/mikefourie/MSBuildExtensionPack">https://github.com/mikefourie/MSBuildExtensionPack</a>

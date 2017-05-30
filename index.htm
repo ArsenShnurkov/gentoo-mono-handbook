@@ -117,6 +117,14 @@ How to obtain source code from
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="InternalsVisibleTo.htm">InternalsVisibleTo</a>
 <br />
+<strong>packaging</strong>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="building-nupkg.htm">store for locally built packages</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;using packages from monodevelop
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="packaging-from-csproj-with-nuget.htm">packaging from .csproj with nuget</a>
+<br />
 <strong>AOT, documentation</strong>
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="AOT-compilation.htm">AOT compilation</a>
@@ -163,10 +171,12 @@ Where to document .ebuild files ? <font style="color:red">we don't know</font>
 <br />
 <a href="pkg-config/index.htm">pkg-config</a>
 
-<h3>src_postinst</h3>
-<a href="adonet-data-providers.htm">How to register ADO .NET data providers in machine.config ?</a> <font style="color:red">we don't know</font>
+<h3>pkg_postinst<sup><a href="https://devmanual.gentoo.org/ebuild-writing/functions/pkg_postinst/">devmanual</a></sup> / pkg_prerm</h3>
+${D} = Path to the temporary install directory
 <br />
 How to determine the location of proper GAC? <font style="color:red">we don't know</font>
+<br />
+<a href="adonet-data-providers.htm">How to register ADO .NET data providers in machine.config ?</a> <font style="color:red">we don't know</font>
 <br />
 How to install web applications with gentoo utilities for web applications maintenance? <font style="color:red">we don't know</font>
 <br />
@@ -201,6 +211,8 @@ emerge --regen
 
 <a href="How-to-modify-the-code-of-mono.htm">How to modify the code of mono</a>
 <br />
+<a href="compilation-to-native-code.htm">Compilation to native code</a>
+<br />
 <a href="github/index.htm">working with github</a>
 <br />
 <a href="gtk-plus-packaging/index.htm">GTK  packaging</a>
@@ -222,6 +234,8 @@ Where to find examples/templates for ebuilds for various types of applications
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="service.htm">services</a> with <strong>mono-service</strong>, 
 <br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="daemons/index.htm">Daemons</a>
+<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="adonet-provider.htm">ADO .NET providers</a>
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="ef-provider.htm">EF providers</a>
@@ -231,6 +245,8 @@ Where to find examples/templates for ebuilds for various types of applications
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="web-applications/index.htm">web applications</a>
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="webapps-xsp.htm">xsp-server hosted</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="msbuild/index.htm">MSBuild .target files and MSBuild Task libraries</a>
 <br />
 <font style="color:red">(we don't have other docs beside <a href="https://github.com/gentoo/dotnet/">dotnet overlay</a> ebuilds!)</font>
 <br />

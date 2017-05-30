@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>MSBuild .target files and MSBuild Task libraries</title>
+</head>
+<body>
+
+<table><tr><td style="vertical-align:top;">
+<h1>MSBuild .target files and MSBuild Task libraries</h1>
+</td><td style="vertical-align:top;">
+<a href="../index.htm">Gentoo Mono Handbook</a>
+<br />
+&nbsp;
+</td></tr></table>
+
+<dl>
+<dt>MSBuildExtensionsPath</dt>
+<dd>This location is a useful place to put custom target files
+<br />
+<font style="color:red">What is it's value on gentoo? Where it is defined?</font>
+</dd>
+<dt>MSBuildProjectDirectory</dt>
+<dd>The absolute path of the directory where the project file is located</dd>
+<dt>MSBuildBinPath</dt>
+<dd>The absolute path of the folder where the MSBuild binaries that are currently being used are located</dd>
+</dl>
+Do not include the final backslash on these properties<sup><a href="https://msdn.microsoft.com/en-us/library/ms164309.aspx">1</a></sup>
+
+
+<h2>MSBuildExtensionsPath</h2>
+<a href="http://freebsd.polarhome.com/service/man/?qf=xbuild&tf=2&of=OpenSuSE&sf=1">http://freebsd.polarhome.com/service/man/?qf=xbuild&tf=2&of=OpenSuSE&sf=1</a>
+
+	      MSBuild  extensions are usually installed in $(MSBuildExtensionтАР
+	      sPath), which <b>xbuild</b> resolves to $prefix/lib/mono/xbuild .  When
+	      used in Import, like:
+
+		&lt;Import	    Project="$(MSBuildExtensionsPath)\TestTargets.tarтАР
+	      gets"/&gt;
+
+	      <b>xbuild</b>  tries  various   values	for   the   msbuild   property
+	      $(MSBuildExtensionsPath), in order:
+
+		1.  Paths specified in the environment variable $MSBuildExtenтАР
+	      sionsPath.
+		2. /Library/Frameworks/Mono.framework/External/xbuild  on  Mac
+	      OSX.
+		3.   $XDG_CONFIG_HOME/xbuild/tasks   (or  Environment.SpecialтАР
+	      Folder.ApplicationData)
+		4. $prefix/lib/mono/xbuild (default location)
+
+	      Anywhere else in	the  project  files,  $(MSBuildExtensionsPath)
+	      will  always  resolve to the default location. This is a xbuild-
+	      only feature.   This  is	also  applicable  for  the  properties
+	      $(MSBuildExtensionsPath32)  and  $(MSBuildExtensionsPath64), and
+	      the  environment	variables  have	 the  corresponding  names   <b><i>-
+</i></b>	      MSBuildExtensionsPath32/64 .
+
+
+<pre>&lt;PropertyGroup Condition=&quot;Exists('/usr/lib64/mono/msbuildtasks/MSBuild.Community.Tasks.dll')&quot;&gt;
+    &lt;MSBuildCommunityTasksPath&gt;/usr/lib64/mono/msbuildtasks&lt;/MSBuildCommunityTasksPath&gt;
+    &lt;MSBuildCommunityTasksLib&gt;$(MSBuildCommunityTasksPath)/MSBuild.Community.Tasks.dll&lt;/MSBuildCommunityTasksLib&gt;
+&lt;/PropertyGroup&gt;</pre>
+<br />
+<br />
+<a href="https://gitweb.gentoo.org/proj/dotnet.git/diff/?h=dotnet-2010">https://gitweb.gentoo.org/proj/dotnet.git/diff/?h=dotnet-2010</a>
+<pre>&lt;importTargets Condition=&quot;$(devel)&quot;&gt;$(binDir)\MSBuild.Community.Tasks.Targets&lt;/importTargets&gt;
+&lt;importTargets Condition=&quot;!$(devel)&quot;&gt;$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets&lt;/importTargets&gt;</pre>
+
+
+<a href="https://github.com/gentoo/dotnet/blob/118bf4f185f884cec522c066dd148df870897961/dev-dotnet/msbuildtasks/msbuildtasks-1.5.0.196.ebuild">https://github.com/gentoo/dotnet/blob/118bf4f185f884cec522c066dd148df870897961/dev-dotnet/msbuildtasks/msbuildtasks-1.5.0.196.ebuild</a>
+<br />
+/usr/lib/mono/4.5/MSBuild.Community.Tasks.Targets
+
+</body>
+</html>

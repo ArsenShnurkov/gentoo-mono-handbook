@@ -2,19 +2,19 @@
 <html>
 <head>
 <meta charset="utf8" />
-<title>What is DLR</title>
+<title>packaging from .csproj with nuget</title>
 </head>
 <body>
 
 <table><tr><td style="vertical-align:top;">
-<h1>What is DLR</h1>
+<h1>packaging from .csproj with nuget</h1>
 </td><td style="vertical-align:top;">
 <a href="index.htm">Gentoo Mono Handbook</a>
 <br />
 &nbsp;
 </td></tr></table>
 
-<a href="https://github.com/IronLanguages/dlr">https://github.com/IronLanguages/dlr</a>
+nuget pack ..\Src\SmtpServer\SmtpServer.csproj -Prop Configuration=Release -BasePath ..\Src\SmtpServer\ -OutputDirectory Packages
 
 </body>
 </html>

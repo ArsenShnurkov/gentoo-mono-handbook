@@ -16,16 +16,24 @@
 
 <dl>
 <dt>MSBuildExtensionsPath</dt>
-<dd>This location is a useful place to put custom target files
+<dd>This location is a useful place to put custom target files.
 <br />
 <font style="color:red">What is it's value on gentoo? Where it is defined?</font>
 </dd>
-<dt>MSBuildProjectDirectory</dt>
-<dd>The absolute path of the directory where the project file is located</dd>
+<dt>MSBuildToolsPath</dt>
+<dd>
+The installation path of the MSBuild version 
+that's associated with the value of MSBuildToolsVersion.
+This property cannot be overridden.
+You can modify the value of MSBuildToolsPath by defining a custom Toolset.
+</dd>
 <dt>MSBuildBinPath</dt>
 <dd>The absolute path of the folder where the MSBuild binaries that are currently being used are located</dd>
+<dt>MSBuildProjectDirectory</dt>
+<dd>The absolute path of the directory where the project file is located</dd>
 </dl>
 Do not include the final backslash on these properties<sup><a href="https://msdn.microsoft.com/en-us/library/ms164309.aspx">1</a></sup>
+
 
 
 <h2>MSBuildExtensionsPath</h2>
@@ -71,6 +79,16 @@ Do not include the final backslash on these properties<sup><a href="https://msdn
 <a href="https://github.com/gentoo/dotnet/blob/118bf4f185f884cec522c066dd148df870897961/dev-dotnet/msbuildtasks/msbuildtasks-1.5.0.196.ebuild">https://github.com/gentoo/dotnet/blob/118bf4f185f884cec522c066dd148df870897961/dev-dotnet/msbuildtasks/msbuildtasks-1.5.0.196.ebuild</a>
 <br />
 /usr/lib/mono/4.5/MSBuild.Community.Tasks.Targets
+
+<br />
+<br />
+<a href="https://msdn.microsoft.com/en-us/library/bb383796.aspx">MSBuild Toolset (ToolsVersion)</a>
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;"Only that Toolset property (or $(MSBuildBinPath)), is required."
+<br />
+<a href="https://msdn.microsoft.com/en-us/library/bb397428.aspx">Standard and Custom Toolset Configurations</a>
+<br />
+<a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-reserved-and-well-known-properties">MSBuild Reserved and Well-Known Properties</a>
 
 </body>
 </html>

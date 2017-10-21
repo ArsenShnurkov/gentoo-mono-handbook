@@ -15,11 +15,17 @@
 <a href="otabs-how-to-remove-remote-tag.htm">How to remove remote tag</a>
 </td></tr></table>
 
-# branch name should be defferent from tag name, and branch will be deleted later, only tag will stay
+# branch is not pushed into github, so it's name is unimportant
 <br />
-BRANCH_NAME=temporary-branch-name123
+# branch will be deleted later, only tag will stay
 <br />
-TAG_NAME=dev-dotnet/system-web/system-web-4.6.0.182.tar.gz
+# branch name should be defferent from tag name
+<br />
+BRANCH_NAME=tmpbranch
+<br />
+# tag name is important, if SLOT=0 it can be omited
+<br />
+TAG_NAME=${CATEGORY}/${PN}/${SLOT}
 <br />
 /usr/libexec/git-core/git-check-ref-format  ${TAG_NAME}
 <br />

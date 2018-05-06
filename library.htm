@@ -14,19 +14,21 @@
 
 In this type of projects we need to:
 <br />
-1) provide an ability to build library with debug symbols
+1) perform AOT-compilation
 <br />
-2) provide an ability to sign and install into GAC
+2) install documentation (.xml files, generated .html files)
 <br />
-3) provide a <a href="pc-files.htm">.pc -file</a> (for <a href="pkg-config/index.htm">pkg-config</a>) to allow to populate monodevelop's "References"-&gt;"Packages" tab 
+3) optionally do tests
 <br />
-4) provide an ability to create a local .nupkg (which may require writing .nuspec file)
+4) provide an ability to build library with debug symbols
 <br />
-5) perform AOT-compilation
+5) install library into file system, and provide the way to reuse library from other packages
 <br />
-6) optionally do tests
+6) provide a <a href="pc-files.htm">.pc -file</a> (for <a href="pkg-config/index.htm">pkg-config</a>) to allow to populate monodevelop's "References"-&gt;"Packages" tab 
 <br />
-7) install documentation (.xml files, generated .html files)
+7) provide an ability to sign and install into GAC
+<br />
+8) provide an ability to create a local .nupkg (which may require writing .nuspec file)
 
 <h2>some related links</h2>
 <a href="https://github.com/gentoo/dotnet/issues/112">design bug: egacinstall works incorrectly from pkg_postinst</a>

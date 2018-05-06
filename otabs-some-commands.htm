@@ -72,19 +72,26 @@ $ git tag "${TAG_NAME}"
 <br />
 fatal: Failed to resolve 'HEAD' as a valid ref.
 
+<h2>Download URL</h2>
+What will be the download url for uploaded archive?
+<br />
+https://github.com/${username}/${reponame}/releases
 
+<!--
 <h2>Github</h2>
-I think it is possible to create just orphan tags on github and upload binaries with github attachments.
+I think it is possible to keep sources unpacked to allow github to compress then in two ways (zip and tar.gz)
+<br />
+each package version will be under it's own tag
+<br />
+<br />
+Another variant is to create just orphan tags on github and upload binaries with github attachments.
 <br />
 This way archive will not have .tar.gz.tar.gz extension:
 <br />
 https://github.com/ArsenShnurkov/shnurise-tarballs/releases/download/dev-dotnet%2Fsystem-web%2Fsystem-web-4.6.182.tar.gz/system-web-4.6.0.182.tar.gz
 <br />
 https://github.com/ArsenShnurkov/shnurise-tarballs/releases/download/dev-dotnet/system-web/system-web-4.6.182.tar.gz/system-web-4.6.0.182.tar.gz - also works
-<br />
-Another variant is to keep sources unpacked to allow github to compress then in two ways (zip and tar.gz)
-<br />
-each package version will be under it's own tag
+-->
 
 </body>
 </html>

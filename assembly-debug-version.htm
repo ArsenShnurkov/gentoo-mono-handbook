@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8" />
+<title>assembly debug version</title>
+</head>
+<body><a href="https://github.com/ArsenShnurkov/gentoo-mono-handbook"><img alt="Fork me on GitHub" id="forkme" src="images/forkme.png" align="right" width="100" /></a>
+
+<table><tr><td style="vertical-align:top;">
+<h1>assembly debug version</h1>
+</td><td style="vertical-align:top;">
+<a href="index.htm">Gentoo Mono Handbook</a>
+<br />
+dotnet.eclass
+</td></tr></table>
+
+
+<pre>
+# @FUNCTION: usedebug_tostring
+# @DESCRIPTION:  returns strings "Debug" or "Release" depending from USE="debug"
+function <a href="https://github.com/ArsenShnurkov/shnurise/blob/32cd26d1e0d8873c6c5706ff7ab8260ac3f73f5e/eclass/dotnet.eclass#L112">usedebug_tostring</a> ( ) {
+	local DIR=""
+	if use debug; then
+		DIR="Debug"
+	else
+		DIR="Release"
+	fi
+	echo "${DIR}"
+}
+</pre>
+
+</body>
+</html>

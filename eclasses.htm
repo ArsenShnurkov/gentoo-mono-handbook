@@ -14,27 +14,72 @@
 &nbsp;
 </td></tr></table>
 
-<table>
-<tr><td width="20%">39</td><td><a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass">dotnet</a></td></tr>
-<tr><td>34</td><td><a href="https://github.com/gentoo/dotnet/blob/master/eclass/gac.eclass">gac</a></td></tr>
-<tr><td>28</td><td>eutils</td></tr>
-<tr><td>22</td><td><a href="https://github.com/gentoo/dotnet/blob/master/eclass/nupkg.eclass">nupkg</a></td></tr>
-<tr><td>17</td><td>mono-env</td></tr>
-<tr><td>16</td><td>autotools</td></tr>
-<tr><td>9</td><td>versionator</td></tr>
-<tr><td>8</td><td>multilib</td></tr>
-<tr><td>3</td><td>flag-o-matic</td></tr>
-<tr><td>2</td><td>gac nupkg</td></tr>
-<tr><td>2</td><td>java-pkg-2</td></tr>
-<tr><td>2</td><td>vcs-snapshot</td></tr>
-<tr><td>1</td><td>autotools-utils</td></tr>
-<tr><td>1</td><td>git-2</td></tr>
-<tr><td>1</td><td>git-r3</td></tr>
-<tr><td>1</td><td>inherit</td></tr>
-<tr><td>1</td><td>machine</td></tr>
-<tr><td>1</td><td><a href="https://github.com/gentoo/dotnet/blob/master/eclass/nuget.eclass">nuget</a></td></tr>
-<tr><td>1</td><td>rpm</td></tr>
-</table>
+<dl>
+
+<dt>xbuild</dt>
+<dd>compile sources with <strong>xbuild</strong> utility</dd>
+
+<dt>msbuild</dt>
+<dd>compile sources with <strong>msbuild</strong> utility</dd>
+
+<dt>mono-pkg-config</dt>
+<dd>
+installs library into filesystem and register it in .pc-file for other applications
+</dd>
+
+<dt><a href="https://github.com/gentoo/dotnet/blob/master/eclass/gac.eclass">gac</a></dt>
+<dd>
+contain functions to register .dll in GAC
+</dd>
+
+<dt>machine</dt>
+<dd>
+allows to add elements into machine.config file(s?)
+</dd>
+
+<dt><a href="https://github.com/gentoo/dotnet/blob/master/eclass/dotnet.eclass">dotnet</a></dt>
+<dd>this is base eclass for <strong>msbuild.eclass</strong> and <strong>xbuild.eclass</strong></dd>
+
+<dt><a href="https://github.com/gentoo/dotnet/blob/master/eclass/nupkg.eclass">nupkg</a></dt>
+<dd>contain functions to create .nupkg file from .nuspec file
+</dd>
+
+<dt>mono-env</dt>
+<dd>
+it support compilation of native libraries which should know .net platform specific (where to see examples of such specific?)
+</dd>
+
+<dt>multilib</dt>
+<dd>
+strange library for 32 and 64-bit builds of native libraries
+</dd>
+
+<dt><a href="https://github.com/gentoo/dotnet/blob/master/eclass/nuget.eclass">nuget</a></dt>
+<dd>
+should allow to install .nuget packages from nuget.org site in binary form
+</dd>
+
+<dt>versionator</dt>
+<dd>
+</dd>
+
+<dt>eutils</dt>
+<dd>
+</dd>
+
+<dt>autotools</dt>
+<dd>
+</dd>
+
+<dt>autotools-utils</dt><dd></dd>
+<dt>flag-o-matic</dt><dd></dd>
+<dt>java-pkg-2</dt><dd></dd>
+<dt>vcs-snapshot</dt><dd></dd>
+<dt>git-r3</dt><dd></dd>
+<dt>git-2</dt><dd></dd>
+<dt>rpm</dt><dd></dd>
+
+</dl>
 
 </body>
 </html>

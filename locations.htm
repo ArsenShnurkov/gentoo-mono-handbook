@@ -36,5 +36,30 @@ alternative:
 <br />
 /use/share/${PN}/slot-${SLOT}/myexe.exe
 
+<h2>Newer approach</h2>
+<pre>
+if [ &quot;${SLOT}&quot; != &quot;0&quot; ]; then
+	APPENDIX=&quot;-${SLOT}&quot;
+fi
+
+# @FUNCTION: framework_assembly_dir
+# @DESCRIPTION: returns path for .dll assemblies installation
+function framework_assembly_dir() {
+	echo &quot;/usr/$(get_libdir)/mono/${FRAMEWORK}/${PN}${APPENDIX}&quot;
+}
+
+# @FUNCTION: library_assembly_dir
+# @DESCRIPTION:  returns default directory for installing libraries
+function library_assembly_dir() {
+	echo &quot;/usr/$(get_libdir)/${CATEGORY}/${PN}${APPENDIX}&quot;
+}
+
+# @FUNCTION: executable_assembly_dir
+# @DESCRIPTION:  returns default directory for installing executables
+function executable_assembly_dir() {
+	echo &quot;/usr/share/${PN}${APPENDIX}&quot;
+}
+</pre>
+
 </body>
 </html>

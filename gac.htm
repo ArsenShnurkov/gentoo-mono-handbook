@@ -24,7 +24,36 @@ egacinstall is from <a href="https://github.com/gentoo/dotnet/blob/master/eclass
 <br />
 see also <a href="./pc-files.htm">.pc-files</a> and <a href="pkg-config/index.htm">pkg-config</a>
 
-<h2>New approach</h2>
+<h2>Latest approach</h2>
+
+<pre>
+src_install() {
+	insinto &quot;/gac&quot;
+	doins &quot;$(output_filename)&quot;
+}
+
+pkg_preinst()
+{
+	echo mv &quot;${D}/gac/${ASSEMBLY_NAME}.dll&quot; &quot;${T}/${ASSEMBLY_NAME}.dll&quot;
+	mv &quot;${D}/gac/${ASSEMBLY_NAME}.dll&quot; &quot;${T}/${ASSEMBLY_NAME}.dll&quot; || die
+	echo rm -rf &quot;${D}/gac&quot;
+	rm -rf &quot;${D}/gac&quot; || die
+}
+
+pkg_postinst()
+{
+	egacadd &quot;${T}/${ASSEMBLY_NAME}.dll&quot;
+	rm &quot;${T}/${ASSEMBLY_NAME}.dll&quot; || die
+}
+
+pkg_prerm()
+{
+	egacdel &quot;${ASSEMBLY_NAME}, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756&quot;
+}
+</pre>
+
+<!--
+<h2>Variant of installation with <strong>egacadd</strong> and <strong>egacdel</strong></h2>
 <pre>src_install() {
 	if use debug; then
 		DIR=&quot;Debug&quot;
@@ -55,6 +84,7 @@ pkg_prerm()
 {
 	egacdel &quot;${NAME}&quot;
 }</pre>
+-->
 
 </body>
 </html>

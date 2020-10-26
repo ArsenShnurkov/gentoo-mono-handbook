@@ -16,12 +16,27 @@ see also <a href="https://devmanual.gentoo.org/eclass-reference/git-2.eclass/ind
 <a href="https://devmanual.gentoo.org/eclass-reference/vcs-snapshot.eclass/index.html">cvs-snapshot</a>
 </td></tr></table>
 
- <h2>by sha1</h2>
+ <h2>by SHA1</h2>
  When using a distributed source control system such as Git, it's important to understand 
  that the latest check-in on the GitHub repository is not necessarily the one 
  you want to download or sync to as it may be a different branch than the master branch.
+<br />
+<a href="SHA1.htm">Details about SHA1</a>
 
 <h3>Example</h3>
+<pre>
+# vcs-snapshot.eclass will strip that first dir level and re-add /${P} , so default S works
+# eg instead of unpacking to $WORKDIR/foo-dc8s9ee1/ , it will unpack to $WORKDIR/foo-1.2.3/ as expected
+inherit vcs-snapshot
+
+REPO_OWNER=apache
+REPO_NAME=logging-log4net
+EGIT_COMMIT=dbad144815221ffe4ed85efa73134583253dc75b
+SRC_URI="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/tarball/${EGIT_COMMIT} -> <font style="color:green">${P}.tar.gz</font>"
+</pre>
+It should be <font style="color:green">${P}.tar.gz</font>, not ${CATEGORY}-${PN}-${PV}.tar.gz, to match the default value of ${S} variable
+
+<!--
 Code on github can be in the <strong>master</strong> branch
 <pre>NAME="<font style="color:red">ProjectName</font>"
 HOMEPAGE="https://github.com/<font style="color:red">AccountName</font>/${NAME}"
@@ -41,17 +56,33 @@ EGIT_COMMIT="<font style="color:#CC00CC">c3eb07ff89523154dc2385c7db0ba9437bff336
 SRC_URI="${HOMEPAGE}/archive/<font style="color:#00CC00">${EGIT_BRANCH}</font>/${EGIT_COMMIT}.tar.gz -&gt; ${PN}-${PV}.tar.gz"
 RESTRICT="mirror"
 S="${WORKDIR}/${NAME}-${EGIT_COMMIT}"</pre>
+-->
 
+<h3>Documentation and specifications</h3>
+<a href="https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#download-a-repository-archive-zip">https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#download-a-repository-archive-zip</a>
+<br />
+Example:
+<br />
+https://api.github.com/repos/apache/logging-log4net/zipball/dbad144815221ffe4ed85efa73134583253dc75b
+<br />
+$ wget -c https://api.github.com/repos/apache/logging-log4net/zipball/dbad144815221ffe4ed85efa73134583253dc75b
+<pre>
+--2020-10-26 21:21:06--  https://api.github.com/repos/apache/logging-log4net/zipball/dbad144815221ffe4ed85efa73134583253dc75b
+Resolving api.github.com... 140.82.121.6
+Connecting to api.github.com|140.82.121.6|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://codeload.github.com/apache/logging-log4net/legacy.zip/dbad144815221ffe4ed85efa73134583253dc75b [following]
+--2020-10-26 21:21:07--  https://codeload.github.com/apache/logging-log4net/legacy.zip/dbad144815221ffe4ed85efa73134583253dc75b
+Resolving codeload.github.com... 140.82.121.9
+Connecting to codeload.github.com|140.82.121.9|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/zip]
+Saving to: ‘dbad144815221ffe4ed85efa73134583253dc75b’
 
-<h3>Specs</h3>
-sha1 is described in <strong>RFC 3174</strong> (<a href="https://tools.ietf.org/html/rfc3174">https://tools.ietf.org/html/rfc3174</a>),
-<br />
-<br />
-The usage of sha1 in git is described in <a href="https://illustrated-git.readthedocs.org/en/latest/">https://illustrated-git.readthedocs.org/en/latest/</a> with examples and .svg illustrations
-<br />
-Git References - <a href="https://git-scm.com/book/tr/v2/Git-Internals-Git-References">https://git-scm.com/book/tr/v2/Git-Internals-Git-References</a>
-<br />
-&nbsp;&nbsp;&nbsp;&nbsp;the files that contain the SHA-1 values in the .git/refs directory.
+dbad144815221ffe4ed85efa73134583253dc75b         [   &lt;=&gt;                                                                                         ]   1,59M  3,29MB/s    in 0,5s    
+
+2020-10-26 21:21:08 (3,29 MB/s) - ‘dbad144815221ffe4ed85efa73134583253dc75b’ saved [1670579]
+</pre>
 <br />
 <br />
 <a href="https://help.github.com/">https://help.github.com/</a>

@@ -15,9 +15,22 @@
 </td></tr></table>
 
 <h2>USE_DOTNET</h2>
-Actually, USE_DOTNET name is a bit confusing.
+Actually, USE_DOTNET name is confusing.
 <br />
 The better name should be "THIS_EBUILD_SUPPORT_AND_IS_INSTALLED_FOR_USE_WITH_THE_FOLLOWING_DOTNET_RUNTIMES"
+<br />
+or "IUSE_DOTNET", to indicate that it should be placed inside ebuild.
+<!--
+<br />
+<br />
+The line 
+<br />
+if [[ ${USE_DOTNET} ]]; then REQUIRED_USE="|| (${USE_DOTNET})"; fi;;
+<br />
+should be something like
+<br />
+if [[ ${USE_DOTNET} ]]; then REQUIRED_ENV_VAR="|| (${DOTNET})"; fi;;
+-->
 <br />
 <br />
 Ebuild can declare which version it understands:
@@ -49,21 +62,51 @@ instructs the user to specify necessary platforms in /etc/portage/make.conf
 «add the following USE flags if relevant.
 <br />
 add DOTNET_TARGETS="net45 net40" to make.conf»
-<br />
-<br />
+<hr />
 <strong><em>The great mystery is why it was not possible to 
 <br />
 just use conventional USE-flags in /etc/portage/make.conf and IUSE in the text of ebuilds.</em></strong>
+
 
 <h2>USE_EXPAND variables</h2>
 Gentoo have a mechanism for creating additional kinds of USE-flags.
 <br />
 see <a href="https://devmanual.gentoo.org/general-concepts/use-flags/index.html#use_expand-and-arch-use-flags">USE_EXPAND and ARCH USE Flags</a>
 <br />
+<dl>
+<dt>USE_EXPAND</dt>
+<dd>Defines a list of variables which are to be treated incrementally and whose contents are to be expanded 
+into the USE variable as passed to ebuilds.</dd>
+<dt>USE_EXPAND_UNPREFIXED</dt>
+<dd>Similar to USE_EXPAND, but no prefix is used. If the repository contains any package using an EAPI supporting</dd>
+</dl>
+«USE_EXPAND values may be forced or masked by using expand_name_value.»
+<br />
+<a href="https://projects.gentoo.org/pms/7/pms.html">https://projects.gentoo.org/pms/7/pms.html</a>
+<br />
 <br />
 The USE_EXPAND list is set in profiles/base/make.defaults
 <br />
 (or USE_EXPAND can be modified in /etc/portage/make.conf)
+<br />
+<br />
+«all USE_EXPAND variables are always exported with filtered USE flags inside, even if none of those flags are declared in IUSE.
+This is the behavior required for EAPI 5+ by the PMS.»
+«why should USE_EXPAND have any effect on a package which doesn't declare the corresponding flags in IUSE?»
+<br />
+<a href="https://archives.gentoo.org/gentoo-portage-dev/message/1c5724058e4f484f3a76ba787d15cdc3">https://archives.gentoo.org/gentoo-portage-dev/message/1c5724058e4f484f3a76ba787d15cdc3</a>
+<br />
+<br />
+We see that the necessary steps are:
+<br />
+1) add USE-flags into IUSE (probably in expanded form)
+<br />
+2) add name of variable into USE_EXPAND
+<br />
+<br />
+USE_EXPAND_VALUES_${v} - the (undocumented) profile variable
+<br />
+USE_EXPAND_UNPREFIXED (this list must contain at least ARCH)
 <br />
 <br />
 Each variable, mentioned in USE_EXPAND is displayed separately during USE-flags processing.
@@ -77,6 +120,22 @@ If the user has DOTNET_TARGETS="net40 net20" in make.conf, for example,
 <br />
 then USE="dotnet_net40 dotnet_net20" will automatically be set by Portage. 
 -->
+
+
+<h2>An idea to convert USE_DOTNET into expand variable</h2>
+<strong>Table: &nbsp;Example Variable Settings</strong></p><div class="table-contents"><table class="table" summary="Example Variable Settings" border="1"><colgroup><col class="source" align="left"><col class="destination" align="left"></colgroup><thead><tr><th align="left">Variable</th><th align="left">Value</th></tr></thead><tbody><tr><td align="left">IUSE_IMPLICIT</td><td align="left">prefix selinux</td></tr><tr><td align="left">USE_EXPAND</td><td align="left">ELIBC KERNEL USERLAND</td></tr><tr><td align="left">USE_EXPAND_UNPREFIXED</td><td align="left">ARCH</td></tr><tr><td align="left">USE_EXPAND_IMPLICIT</td><td align="left">ARCH ELIBC KERNEL USERLAND</td></tr><tr><td align="left">USE_EXPAND_VALUES_ARCH</td><td align="left">amd64 ppc ppc64 x86 x86-fbsd x86-solaris</td></tr><tr><td align="left">USE_EXPAND_VALUES_ELIBC</td><td align="left">FreeBSD glibc</td></tr><tr><td align="left">USE_EXPAND_VALUES_KERNEL</td><td align="left">FreeBSD linux SunOS</td></tr><tr><td align="left">USE_EXPAND_VALUES_USERLAND</td><td align="left">BSD GNU</td></tr></tbody></table></div></div>
+<br />
+<br />
+<font style="color:red"><strong><em>USE_DOTNET looks like UNPREFIXED and IMPLICIT</em></strong></font>
+<br />
+I propose to make it conventional USE-expand variable (or remove at all !!!, because .Net 2.0-3.5 is deprecated and 
+there is only one slot for .Net 4.x in Gentoo)
+
+
+<h2>Profile IUSE injection (profile-iuse-inject)</h2>
+profile defined IUSE injection, since EAPI-5
+<br />
+<a href="https://projects.gentoo.org/pms/7/pms.html#x1-56001r4">https://projects.gentoo.org/pms/7/pms.html#x1-56001r4</a>
 
 
 <h2>USE_MSBUILD</h2>
